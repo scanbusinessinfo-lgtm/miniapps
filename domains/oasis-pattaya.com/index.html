@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oasis — русская и тайская кухня в Паттайе | Пратамнак, доставка</title>
+<meta name="description" content="Кафе Oasis на Пратамнаке у Русского рынка: борщ, пельмени, Том Ям, пад тай, рёбрышки барбекю и свежая выпечка. Сад с водопадом. Доставка по Паттайе от 50 ฿, заказ в Telegram.">
+<meta name="theme-color" content="#0e0c0b">
+<meta property="og:type" content="restaurant">
+<meta property="og:title" content="Oasis — русская и тайская кухня в Паттайе">
+<meta property="og:description" content="Сад с водопадом, 169 блюд и напитков, доставка от 50 ฿. Меню и заказ в Telegram.">
+<meta property="og:image" content="https://oasis-pattaya.com/assets/og.jpg">
+<meta property="og:url" content="https://oasis-pattaya.com/">
+<link rel="canonical" href="https://oasis-pattaya.com/">
+<link rel="alternate" hreflang="ru" href="https://oasis-pattaya.com/">
+<link rel="alternate" hreflang="en" href="https://oasis-pattaya.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://oasis-pattaya.com/en/">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:locale:alternate" content="en_US">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500;1,600&family=Marck+Script&family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Oasis Cafe",
+  "alternateName": "Oasis Russian Restaurant",
+  "description": "Русская и тайская кухня, выпечка и торты. Сад с водопадом на Пратамнаке, доставка по Паттайе.",
+  "servesCuisine": ["Русская кухня", "Тайская кухня", "Выпечка"],
+  "priceRange": "฿",
+  "currenciesAccepted": "THB",
+  "url": "https://oasis-pattaya.com/",
+  "image": "https://oasis-pattaya.com/assets/og.jpg",
+  "address": { "@type": "PostalAddress", "streetAddress": "Русский рынок, Пратамнак", "addressLocality": "Паттайя", "addressRegion": "Чонбури", "addressCountry": "TH" },
+  "geo": { "@type": "GeoCoordinates", "latitude": 12.9099739, "longitude": 100.8639203 },
+  "hasMap": "https://maps.google.com/?cid=6644152962773139887",
+  "hasMenu": "https://oasis-pattaya.com/assets/oasis-menu.pdf?v=2",
+  "acceptsReservations": "https://wa.me/79638333129",
+  "telephone": "+79638333129",
+  "openingHoursSpecification": [{ "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "10:00", "closes": "23:00" }],
+  "sameAs": ["https://t.me/Oasis_Pattaya_bot", "https://wa.me/79638333129"]
+}
+</script>
+<style>
+:root{
+  --bg:#0e0c0b; --bg2:#151210; --card:#1a1613; --line:#2b2520; --text:#f2ebe1; --muted:#b3a799; --dim:#857a6e;
+  --accent:#f0913a; --accent-ink:#130f0c;
+  --serif:'Cormorant Garamond', Georgia, serif; --script:'Marck Script', cursive; --sans:'Golos Text', system-ui, sans-serif;
+  --wrap:1240px; --r:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html{background:var(--bg)}
+body{margin:0;background:transparent;color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+img.plate,.dish img,.reason img,.hero-dish img{aspect-ratio:1/1;object-fit:contain;flex-shrink:0}
+a{color:var(--accent)} a:hover{color:#ffb070}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 26px;border-radius:999px;font-weight:700;text-decoration:none;border:1.5px solid transparent;transition:transform .2s, background .2s, color .2s}
+.btn:active{transform:scale(.97)}
+.btn-accent{background:var(--accent);color:var(--accent-ink)} .btn-accent:hover{background:#ffa456;color:var(--accent-ink)}
+.btn-ghost{border-color:rgba(242,235,225,.45);color:var(--text);background:rgba(242,235,225,.06)} .btn-ghost:hover{border-color:var(--text);color:var(--text)}
+.eyebrow{font-size:13px;letter-spacing:.28em;font-weight:700;color:var(--accent);text-transform:uppercase}
+.script{font-family:var(--script);color:var(--accent);font-weight:400}
+h1,h2,h3{font-family:var(--serif);font-style:italic;font-weight:600;margin:0;line-height:1.02}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* top bar + header */
+.topbar{border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.topbar .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;padding-top:9px;padding-bottom:9px}
+.header{position:sticky;top:0;z-index:40;background:rgba(14,12,11,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s}
+.header.scrolled{border-color:var(--line)}
+.header .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:14px;padding-bottom:14px}
+.logo img{height:42px;width:auto}
+.nav{display:flex;gap:28px;font-size:15px;font-weight:600}
+.nav a{color:var(--muted);text-decoration:none} .nav a:hover{color:var(--text)}
+.header-cta{display:flex;gap:10px;align-items:center}
+.lang{display:inline-flex;align-items:center;justify-content:center;min-width:46px;height:46px;padding:0 12px;border-radius:999px;border:1px solid var(--line);color:var(--text);font-weight:800;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:border-color .2s,color .2s}.lang:hover{border-color:var(--accent);color:var(--accent)}
+
+.burger{display:none;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--text);align-items:center;justify-content:center}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:radial-gradient(ellipse 55% 55% at 72% 55%, rgba(240,145,58,.17), rgba(14,12,11,0) 70%)}
+/* site-wide photo background: spices on dark stone (fixed layer, works on iOS too) */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(rgba(10,9,8,.42),rgba(10,9,8,.42)), url(assets/spices.webp) center / cover no-repeat}
+@media (max-aspect-ratio: 4/5){ body::before{background-image:linear-gradient(rgba(10,9,8,.42),rgba(10,9,8,.42)), url(assets/spices-m.webp)} }
+.hero .wrap{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:30px;padding-top:56px;padding-bottom:110px}
+.hero-text{flex:1 1 480px;min-width:0}
+.hero-text .script.lead{font-size:30px;display:block;margin-bottom:6px}
+.hero h1{font-size:clamp(46px,6.4vw,86px);margin-bottom:6px}
+.hero .script.big{font-size:clamp(44px,5.6vw,72px);line-height:1.08;display:block;margin-bottom:22px}
+.hero p{font-size:18px;color:#d6cabb;max-width:470px;margin:0 0 30px;border-left:2px solid var(--accent);padding-left:16px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:38px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:28px;font-size:14px}
+.hero-facts b{display:block} .hero-facts span{color:var(--dim)}
+.hero-dish{flex:1 1 460px;min-width:0;position:relative;display:flex;justify-content:center}
+.hero-dish img{width:100%;max-width:560px;filter:drop-shadow(0 40px 60px rgba(0,0,0,.7));will-change:transform}
+.badge-round{position:absolute;top:2%;right:6%;width:126px;height:126px;border-radius:50%;border:2px solid var(--accent);background:rgba(14,12,11,.86);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.badge-round .script{font-size:30px;line-height:1} .badge-round small{font-size:12px;color:var(--muted);margin-top:4px}
+.wave{position:absolute;left:0;bottom:-1px;width:100%;height:70px;display:block}
+
+/* sections */
+section{scroll-margin-top:80px}
+.sec{padding:96px 0}
+.sec-head{text-align:center;margin-bottom:44px}
+.sec-head .script{font-size:30px;display:block}
+.sec-head h2{font-size:clamp(38px,4.4vw,56px);margin-top:2px}
+.bg2{background:rgba(12,10,9,.5)}
+
+/* about */
+.about{display:flex;flex-wrap:wrap;gap:40px;align-items:center}
+.about-text{flex:1 1 340px;min-width:0}
+.about-text h2{font-size:clamp(36px,4vw,50px)} .about-text .script.h{font-size:clamp(36px,4vw,50px);display:block;line-height:1.1;margin-bottom:18px}
+.about-text p{color:var(--muted);font-size:17px;margin:0 0 24px}
+.about-photo{flex:1 1 340px;min-width:0;position:relative}
+.about-photo img{width:100%;height:380px;object-fit:cover;border-radius:var(--r)}
+.about-videos{flex:1 1 420px;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.vcard{margin:0;position:relative;aspect-ratio:9/16;border-radius:var(--r);overflow:hidden;background:#000;border:1px solid var(--line)}
+.vcard:nth-child(2){margin-top:44px}
+.vcard video{width:100%;height:100%;object-fit:cover;display:block}
+.vtag{position:absolute;left:12px;top:12px;background:rgba(14,12,11,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(242,235,225,.18);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700}
+.vsound{position:absolute;right:10px;bottom:10px;width:44px;height:44px;border-radius:50%;border:none;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center}
+.vsound .won{display:none} .vsound[aria-pressed="true"] .won{display:inline} .vsound[aria-pressed="true"] .woff{display:none}
+.photo-tag{position:absolute;left:-14px;bottom:22px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;font-weight:700;font-size:14px;line-height:1.3}
+.photo-tag i{width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center}
+.stats{flex:1 1 300px;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+.stats div{padding:26px 18px;text-align:center}
+.stats div:nth-child(1),.stats div:nth-child(3){border-right:1px solid var(--line)} .stats div:nth-child(1),.stats div:nth-child(2){border-bottom:1px solid var(--line)}
+.stats b{display:block;font-family:var(--serif);font-size:36px;color:var(--accent);line-height:1.1} .stats span{font-size:13px;font-weight:700;color:var(--muted)}
+
+/* reasons (F) */
+.reasons{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
+.reason{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:30px 26px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.reason .num{width:52px;height:52px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:26px;display:flex;align-items:center;justify-content:center}
+.reason h3{font-size:30px} .reason p{margin:0;color:var(--muted);font-size:15px}
+.reason img{width:76%;margin:8px 0 4px}
+.price-list{align-self:stretch;text-align:left}
+.price-list div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:15px}
+.price-list b{color:var(--accent);white-space:nowrap;font-weight:600}
+
+/* carousel (E) */
+.carousel{position:relative}
+.track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,calc((100% - 60px)/4));gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 18px;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.dish{scroll-snap-align:start;position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:8px}
+.dish .hit{position:absolute;top:14px;left:14px;background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:800;padding:5px 10px;border-radius:6px;z-index:1}
+.dish img{width:82%;align-self:center;margin-bottom:6px}
+.dish h3{font-family:var(--sans);font-style:normal;font-size:18px;font-weight:800}
+.dish small{color:var(--dim);font-size:13px}
+.dish .row{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:6px}
+.dish .price{font-size:19px;font-weight:800;color:var(--accent)}
+.plus{width:44px;height:44px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;text-decoration:none;border:none}
+.arrows{display:flex;gap:10px;justify-content:flex-end;margin-bottom:16px}
+.arrow{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--text);display:flex;align-items:center;justify-content:center}
+.arrow:hover{border-color:var(--accent)}
+
+/* menu cta */
+.menu-cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:30px}
+
+/* reserve banner */
+.banner{position:relative;border-radius:22px;overflow:hidden;background:#000}
+.banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.38}
+.banner .in{position:relative;padding:48px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
+.banner h2{font-size:clamp(34px,4vw,48px)} .banner p{margin:8px 0 0;color:#d6cabb}
+
+/* garden */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.gallery figure{margin:0} .gallery img{width:100%;height:400px;object-fit:cover;border-radius:10px}
+.gallery figcaption{color:var(--dim);font-size:14px;margin-top:10px}
+
+/* contacts + footer */
+.contacts{display:flex;flex-wrap:wrap;gap:40px}
+.contacts>div{flex:1 1 400px;min-width:0}
+.contacts dl{display:grid;grid-template-columns:120px 1fr;row-gap:14px;margin:0;font-size:17px}
+.contacts dt{color:var(--dim)} .contacts dd{margin:0}
+.map-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:34px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+.map-card p{margin:0;font-family:var(--serif);font-style:italic;font-size:28px;line-height:1.25}
+footer{border-top:1px solid var(--line);margin-top:40px}
+.foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:28px;padding-top:52px;padding-bottom:28px;font-size:14px;line-height:1.9;color:var(--muted)}
+.foot b{display:block;font-family:var(--script);font-weight:400;font-size:24px;color:var(--accent)}
+.foot a{color:var(--muted);text-decoration:none;display:block} .foot a:hover{color:var(--text)}
+.copy{border-top:1px solid var(--line);padding:16px 0;font-size:12px;color:var(--dim)}
+
+/* scroll reveal + dish motion */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.plate{opacity:0;transform:translateY(40px) rotate(-28deg) scale(.86);transition:opacity 1s cubic-bezier(.2,.7,.2,1), transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.plate.in{opacity:1;transform:none}
+.dish:hover img, .reason:hover img{transform:rotate(8deg) scale(1.03);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+@media (prefers-reduced-motion: reduce){ .reveal,.plate{opacity:1;transform:none;transition:none} html{scroll-behavior:auto} }
+
+/* menu modal */
+.modal{position:fixed;inset:0;z-index:100;display:none}
+.modal.open{display:block}
+.modal-back{position:absolute;inset:0;background:rgba(0,0,0,.66);opacity:0;transition:opacity .3s}
+.modal.show .modal-back{opacity:1}
+.sheet{position:absolute;right:0;top:0;bottom:0;width:min(760px,100%);background:var(--bg2);border-left:1px solid var(--line);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .38s cubic-bezier(.2,.8,.2,1)}
+.modal.show .sheet{transform:none}
+.sheet-head{padding:22px 24px 14px;border-bottom:1px solid var(--line)}
+.sheet-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.sheet-top h2{font-size:38px}
+.x{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--text);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.search{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 14px;margin-bottom:12px}
+.search input{flex:1;min-width:0;background:transparent;border:none;color:var(--text);font:inherit;font-size:16px;padding:12px 0;outline:none}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:14px;font-weight:600}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.sheet-body{flex:1;overflow-y:auto;padding:8px 24px 24px;overscroll-behavior:contain}
+.mcat{font-family:var(--serif);font-style:italic;font-size:30px;margin:26px 0 10px;scroll-margin-top:10px}
+.mitem{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+.mitem img,.mitem .noimg{width:76px;height:76px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--card)}
+.mitem .noimg{display:flex;align-items:center;justify-content:center;color:var(--dim)}
+.minfo{flex:1;min-width:0}
+.minfo h4{margin:0;font-size:17px;font-weight:700} .minfo .en{font-size:13px;color:var(--dim)}
+.vars{margin-top:6px;display:flex;flex-direction:column;gap:3px}
+.var{display:flex;justify-content:space-between;gap:12px;font-size:15px;color:var(--muted)}
+.var b{color:var(--accent);white-space:nowrap}
+.sheet-foot{padding:14px 24px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px}
+.sheet-foot .btn{flex:1 1 200px}
+.state{padding:40px 0;text-align:center;color:var(--muted)}
+
+/* responsive */
+@media (max-width: 900px){
+  .nav{display:none}
+  .burger{display:flex}
+  .nav.open{display:flex;position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0;background:var(--bg2);border-bottom:1px solid var(--line);padding:6px 28px 16px}
+  .nav.open a{padding:12px 0;font-size:17px}
+  .header-cta .btn-accent{display:none}
+  .hero .wrap{padding-top:28px;padding-bottom:80px}
+  .badge-round{width:100px;height:100px} .badge-round .script{font-size:24px}
+  .sec{padding:64px 0}
+  .track{grid-auto-columns:78%}
+  .about-photo img{height:300px}
+  .about-videos{flex-basis:100%}
+  .vcard:nth-child(2){margin-top:28px}
+  .gallery img{height:300px}
+  .banner .in{padding:32px}
+  .photo-tag{left:10px}
+}
+@media (max-width: 520px){
+  .wrap{padding:0 16px}
+  .topbar .hide-sm{display:none}
+  .contacts dl{grid-template-columns:96px 1fr}
+  .sheet-head,.sheet-body,.sheet-foot{padding-left:16px;padding-right:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <span>Русский рынок, Пратамнак, Паттайя</span>
+  <span class="hide-sm">10:00–23:00 ежедневно · доставка от 50 ฿</span>
+</div></div>
+
+<header class="header" id="header"><div class="wrap" style="position:relative">
+  <a class="logo" href="#top" aria-label="Oasis — на главную"><img src="assets/logo-light.png" alt="Oasis" width="90" height="42"></a>
+  <nav class="nav" id="nav">
+    <a href="#about">О нас</a>
+    <a href="#kitchen">Кухня</a>
+    <a href="#dishes">Хиты</a>
+    <a href="#garden">Сад</a>
+    <a href="#contacts">Контакты</a>
+  </nav>
+  <div class="header-cta">
+    <a class="lang" href="/en/" hreflang="en" lang="en" aria-label="English version">EN</a>
+    <button class="btn btn-ghost" type="button" data-open-menu>Меню</button>
+    <a class="btn btn-accent" href="https://t.me/Oasis_Pattaya_bot" target="_blank" rel="noopener">Заказать доставку</a>
+    <button class="burger" type="button" id="burger" aria-label="Открыть навигацию" aria-expanded="false" aria-controls="nav">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</div></header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-text reveal">
+      <span class="script lead">Вкусно и по-домашнему</span>
+      <h1>Русская и тайская кухня</h1>
+      <span class="script big">в сердце Паттайи</span>
+      <p>Сад с водопадом, домашние блюда и тайская классика. Приходите в гости или закажите доставку по Паттайе.</p>
+      <div class="hero-actions">
+        <button class="btn btn-accent" type="button" data-open-menu>Открыть меню</button>
+        <a class="btn btn-ghost" href="assets/oasis-menu.pdf?v=2" download="Oasis-menu.pdf">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+          Скачать меню PDF
+        </a>
+      </div>
+      <div class="hero-facts">
+        <div><b>Свежие продукты</b><span>готовим каждый день</span></div>
+        <div><b>Две кухни</b><span>169 позиций в меню</span></div>
+        <div><b>Сад с водопадом</b><span>терраса в тени</span></div>
+      </div>
+    </div>
+    <div class="hero-dish">
+      <img id="heroPlate" class="plate" src="assets/cut-seafood.webp" alt="Морепродукты на гриле" width="560" height="560">
+      <div class="badge-round"><span class="script">Гриль</span><small>море и мясо</small></div>
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 44 C60 26 110 56 180 40 S300 18 380 42 S520 62 600 36 S760 16 840 40 S990 64 1070 38 S1220 14 1300 36 S1400 54 1440 32 L1440 70 L0 70 Z" fill="rgb(12,10,9)" fill-opacity=".5"/></svg>
+</section>
+
+<section id="about" class="sec bg2">
+  <div class="wrap about">
+    <div class="about-text reveal">
+      <span class="script" style="font-size:28px">О нас</span>
+      <h2>Готовим с душой</h2>
+      <span class="script h">для своих</span>
+      <p>Oasis — кафе на Пратамнаке, прямо на Русском рынке. Борщ, пельмени и блины соседствуют в меню с Том Ям, карри и пад таем. По утрам — свежая выпечка, вечером — сад в огнях.</p>
+      <a class="btn btn-accent" href="#contacts">Как нас найти</a>
+    </div>
+    <div class="about-videos reveal">
+      <figure class="vcard">
+        <video poster="assets/about-1.jpg" muted loop playsinline preload="none" aria-label="Видео: блюда и сад Oasis"><source src="assets/about-1.mp4" type="video/mp4"><source src="assets/about-1.webm" type="video/webm"></video>
+        <span class="vtag">Сад и кухня</span>
+        <button class="vsound" type="button" aria-label="Включить звук" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="woff" d="M16 9l5 6M21 9l-5 6"/><path class="won" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>
+      </figure>
+      <figure class="vcard">
+        <video poster="assets/about-2.jpg" muted loop playsinline preload="none" aria-label="Видео: подача блюд в Oasis"><source src="assets/about-2.mp4" type="video/mp4"><source src="assets/about-2.webm" type="video/webm"></video>
+        <span class="vtag">Подача блюд</span>
+        <button class="vsound" type="button" aria-label="Включить звук" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="woff" d="M16 9l5 6M21 9l-5 6"/><path class="won" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>
+      </figure>
+    </div>
+    <div class="stats reveal">
+      <div><b>169</b><span>блюд и напитков</span></div>
+      <div><b>21</b><span>раздел меню</span></div>
+      <div><b>50 ฿</b><span>доставка от</span></div>
+      <div><b>2</b><span>кухни: русская и тайская</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="kitchen" class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="script">— Oasis —</span><h2>Три причины прийти к нам</h2></div>
+    <div class="reasons">
+      <article class="reason reveal">
+        <span class="num">1</span><h3>Тайская классика</h3><p>Том Ям, карри, вок и пад тай — как в Бангкоке.</p>
+        <img class="plate" src="assets/cut-padthai.webp" alt="Пад Тай" loading="lazy">
+        <div class="price-list"><div><span>Том Ям</span><b>от 100 ฿</b></div><div><span>Пад Тай</span><b>от 100 ฿</b></div><div><span>Зелёное карри</span><b>от 100 ฿</b></div></div>
+      </article>
+      <article class="reason reveal">
+        <span class="num">2</span><h3>Домашняя русская</h3><p>Борщ, пельмени, блины и котлеты — по-домашнему.</p>
+        <img class="plate" src="assets/cut-pelmeni.webp" alt="Пельмени" loading="lazy">
+        <div class="price-list"><div><span>Борщ</span><b>120 ฿</b></div><div><span>Пельмени, 10 шт.</span><b>от 149 ฿</b></div><div><span>Блины, 3 шт.</span><b>79 ฿</b></div></div>
+      </article>
+      <article class="reason reveal">
+        <span class="num">3</span><h3>Гриль и море</h3><p>Рыба, мидии и рёбрышки — для большой компании.</p>
+        <img class="plate" src="assets/cut-mussels.webp" alt="Мидии, запечённые с сыром" loading="lazy">
+        <div class="price-list"><div><span>Мидии с сыром</span><b>159 ฿</b></div><div><span>Рёбрышки барбекю</span><b>300 ฿</b></div><div><span>Рыба на пару с лаймом</span><b>350 ฿</b></div></div>
+      </article>
+    </div>
+    <div class="menu-cta reveal">
+      <button class="btn btn-accent" type="button" data-open-menu>Всё меню — 169 позиций</button>
+      <a class="btn btn-ghost" href="assets/oasis-menu.pdf?v=2" download="Oasis-menu.pdf">Скачать PDF</a>
+    </div>
+  </div>
+</section>
+
+<section id="dishes" class="sec bg2">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-bottom:20px"><span class="script">Наше меню</span><h2>Популярные блюда</h2></div>
+    <div class="arrows"><button class="arrow" type="button" data-dir="-1" aria-label="Предыдущие блюда"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><button class="arrow" type="button" data-dir="1" aria-label="Следующие блюда"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></div>
+    <div class="carousel reveal"><div class="track" id="track"></div></div>
+  </div>
+</section>
+
+<section class="sec" style="padding-bottom:40px">
+  <div class="wrap">
+    <div class="banner reveal">
+      <img src="assets/night-alley.webp" alt="" aria-hidden="true" loading="lazy">
+      <div class="in">
+        <div><span class="eyebrow">Бронь стола</span><h2 style="margin-top:8px">Ужин под гирляндами</h2><p>Лучшие места — у водопада. Напишите нам в WhatsApp: дата, время и сколько гостей.</p></div>
+        <a class="btn btn-accent" href="https://wa.me/79638333129?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%B1%D1%80%D0%BE%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D1%81%D1%82%D0%BE%D0%BB%D0%B8%D0%BA%20%D0%B2%20Oasis.%0A%D0%94%D0%B0%D1%82%D0%B0%3A%20%0A%D0%92%D1%80%D0%B5%D0%BC%D1%8F%3A%20%0A%D0%93%D0%BE%D1%81%D1%82%D0%B5%D0%B9%3A%20%0A%D0%98%D0%BC%D1%8F%3A%20" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>Забронировать в WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="garden" class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="script">Атмосфера</span><h2>Сад Oasis</h2></div>
+    <div class="gallery">
+      <figure class="reveal"><img src="assets/planter.webp" alt="Пальмы и столики вечером" loading="lazy"><figcaption>Терраса вечером</figcaption></figure>
+      <figure class="reveal"><img src="assets/fountains.webp" alt="Ручей с фонтанами вдоль столиков вечером" loading="lazy"><figcaption>Ручей с фонтанами</figcaption></figure>
+      <figure class="reveal"><img src="assets/garden.webp" alt="Столики у ручья в зелени" loading="lazy"><figcaption>Столики в зелени</figcaption></figure>
+      <figure class="reveal"><img src="assets/bakery.webp" alt="Свежая выпечка Oasis" loading="lazy"><figcaption>Выпечка каждое утро</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="contacts" class="sec bg2">
+  <div class="wrap contacts">
+    <div class="reveal">
+      <h2 style="font-size:clamp(40px,4.6vw,56px);margin-bottom:28px">Ждём в гости</h2>
+      <dl>
+        <dt>Адрес</dt><dd>Русский рынок, Пратамнак, Паттайя</dd>
+        <dt>Часы</dt><dd>10:00–23:00, ежедневно</dd>
+        <dt>Телефон</dt><dd><a href="tel:+79638333129">+7 963 833-31-29</a></dd>
+        <dt>WhatsApp</dt><dd><a href="https://wa.me/79638333129" target="_blank" rel="noopener">+7 963 833-31-29</a> · бронь столика</dd>
+        <dt>Доставка</dt><dd><a href="https://t.me/Oasis_Pattaya_bot" target="_blank" rel="noopener">@Oasis_Pattaya_bot</a> · от 50 ฿ по тарифу Grab</dd>
+      </dl>
+    </div>
+    <div class="map-card reveal">
+      <p>Рядом с Русским рынком на Пратамнаке — удобно приехать на байке или такси.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <a class="btn btn-accent" href="https://maps.google.com/?cid=6644152962773139887" target="_blank" rel="noopener">Маршрут в Google Maps</a>
+        <a class="btn btn-ghost" href="https://wa.me/79638333129?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%B1%D1%80%D0%BE%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D1%81%D1%82%D0%BE%D0%BB%D0%B8%D0%BA%20%D0%B2%20Oasis.%0A%D0%94%D0%B0%D1%82%D0%B0%3A%20%0A%D0%92%D1%80%D0%B5%D0%BC%D1%8F%3A%20%0A%D0%93%D0%BE%D1%81%D1%82%D0%B5%D0%B9%3A%20%0A%D0%98%D0%BC%D1%8F%3A%20" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>Забронировать столик</a>
+        <a class="btn btn-ghost" href="https://t.me/Oasis_Pattaya_bot" target="_blank" rel="noopener">Заказать доставку</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div><img src="assets/logo-light.png" alt="Oasis" style="height:40px;width:auto"><p style="margin:10px 0 0;line-height:1.6">Cafe · Bakery · Cake<br>Паттайя, Пратамнак</p></div>
+    <div><b>Разделы</b><a href="#about">О нас</a><a href="#kitchen">Кухня</a><a href="#dishes">Хиты</a><a href="#garden">Сад</a></div>
+    <div><b>Меню</b><a href="#" data-open-menu>Открыть меню</a><a href="assets/oasis-menu.pdf?v=2" download="Oasis-menu.pdf">Скачать PDF</a><a href="https://t.me/Oasis_Pattaya_bot" target="_blank" rel="noopener">Заказ в Telegram</a></div>
+    <div><b>Контакты</b><a href="tel:+79638333129">+7 963 833-31-29</a><a href="https://wa.me/79638333129" target="_blank" rel="noopener">WhatsApp</a><span style="display:block;color:var(--muted)">10:00–23:00 ежедневно</span><a href="https://maps.google.com/?cid=6644152962773139887" target="_blank" rel="noopener">Google Maps</a></div>
+  </div>
+  <div class="wrap copy">Oasis Cafe · цены в тайских батах</div>
+</footer>
+
+<div class="modal" id="menuModal" aria-hidden="true">
+  <div class="modal-back" data-close></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="menuTitle">
+    <div class="sheet-head">
+      <div class="sheet-top"><h2 id="menuTitle">Меню Oasis</h2><button class="x" type="button" data-close aria-label="Закрыть меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <label class="search"><span class="sr">Поиск по меню</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#857a6e" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="mq" type="search" placeholder="Найти блюдо" autocomplete="off"></label>
+      <div class="chips" id="mchips"></div>
+    </div>
+    <div class="sheet-body" id="mbody"><div class="state">Загружаем меню…</div></div>
+    <div class="sheet-foot">
+      <a class="btn btn-accent" href="https://t.me/Oasis_Pattaya_bot" target="_blank" rel="noopener">Заказать в Telegram</a>
+      <a class="btn btn-ghost" href="assets/oasis-menu.pdf?v=2" download="Oasis-menu.pdf">Скачать PDF</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const LANG = document.documentElement.lang === 'en' ? 'en' : 'ru';
+  const BOT = 'https://t.me/Oasis_Pattaya_bot';
+  const SB = 'https://roqmejclibyyjlnxshzu.supabase.co';
+  const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvcW1lamNsaWJ5eWpsbnhzaHp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMzQ5OTcsImV4cCI6MjEwMTcxMDk5N30.Y4FhKvSa8b515buVumv3UTzX6mLti1aEmbrL38Jnvuc';
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- popular dishes carousel ----------
+  const DISHES = [
+    ['Том Ям', 'креветки · курица · морепродукты', 'от 100 ฿', 'tomyum', 1],
+    ['Куриный сате', 'шпажки на гриле, арахисовый соус', '159 ฿', 'satay', 1],
+    ['Рис в ананасе', 'курица · свинина · креветки', 'от 150 ฿', 'pineapple-rice', 0],
+    ['Пельмени', '10 шт., три начинки', 'от 149 ฿', 'pelmeni', 0],
+    ['Свиные рёбрышки барбекю', 'с картофелем фри и соусом', '300 ฿', 'ribs', 0],
+    ['Свиная рулька', 'по-немецки, хрустящая', '350 ฿', 'knuckle', 1],
+    ['Зелёное карри', 'курица · креветки · морепродукты', 'от 100 ฿', 'greencurry', 0],
+    ['Спагетти Карбонара', 'сливочный соус, бекон', '199 ฿', 'carbonara', 0],
+    ['Блины', '3 шт.: джем, сгущёнка или шоколад', '79 ฿', 'blini', 0]
+  ];
+  const track = document.getElementById('track');
+  track.innerHTML = DISHES.map(d =>
+    '<article class="dish reveal">' + (d[4] ? '<span class="hit">Хит</span>' : '') +
+    '<img class="plate" src="assets/cut-' + d[3] + '.webp" alt="' + esc(d[0]) + '" loading="lazy" width="300" height="300">' +
+    '<h3>' + esc(d[0]) + '</h3><small>' + esc(d[1]) + '</small>' +
+    '<div class="row"><span class="price">' + esc(d[2]) + '</span><a class="plus" href="' + BOT + '" target="_blank" rel="noopener" aria-label="Заказать: ' + esc(d[0]) + '">' +
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a></div></article>').join('');
+  document.querySelectorAll('.arrow').forEach(b => b.addEventListener('click', () => {
+    const card = track.querySelector('.dish'); const step = card ? card.getBoundingClientRect().width + 20 : 300;
+    track.scrollBy({ left: step * Number(b.dataset.dir), behavior: reduce ? 'auto' : 'smooth' });
+  }));
+
+  // ---------- scroll reveal (sections fade up, plates roll in) ----------
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); e.target.querySelectorAll('.plate, .reveal').forEach((p, k) => { p.style.transitionDelay = (k % 8) * 0.06 + 's'; p.classList.add('in'); }); io.unobserve(e.target); } });
+  }, { threshold: 0.18, rootMargin: '0px 0px -40px 0px' }) : null;
+  document.querySelectorAll('.reveal, .plate').forEach((el, i) => {
+    if (!io || reduce) { el.classList.add('in'); return; }
+    if (el.closest('#track')) return; // revealed together with the carousel
+    if (el.classList.contains('plate')) el.style.transitionDelay = (i % 4) * 0.08 + 's';
+    io.observe(el);
+  });
+
+  // hero plate: slow rotation while scrolling
+  const hero = document.getElementById('heroPlate');
+  setTimeout(() => hero.classList.add('in'), 120);
+  let ticking = false;
+  const onScroll = () => {
+    document.getElementById('header').classList.toggle('scrolled', scrollY > 10);
+    if (reduce || ticking) return; ticking = true;
+    requestAnimationFrame(() => {
+      const y = Math.min(scrollY, 900);
+      if (hero.classList.contains('in')) { hero.style.transition = 'none'; hero.style.transform = 'translateY(' + (y * 0.12) + 'px) rotate(' + (y * 0.06) + 'deg)'; }
+      ticking = false;
+    });
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  hero.addEventListener('transitionend', () => { hero.style.transition = 'none'; }, { once: true });
+
+  // ---------- about videos: play only while visible, one sound at a time ----------
+  const vids = [...document.querySelectorAll('.vcard video')];
+  if ('IntersectionObserver' in window) {
+    const vio = new IntersectionObserver(es => es.forEach(e => {
+      const v = e.target;
+      if (e.isIntersecting && !reduce) { v.preload = 'auto'; const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+      else v.pause();
+    }), { threshold: 0.35 });
+    vids.forEach(v => vio.observe(v));
+  }
+  document.querySelectorAll('.vsound').forEach(btn => btn.addEventListener('click', () => {
+    const v = btn.parentElement.querySelector('video'), on = v.muted;
+    vids.forEach(o => { o.muted = true; const b = o.parentElement.querySelector('.vsound'); b.setAttribute('aria-pressed', 'false'); b.setAttribute('aria-label', 'Включить звук'); });
+    if (on) { v.muted = false; btn.setAttribute('aria-pressed', 'true'); btn.setAttribute('aria-label', 'Выключить звук'); const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+  }));
+
+  // ---------- mobile nav ----------
+  const nav = document.getElementById('nav'), burger = document.getElementById('burger');
+  burger.addEventListener('click', () => { const o = nav.classList.toggle('open'); burger.setAttribute('aria-expanded', o); });
+  nav.addEventListener('click', e => { if (e.target.tagName === 'A') { nav.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); } });
+
+  // ---------- menu popup (live data from the bot's database) ----------
+  const modal = document.getElementById('menuModal'), body = document.getElementById('mbody'), chips = document.getElementById('mchips'), q = document.getElementById('mq');
+  let groups = null, lastFocus = null, loading = null;
+
+  const EN_CATS = {"Супы": "Soups", "Салаты": "Salads", "Горячие блюда": "Hot Dishes", "Паста и гарниры": "Pasta & Sides", "Закуски": "Snacks", "Выпечка": "Bakery", "Тайские супы": "Thai Soups", "Тайские салаты": "Thai Salads", "Рис и лапша": "Rice & Noodles", "Тайский вок": "Thai Wok", "Тайские карри": "Thai Curries", "Тайские закуски и гриль": "Thai Snacks & Grill", "Рыба и морепродукты": "Fish & Seafood", "Смузи": "Smoothies", "Компот и морс": "Kompot & Mors", "Безалкогольные напитки": "Soft Drinks & Juices", "Разливное пиво": "Draft Beer", "Пиво бутылочное": "Bottled Beer", "Крепкие напитки": "Spirits", "Вино": "Wine", "Коктейли": "Cocktails", "Пельмени и блины": "Dumplings & Pancakes"}, EN_VARS = {"Курица": "Chicken", "Свинина + говядина": "Pork & beef", "Говядина": "Beef", "Печень": "Liver", "Джем / варенье": "Jam", "Сгущённое молоко": "Condensed milk", "Шоколадный соус": "Chocolate sauce", "Креветки": "Shrimp", "Морепродукты": "Seafood", "Свинина": "Pork", "Классический": "Classic", "Со свиным фаршем": "Minced pork", "С кальмарами / креветками": "Squid / Shrimp", "С морепродуктами": "Seafood", "С ананасом и креветками": "Pineapple & shrimp", "Стакан": "Glass", "Кувшин": "Pitcher", "«Кондо»": "Condo", "Маленькая": "Small", "Большая": "Large", "1 л": "1 L", "750 мл": "750 ml", "350 мл": "350 ml", "40 мл": "40 ml", "Большая бутылка": "Large bottle", "Плоская бутылка 700 мл": "Flat bottle 700 ml", "100 мл": "100 ml", "700 мл": "700 ml", "Бокал": "Glass", "Бутылка": "Bottle", "Безалкогольный": "Mocktail", "Коктейль": "Cocktail", "Тоник": "Tonic", "Только джин, 50 мл": "Gin only, 50 ml", "Плоская бутылка": "Flat bottle"};
+  const trVar = v => EN_VARS[v] || String(v).replace(/(\d)\s*мл/g, '$1 ml').replace(/(\d)\s*л\b/g, '$1 L').replace(/(\d)\s*л$/g, '$1 L');
+  const EN_NAMES = { 'Блины (3 шт.)': 'Pancakes (3 pcs) — filling of your choice: jam, condensed milk or chocolate sauce (add it in the order comment)' };
+  const enName = (ru, en) => EN_NAMES[ru] || (/[А-Яа-яЁё]/.test(en) ? ((en.match(/([A-Za-z][^А-Яа-яЁё]*)$/) || [])[1] || ru) : en);
+  function groupMenu(d) {
+    const cats = d.categories.map(c => ({ id: c.id, name: LANG === 'en' ? (EN_CATS[c.name] || c.name) : c.name, items: [] }));
+    const byId = Object.fromEntries(cats.map(c => [c.id, c]));
+    const sym = (d.venue && d.venue.currency_symbol) || '฿';
+    d.items.forEach(i => {
+      if (!i.is_available || !byId[i.category_id]) return;
+      const parts = String(i.name).split(' · '), base = parts[0], variant = parts.slice(1).join(' · ');
+      const cat = byId[i.category_id];
+      let g = cat.items.find(x => (x.ru || x.name) === base);
+      if (!g) { g = { name: base, en: i.description || '', photo: i.photo_url, vars: [] }; if (LANG === 'en' && g.en) { g.ru = base; g.name = enName(base, g.en); g.en = ''; } cat.items.push(g); }
+      if (!g.photo && i.photo_url) g.photo = i.photo_url;
+      g.vars.push({ v: LANG === 'en' ? trVar(variant) : variant, p: i.price.toLocaleString(LANG === 'en' ? 'en-US' : 'ru-RU').replace(/ /g, ' ') + ' ' + sym });
+    });
+    return cats.filter(c => c.items.length);
+  }
+  function render() {
+    const s = q.value.trim().toLowerCase();
+    let html = '';
+    groups.forEach(c => {
+      const list = s ? c.items.filter(i => (i.name + ' ' + i.en + ' ' + (i.ru || '')).toLowerCase().includes(s)) : c.items;
+      if (!list.length) return;
+      html += '<h3 class="mcat" id="mc-' + c.id + '">' + esc(c.name) + '</h3>' + list.map(i =>
+        '<div class="mitem">' + (i.photo ? '<img src="' + esc(i.photo) + '" alt="" loading="lazy">' : '<span class="noimg" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 3v8M5 3v4a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 0-3 3-3 6s1 4 3 4v8"/></svg></span>') +
+        '<div class="minfo"><h4>' + esc(i.name) + '</h4>' + (i.en && i.en !== i.name ? '<div class="en">' + esc(i.en) + '</div>' : '') +
+        '<div class="vars">' + i.vars.map(v => '<div class="var"><span>' + esc(v.v || '') + '</span><b>' + esc(v.p) + '</b></div>').join('') + '</div></div></div>').join('');
+    });
+    body.innerHTML = html || '<div class="state">Ничего не нашли</div>';
+  }
+  function load() {
+    if (loading) return loading;
+    loading = fetch(SB + '/rest/v1/rpc/cafe_public_get_menu', {
+      method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ p_venue: 'oasis' })
+    }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(d => {
+      groups = groupMenu(d);
+      chips.innerHTML = groups.map(c => '<button class="chip" type="button" data-cat="' + c.id + '">' + esc(c.name) + '</button>').join('');
+      render();
+    }).catch(() => {
+      loading = null;
+      body.innerHTML = '<div class="state">Не удалось загрузить меню.<br><br><a class="btn btn-ghost" href="assets/oasis-menu.pdf?v=2" download="Oasis-menu.pdf">Скачать PDF</a></div>';
+    });
+    return loading;
+  }
+  chips.addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    if (q.value) { q.value = ''; render(); }
+    chips.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === b));
+    const t = document.getElementById('mc-' + b.dataset.cat);
+    if (t) body.scrollTo({ top: t.offsetTop - 8, behavior: reduce ? 'auto' : 'smooth' });
+  });
+  q.addEventListener('input', () => { if (groups) render(); });
+  function open(e) {
+    if (e) e.preventDefault();
+    lastFocus = document.activeElement;
+    modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => requestAnimationFrame(() => modal.classList.add('show')));
+    load();
+    setTimeout(() => modal.querySelector('.x').focus(), 60);
+  }
+  function close() {
+    modal.classList.remove('show'); modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(() => modal.classList.remove('open'), 380);
+    if (lastFocus) lastFocus.focus();
+  }
+  document.querySelectorAll('[data-open-menu]').forEach(b => b.addEventListener('click', open));
+  modal.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', close));
+  document.addEventListener('keydown', e => {
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'Tab') {
+      const f = [...modal.querySelectorAll('button, a[href], input')].filter(x => x.offsetParent !== null);
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  if (location.hash === '#menu') open();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://oasis-pattaya.com/sitemap.xml
