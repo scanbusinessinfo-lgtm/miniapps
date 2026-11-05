@@ -1,0 +1,1084 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ветер · аренда байков</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@300;800&display=swap">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+/* Layout: hero-слайдер → каталог плиток (2 кол. на телефоне, 3–4 на десктопе) → как это работает → контакты; карточка и бронь — нижние шторки */
+@property --accent { syntax: '<color>'; inherits: true; initial-value: #F5B700; }
+@property --accent-soft { syntax: '<color>'; inherits: true; initial-value: rgba(245,183,0,.22); }
+@property --ink { syntax: '<color>'; inherits: true; initial-value: #16181D; }
+:root {
+  --bg: #ECEEF1;
+  --surface: #FFFFFF;
+  --surface-2: #F5F6F8;
+  --fg: #16181D;
+  --muted: #687080;
+  --line: #DADDE3;
+  --head: #1C1E23;
+  --head-fg: #F3F4F6;
+  --floor: rgba(20,22,28,.34);
+  --brand: #F5B700;
+  --brand-ink: #16181D;
+  --danger: #D93A3F;
+  --ok: #1E9E5A;
+  --accent: #F5B700;
+  --accent-soft: rgba(245,183,0,.22);
+  --ink: #16181D;
+  --f-display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --f-body: "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ease: cubic-bezier(.65,0,.25,1);
+  transition: --accent .8s var(--ease), --accent-soft .8s var(--ease), --ink .8s var(--ease);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --surface: #1B1E25; --surface-2: #22262E; --fg: #F2F3F5; --muted: #8E95A3;
+    --line: #2C303A; --head: #0B0C0F; --head-fg: #F3F4F6; --floor: rgba(0,0,0,.6); --danger: #F0656A; --ok: #3CC77E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111318; --surface: #1B1E25; --surface-2: #22262E; --fg: #F2F3F5; --muted: #8E95A3;
+  --line: #2C303A; --head: #0B0C0F; --head-fg: #F3F4F6; --floor: rgba(0,0,0,.6); --danger: #F0656A; --ok: #3CC77E;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; margin: 0; }
+[hidden] { display: none !important; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+img { max-width: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 15px; -webkit-tap-highlight-color: transparent; }
+body.locked { overflow: hidden; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+h2 { font: 800 22px/1.1 var(--f-display); letter-spacing: -.02em; margin: 0; text-transform: uppercase; font-style: italic; text-wrap: balance; }
+
+/* ---------- Шапка ---------- */
+.topbar { background: var(--head); color: var(--head-fg); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.topbar-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-mark { font: 800 20px/1 var(--f-display); letter-spacing: -.02em; font-style: italic; }
+.logo-mark span { color: var(--brand); }
+.logo-sub { font-size: 11px; line-height: 1.25; color: #A4AAB6; letter-spacing: .02em; }
+.top-actions { display: flex; gap: 8px; }
+.icon-btn { position: relative; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(255,255,255,.08); color: var(--head-fg); }
+.icon-btn svg { width: 20px; height: 20px; }
+.icon-btn .dot { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--brand); color: var(--brand-ink); font-size: 11px; font-weight: 700; display: grid; place-items: center; }
+
+/* ---------- Hero ---------- */
+.app { padding-block: 18px 120px; }
+.hero { display: grid; grid-template-areas: "title" "stage" "card"; gap: 10px; }
+.title { grid-area: title; display: grid; gap: 6px; min-width: 0; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); overflow: hidden; }
+#tag { display: inline-block; }
+.eyebrow b { color: color-mix(in oklab, var(--accent) 80%, var(--fg)); font-weight: 700; }
+.mask { overflow: hidden; padding-bottom: .06em; }
+.mask > span { display: block; will-change: transform; }
+.brand { font: 300 22px/1.15 var(--f-display); letter-spacing: -.01em; }
+.model { font: 800 clamp(28px, 8.6vw, 40px)/1.02 var(--f-display); text-transform: uppercase; letter-spacing: -.02em; text-wrap: balance; }
+.tagline { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.stage { grid-area: stage; position: relative; height: clamp(200px, 58vw, 290px); overflow: clip; touch-action: pan-y; user-select: none;
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px))); }
+.blob { position: absolute; width: min(72vw, 330px); aspect-ratio: 1; max-width: 100%; left: 50%; top: 50%; margin: calc(min(72vw, 330px) / -2) 0 0 calc(min(72vw, 330px) / -2);
+  border-radius: 50%; background: var(--accent-soft); transition: transform 1.2s var(--ease); }
+.floor-shadow { position: absolute; left: 50%; bottom: 7%; width: 66%; max-width: 380px; height: 26px; transform: translateX(-50%); background: radial-gradient(closest-side, var(--floor), transparent); }
+.bike { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4%; transform-origin: 50% 88%; will-change: transform; }
+.bike svg, .bike img { width: min(90%, 430px); height: auto; display: block; transition: filter .6s; }
+.is-busy svg, .is-busy img { filter: grayscale(.6) brightness(.95); }
+.wheel { transform-box: fill-box; transform-origin: center; }
+
+.card { grid-area: card; position: relative; background: var(--surface); border-radius: 20px; padding: 16px; box-shadow: 0 1px 0 var(--line), 0 10px 30px -18px rgba(0,0,0,.35); min-width: 0; }
+.card-body { display: grid; gap: 14px; }
+.card-top { display: flex; gap: 12px; align-items: center; }
+.rating { flex: 0 0 56px; height: 56px; border-radius: 16px; background: var(--accent); color: var(--ink); display: grid; place-content: center; text-align: center; }
+.rating b { font: 800 18px/1 var(--f-display); }
+.rating small { font-size: 9px; font-weight: 600; letter-spacing: .08em; opacity: .75; margin-top: 3px; display: block; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.chip { padding: 5px 10px; border-radius: 999px; font-size: 13px; font-weight: 500; white-space: nowrap;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.price-main { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.price-main strong { font: 800 26px/1 var(--f-display); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.price-main span { color: var(--muted); font-size: 14px; }
+.price-rows { display: grid; gap: 8px; border-top: 1px dashed var(--line); padding-top: 12px; margin: 0; }
+.price-row { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+.price-row dt { color: var(--muted); }
+.price-row dd { margin: 0; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.busy-badge { position: absolute; top: 14px; right: 14px; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px;
+  background: color-mix(in srgb, var(--danger) 15%, var(--surface)); color: var(--danger); }
+.link-btn { justify-self: start; font-size: 14px; font-weight: 600; color: color-mix(in oklab, var(--accent) 70%, var(--fg)); display: inline-flex; gap: 6px; align-items: center; padding: 2px 0; }
+.arrows { display: none; }
+.thumbs { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 10px 8px; margin: 16px -8px 0; }
+.thumbs::-webkit-scrollbar { display: none; }
+.thumb { flex: 0 0 104px; scroll-snap-align: center; background: var(--surface); border-radius: 14px; padding: 8px 8px 10px; border: 1.5px solid transparent;
+  display: grid; gap: 4px; text-align: left; transition: transform .45s var(--ease), background-color .45s, border-color .45s; }
+.thumb svg, .thumb img { width: 100%; height: auto; aspect-ratio: 400/240; object-fit: contain; }
+.thumb .t-model { font-size: 12px; font-weight: 600; line-height: 1.2; }
+.thumb .t-price { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.thumb.busy svg { filter: grayscale(.7); opacity: .7; }
+.thumb.active { background: var(--accent-soft); border-color: var(--accent); transform: scale(1.08); }
+.progress { height: 3px; border-radius: 3px; background: var(--line); overflow: hidden; margin-top: 8px; }
+.progress i { display: block; height: 100%; width: 0; background: var(--accent); }
+.progress.manual i { transition: width .6s var(--ease); }
+@keyframes fillbar { from { width: 0 } to { width: 100% } }
+.hint { font-size: 12px; color: var(--muted); margin-top: 8px; display: flex; justify-content: space-between; gap: 8px; }
+
+/* ---------- Каталог ---------- */
+.section { margin-top: 40px; }
+.sec-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.sec-head p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; align-items: center; }
+.seg { display: flex; background: var(--surface); border-radius: 12px; padding: 3px; gap: 2px; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+.seg button { padding: 8px 12px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; transition: background-color .25s, color .25s; }
+.seg button[aria-pressed="true"] { background: var(--head); color: var(--head-fg); }
+.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; padding: 8px 12px; border-radius: 12px; background: var(--surface); }
+.toggle input { width: 16px; height: 16px; accent-color: var(--brand); margin: 0; }
+.sort { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+.sort select { border: 0; background: var(--surface); border-radius: 10px; padding: 8px 10px; font-size: 13px; font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--fg); }
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+.tile { position: relative; background: var(--surface); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; min-width: 0;
+  transition: transform .3s var(--ease), box-shadow .3s; box-shadow: 0 1px 0 var(--line); outline-offset: 2px; }
+.tile:hover { transform: translateY(-2px); box-shadow: 0 1px 0 var(--line), 0 14px 28px -18px rgba(0,0,0,.45); }
+.tile:hover .wheel { animation: spin 1.1s cubic-bezier(.3,.5,.25,1); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.t-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.t-brand { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.t-badge { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 7px; border-radius: 6px; background: var(--head); color: var(--head-fg); }
+.t-badge.busy { background: color-mix(in srgb, var(--danger) 15%, var(--surface)); color: var(--danger); }
+.t-name { font: 800 15px/1.1 var(--f-display); text-transform: uppercase; font-style: italic; letter-spacing: -.02em; text-wrap: balance; min-height: 2.2em; }
+.pricetag { align-self: flex-start; background: var(--brand); color: var(--brand-ink); font-weight: 700; font-size: 13px; padding: 5px 12px 5px 10px;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pricetag small { font-weight: 500; opacity: .75; }
+.t-img { position: relative; aspect-ratio: 400 / 240; display: grid; place-items: end center; }
+.t-img::before { content: ""; position: absolute; left: 15%; right: 15%; bottom: 2%; height: 12%; background: radial-gradient(closest-side, var(--floor), transparent); }
+.t-img svg, .t-img img { position: relative; width: 100%; height: auto; max-height: 100%; object-fit: contain; }
+.specs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--line); padding-top: 8px; }
+.specs > div { padding: 0 6px; border-left: 1px solid var(--line); min-width: 0; }
+.specs > div:first-child { border-left: 0; padding-left: 0; }
+.specs dt { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.specs dd { margin: 2px 0 0; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.specs dd small { font-weight: 500; color: var(--muted); font-size: 10px; }
+.t-foot { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-top: auto; }
+.t-foot .star { font-weight: 700; }
+.t-foot .star::before { content: "★ "; color: var(--brand); }
+.t-foot .more { color: var(--muted); font-weight: 600; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+.tile.wide { grid-column: 1 / -1; background: linear-gradient(135deg, color-mix(in srgb, var(--t-accent) 22%, var(--surface)), var(--surface) 70%); }
+.tile.wide .t-name { font-size: 22px; min-height: 0; }
+.tile.wide .t-img { aspect-ratio: 400 / 200; }
+.tile.busy .t-img { filter: grayscale(.65); opacity: .8; }
+.empty { grid-column: 1 / -1; text-align: center; padding: 32px 16px; background: var(--surface); border-radius: 16px; color: var(--muted); }
+.empty button { margin-top: 10px; font-weight: 600; color: var(--fg); text-decoration: underline; }
+
+/* ---------- Как это работает / контакты ---------- */
+.steps { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 14px; counter-reset: s; }
+.step { background: var(--surface); border-radius: 16px; padding: 14px 16px; display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; }
+.step::before { counter-increment: s; content: counter(s); width: 40px; height: 40px; border-radius: 12px; background: var(--brand); color: var(--brand-ink); display: grid; place-items: center; font: 800 16px var(--f-display); }
+.step b { display: block; font-size: 15px; }
+.step span { font-size: 13px; color: var(--muted); line-height: 1.45; }
+.contacts { margin-top: 14px; background: var(--head); color: var(--head-fg); border-radius: 20px; padding: 18px; display: grid; gap: 12px; }
+.contacts .row { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+.contacts .k { font-size: 12px; color: #A4AAB6; }
+.contacts .v { font-weight: 600; user-select: all; }
+.copy { font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,.1); color: var(--head-fg); }
+.credits { margin-top: 10px; font-size: 11px; color: var(--muted); text-align: center; }
+.credits summary { cursor: pointer; }
+.credits ul { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 3px; }
+.credits a { color: inherit; }
+.credits p { margin: 0; }
+.foot { margin-top: 24px; font-size: 12px; color: var(--muted); text-align: center; }
+
+/* ---------- Шторки ---------- */
+.sheet { position: fixed; inset: 0; z-index: 30; display: flex; align-items: flex-end; justify-content: center; }
+.sheet[hidden] { display: none !important; }
+.sheet-bg { position: absolute; inset: 0; background: rgba(8,9,12,.55); animation: fade .3s ease both; }
+.sheet-panel { position: relative; width: 100%; max-width: 620px; max-height: 92%; overflow-y: auto; overscroll-behavior: contain; background: var(--bg);
+  border-radius: 24px 24px 0 0; animation: up .45s var(--ease) both; padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+.sheet.closing .sheet-panel { animation: down .3s var(--ease) both; }
+.sheet.closing .sheet-bg { animation: fade .3s ease reverse both; }
+@keyframes up { from { transform: translateY(100%); } }
+@keyframes down { to { transform: translateY(100%); } }
+@keyframes fade { from { opacity: 0; } }
+.grab { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: var(--bg); }
+.grab::before { content: ""; position: absolute; left: 50%; top: 6px; width: 40px; height: 4px; border-radius: 2px; background: var(--line); transform: translateX(-50%); }
+.grab .g-title { flex: 1; text-align: center; }
+.grab .g-title { font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 6px; }
+.close-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; margin-top: 6px; }
+.close-btn svg { width: 16px; height: 16px; }
+.sheet-in { padding: 0 16px; display: grid; gap: 14px; }
+
+.d-stage { position: relative; height: 200px; display: grid; place-items: end center; overflow: hidden; border-radius: 20px; background: var(--surface); }
+.d-stage .blob { width: 220px; margin: -110px 0 0 -110px; background: var(--accent-soft); }
+.d-stage svg, .d-stage img { position: relative; width: min(90%, 380px); height: auto; margin-bottom: 8px; }
+.d-stage .floor-shadow { bottom: 6%; }
+.d-title .brand { font-size: 18px; }
+.d-title .model { font-size: 30px; }
+.panel { background: var(--surface); border-radius: 18px; padding: 14px 16px; display: grid; gap: 10px; }
+.panel h3 { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.spec-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.spec-grid div { background: var(--surface-2); border-radius: 12px; padding: 10px; min-width: 0; }
+.spec-grid dt { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.spec-grid dd { margin: 4px 0 0; font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; }
+.tariffs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.tariff { border: 1.5px solid var(--line); border-radius: 14px; padding: 10px; text-align: center; }
+.tariff.best { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.tariff span { font-size: 11px; color: var(--muted); display: block; }
+.tariff b { display: block; font: 800 14px/1.2 var(--f-display); margin-top: 4px; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.tariff i { font-style: normal; font-size: 11px; color: var(--muted); }
+.list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: 14px; }
+.list li { display: flex; gap: 10px; align-items: flex-start; line-height: 1.4; }
+.list li::before { content: ""; flex: 0 0 8px; height: 8px; margin-top: 6px; border-radius: 2px; background: var(--accent); transform: rotate(45deg); }
+.notice { border-radius: 14px; padding: 12px 14px; font-size: 13px; line-height: 1.45; background: color-mix(in srgb, var(--danger) 12%, var(--surface)); color: var(--fg); }
+.notice b { color: var(--danger); }
+
+/* форма брони */
+.field { display: grid; gap: 6px; }
+.field label, .field .lbl { font-size: 12px; font-weight: 600; color: var(--muted); }
+.field input, .field select { width: 100%; box-sizing: border-box; border: 1.5px solid var(--line); background: var(--surface-2); border-radius: 12px; padding: 11px 12px; font-size: 15px; min-width: 0; }
+.field input:focus, .field select:focus { border-color: var(--accent); outline: none; }
+.field.err input { border-color: var(--danger); }
+.field .msg { font-size: 12px; color: var(--danger); }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.opts { display: grid; gap: 8px; }
+.opt { display: flex; gap: 10px; align-items: center; padding: 11px 12px; border-radius: 12px; border: 1.5px solid var(--line); cursor: pointer; font-size: 14px; }
+.opt input { accent-color: var(--accent); margin: 0; width: 18px; height: 18px; flex: 0 0 18px; }
+.opt span { flex: 1; min-width: 0; }
+.opt em { font-style: normal; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.opt:has(input:checked) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.stepper { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; }
+.stepper .ctrl { display: flex; align-items: center; gap: 4px; background: var(--surface-2); border-radius: 12px; padding: 3px; }
+.stepper .ctrl button { width: 34px; height: 34px; border-radius: 9px; background: var(--surface); font-size: 18px; font-weight: 600; }
+.stepper .ctrl output { min-width: 26px; text-align: center; font-weight: 700; }
+.summary { display: grid; gap: 8px; font-size: 14px; }
+.summary .line { display: flex; justify-content: space-between; gap: 12px; }
+.summary .line span:first-child { color: var(--muted); }
+.summary .line span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.summary .total { border-top: 1px dashed var(--line); padding-top: 10px; align-items: baseline; }
+.summary .total span:first-child { color: var(--fg); font-weight: 600; }
+.summary .total span:last-child { font: 800 22px var(--f-display); letter-spacing: -.02em; }
+.mini-bike { display: flex; gap: 12px; align-items: center; }
+.mini-bike svg, .mini-bike img { width: 96px; height: auto; flex: 0 0 96px; object-fit: contain; }
+.mini-bike b { font: 800 16px/1.1 var(--f-display); text-transform: uppercase; font-style: italic; }
+.mini-bike span { display: block; font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+.done { text-align: center; padding: 18px 8px 4px; display: grid; gap: 8px; justify-items: center; }
+.done .check { width: 72px; height: 72px; border-radius: 50%; background: var(--accent); color: var(--ink); display: grid; place-items: center; animation: pop .6s var(--ease) both; }
+.done .check svg { width: 34px; height: 34px; }
+@keyframes pop { from { transform: scale(.4); opacity: 0; } }
+.done h2 { font-size: 20px; }
+.done p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; max-width: 40ch; }
+.booking-item { background: var(--surface); border-radius: 16px; padding: 12px 14px; display: grid; gap: 6px; }
+.booking-item .top { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.booking-item b { font-size: 15px; }
+.status { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; letter-spacing: .04em; text-transform: uppercase; background: color-mix(in srgb, var(--brand) 22%, var(--surface)); }
+.status.notify { background: var(--surface-2); color: var(--muted); }
+.booking-item .meta { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* ---------- Демо MainButton ---------- */
+.mainbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-top: 1px solid var(--line);
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.mainbtn { display: block; width: 100%; max-width: 560px; margin: 0 auto; height: 50px; border-radius: 12px; background: var(--accent); color: var(--ink); font-weight: 600; font-size: 16px; transition: transform .15s, opacity .2s; }
+.mainbtn:active { transform: scale(.98); }
+.toast { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 12px); z-index: 50; width: min(92vw, 460px);
+  background: var(--head); color: var(--head-fg); border-radius: 14px; padding: 12px 14px; font-size: 13px; line-height: 1.4; opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s var(--ease); }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast code { font-size: 11.5px; color: #C9CED8; word-break: break-all; display: block; margin-top: 4px; }
+
+@media (min-width: 620px) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tile.wide { grid-column: span 2; }
+  .steps { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 820px) {
+  .app { padding-block: 32px 120px; }
+  .hero { grid-template-columns: 1.3fr .95fr 1fr; grid-template-areas: "stage title card"; align-items: center; gap: 28px; }
+  .stage { height: 380px; margin: 0; border-radius: 28px; }
+  .stage .blob { width: 340px; margin: -170px 0 0 -170px; }
+  .model { font-size: 44px; }
+  .arrows { display: flex; gap: 10px; margin-top: 18px; }
+  .arrows button { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; transition: background-color .3s, border-color .3s; }
+  .arrows button:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .arrows svg { width: 18px; height: 18px; }
+  .thumbs { margin-top: 28px; }
+  .thumb { flex-basis: 130px; }
+  .section { margin-top: 56px; }
+  .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .tile { padding: 16px; }
+  .tile .t-name { font-size: 17px; }
+  .tile.wide .t-name { font-size: 26px; }
+  .sheet { align-items: center; }
+  .sheet-panel { border-radius: 24px; max-height: 88%; padding-bottom: 96px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheet-panel, .sheet-bg, .done .check { animation: none !important; }
+  .tile:hover .wheel { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap topbar-in">
+    <div class="logo">
+      <div class="logo-mark">ВЕТЕР<span>.</span></div>
+      <div class="logo-sub">прокат байков<br>Нячанг</div>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="bookingsBtn" aria-label="Мои заявки">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
+        <span class="dot" id="bookingsDot" hidden>0</span>
+      </button>
+      <button class="icon-btn" id="filterBtn" aria-label="Перейти к фильтрам">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<main class="app wrap">
+  <!-- ===== HERO ===== -->
+  <section class="hero" aria-live="polite">
+    <div class="title">
+      <div class="eyebrow"><b id="rank">#1</b> <span id="tag">Самый популярный</span></div>
+      <div class="mask"><span class="brand" id="brand">Honda</span></div>
+      <div class="mask"><span class="model" id="model">Air Blade 160</span></div>
+      <div class="tagline">Доставим к отелю бесплатно · полный бак 95-го</div>
+      <div class="arrows">
+        <button id="prevBtn" aria-label="Предыдущий байк"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button id="nextBtn" aria-label="Следующий байк"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="blob" id="blob"></div>
+      <div class="floor-shadow" id="shadow"></div>
+    </div>
+    <article class="card" id="card">
+      <div class="card-body" id="cardBody">
+        <div class="card-top">
+          <div class="rating"><b id="rating">4.9</b><small>ОТЗЫВЫ</small></div>
+          <div class="chips" id="chips"></div>
+        </div>
+        <div class="price-main"><strong id="priceDay">250 000</strong><span>₫ / день</span></div>
+        <dl class="price-rows">
+          <div class="price-row"><dt>Неделя</dt><dd id="priceWeek"></dd></div>
+          <div class="price-row"><dt>Залог</dt><dd id="deposit"></dd></div>
+          <div class="price-row"><dt>В комплекте</dt><dd id="extras"></dd></div>
+        </dl>
+        <button class="link-btn" id="heroMore">Все характеристики →</button>
+      </div>
+      <div class="busy-badge" id="busyBadge" hidden>Занят до 25.10</div>
+    </article>
+  </section>
+  <div class="thumbs" id="thumbs" role="tablist" aria-label="Популярные байки"></div>
+  <div class="progress" id="progress"><i id="progressBar"></i></div>
+  <div class="hint"><span id="hintText">Автолистание · коснитесь, чтобы выбрать самому</span><span id="counter">1 / 6</span></div>
+
+  <!-- ===== КАТАЛОГ ===== -->
+  <section class="section" id="catalog">
+    <div class="sec-head">
+      <div><h2>Весь парк</h2><p id="catCount">12 байков</p></div>
+    </div>
+    <div class="filters" id="filters">
+      <div class="seg" id="transSeg" role="group" aria-label="Коробка передач">
+        <button data-v="all" aria-pressed="true">Все</button>
+        <button data-v="Автомат" aria-pressed="false">Автомат</button>
+        <button data-v="Полуавтомат" aria-pressed="false">Полуавтомат</button>
+        <button data-v="Механика" aria-pressed="false">Механика</button>
+      </div>
+      <label class="toggle"><input type="checkbox" id="freeOnly"> Только свободные</label>
+      <label class="sort" for="sortSel">Сорт.
+        <select id="sortSel">
+          <option value="pop">Популярные</option>
+          <option value="cheap">Дешевле</option>
+          <option value="exp">Дороже</option>
+          <option value="cc">По объёму</option>
+        </select>
+      </label>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- ===== КАК ЭТО РАБОТАЕТ ===== -->
+  <section class="section">
+    <h2>Как взять байк</h2>
+    <div class="steps">
+      <div class="step"><div><b>Выберите байк и даты</b><span>Заявка уходит менеджеру, он подтвердит в Telegram за 15 минут.</span></div></div>
+      <div class="step"><div><b>Привезём к отелю</b><span>Бесплатно в центре Нячанга. Байк с полным баком, шлемы в комплекте.</span></div></div>
+      <div class="step"><div><b>Вернёте — отдадим залог</b><span>Паспорт или деньги возвращаем сразу при сдаче байка.</span></div></div>
+    </div>
+    <div class="contacts">
+      <div class="row"><div><div class="k">Менеджер в Telegram</div><div class="v">@veter_bikes</div></div><button class="copy" data-copy="@veter_bikes">Скопировать</button></div>
+      <div class="row"><div><div class="k">Телефон / Zalo</div><div class="v">+84 90 123 45 67</div></div><button class="copy" data-copy="+84901234567">Скопировать</button></div>
+      <div class="row"><div><div class="k">Пункт выдачи</div><div class="v">Hùng Vương, 52 · ежедневно 8:00–21:00</div></div></div>
+    </div>
+    <div class="foot">Прокат «Ветер» · Нячанг</div>
+    <details class="credits"><summary>Фото: Wikimedia Commons</summary><ul><li>Air Blade: <a href="https://commons.wikimedia.org/wiki/File:Xe-Air-Blade-Tai-Viet-Nam.jpg" target="_blank" rel="noopener">Levanhungqb1990</a>, CC BY-SA 4.0</li><li>NVX (Aerox 155): <a href="https://commons.wikimedia.org/wiki/File:2025_Yamaha_Aerox_155_ABS.jpg" target="_blank" rel="noopener">Chanokchon</a>, CC BY-SA 4.0</li><li>Vision: <a href="https://commons.wikimedia.org/wiki/File:Honda_Vision_110-002.JPG" target="_blank" rel="noopener">Millermaster</a>, CC0</li><li>PCX 160: <a href="https://commons.wikimedia.org/wiki/File:2021_Honda_PCX_160_ABS_(New_Color).jpg" target="_blank" rel="noopener">Chanokchon</a>, CC BY-SA 4.0</li><li>Wave Alpha: <a href="https://commons.wikimedia.org/wiki/File:2022_Honda_Wave_110.png" target="_blank" rel="noopener">Honda Cambodia - NCX</a>, CC BY 3.0</li><li>Exciter (Y15ZR): <a href="https://commons.wikimedia.org/wiki/File:Yamaha_Y15ZR_V2.jpg" target="_blank" rel="noopener">Jolt737</a>, CC BY-SA 4.0</li><li>SH: <a href="https://commons.wikimedia.org/wiki/File:Honda_SH_150.jpg" target="_blank" rel="noopener">Corvettec6r</a>, CC BY 4.0</li><li>Lead 125: <a href="https://commons.wikimedia.org/wiki/File:2026_Honda_Lead_125_ABS.jpg" target="_blank" rel="noopener">Chanokchon</a>, CC BY-SA 4.0</li><li>Winner X: <a href="https://commons.wikimedia.org/wiki/File:Honda_winner_in_anthoi_phuquoc.jpg" target="_blank" rel="noopener">Phan long hậu</a>, CC BY-SA 4.0</li><li>XSR155: <a href="https://commons.wikimedia.org/wiki/File:Yamaha_XSR155_parked_near_Masjid_Sultan_-_Singapore.jpg" target="_blank" rel="noopener">Firzafp</a>, CC BY 4.0</li><li>Wave 125i: <a href="https://commons.wikimedia.org/wiki/File:2025_Honda_Wave_125_(Alloy_Type_with_Smart_Key)_(2).jpg" target="_blank" rel="noopener">Chanokchon</a>, CC BY-SA 4.0</li><li>Grande (Grand Filano): <a href="https://commons.wikimedia.org/wiki/File:2022_Yamaha_Grand_Filano_Hybrid_Connected.jpg" target="_blank" rel="noopener">Chanokchon</a>, CC BY-SA 4.0</li></ul><p>Фон удалён, изображения обрезаны, часть отзеркалена. Лицензии CC BY / CC BY-SA / CC0.</p></details>
+  </section>
+</main>
+
+<!-- Шторка (карточка байка / бронь / подтверждение / мои заявки) -->
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-bg" id="sheetBg"></div>
+  <div class="sheet-panel" id="sheetPanel" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="grab">
+      <button class="close-btn" id="sheetBack" aria-label="Назад" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <span class="g-title" id="sheetTitle"></span>
+      <button class="close-btn" id="sheetClose" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="sheet-in" id="sheetIn"></div>
+  </div>
+</div>
+
+<div class="mainbar" id="mainbar"><button class="mainbtn" id="mainBtn">Забронировать</button></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ====== ДАННЫЕ БАЙКОВ ======
+   image: путь к PNG без фона (вид сбоку, передом ВЛЕВО). Пока null — рисуется встроенный SVG (svgType: scooter | underbone | sport).
+   featured: true — байк попадает в верхний слайдер. badge: 'Хит' | 'Новинка' | null. */
+let BIKES = [
+  { id: 'airblade160', brand: 'Honda', model: 'Air Blade 160', tag: 'Самый популярный', featured: true, badge: 'Хит', rating: 4.9, engineCc: 160, year: 2024, transmission: 'Автомат',
+    tank: 4.4, fuel: 2.3, topSpeed: 110, extras: ['2 шлема', 'дождевики', 'держатель телефона'], pricePerDay: 250000, pricePerWeek: 1500000, pricePerMonth: 4500000, deposit: 'паспорт или 3 000 000 ₫',
+    image: null, svgType: 'scooter', body: '#22252B', stripe: '#F5B700', rim: '#2E3138', accent: '#F5B700', accentSoft: 'rgba(245,183,0,.24)', ink: '#16181D', available: true },
+  { id: 'nvx155', brand: 'Yamaha', model: 'NVX 155', tag: 'Для поездок вдвоём', featured: true, badge: null, rating: 4.8, engineCc: 155, year: 2023, transmission: 'Автомат',
+    tank: 5.5, fuel: 2.4, topSpeed: 115, extras: ['2 шлема', 'дождевики'], pricePerDay: 300000, pricePerWeek: 1800000, pricePerMonth: 5200000, deposit: 'паспорт или 4 000 000 ₫',
+    image: null, svgType: 'scooter', body: '#2552D9', stripe: '#E8ECF5', rim: '#1A1C21', accent: '#3D6BFF', accentSoft: 'rgba(61,107,255,.22)', ink: '#FFFFFF', available: true },
+  { id: 'vision110', brand: 'Honda', model: 'Vision 110', tag: 'Лёгкий для новичков', featured: true, badge: null, rating: 4.7, engineCc: 110, year: 2024, transmission: 'Автомат',
+    tank: 4.9, fuel: 1.9, topSpeed: 85, extras: ['2 шлема', 'корзина'], pricePerDay: 150000, pricePerWeek: 900000, pricePerMonth: 2800000, deposit: 'паспорт или 2 000 000 ₫',
+    image: null, svgType: 'scooter', body: '#C8262E', stripe: '#F4F4F2', rim: '#B9BEC6', accent: '#E5484D', accentSoft: 'rgba(229,72,77,.2)', ink: '#FFFFFF', available: true },
+  { id: 'pcx160', brand: 'Honda', model: 'PCX 160', tag: 'Комфорт на трассе', featured: true, badge: 'Хит', rating: 4.9, engineCc: 160, year: 2024, transmission: 'Автомат',
+    tank: 8.1, fuel: 2.2, topSpeed: 115, extras: ['2 шлема', 'Smart Key', 'USB-зарядка'], pricePerDay: 350000, pricePerWeek: 2100000, pricePerMonth: 6000000, deposit: 'паспорт или 5 000 000 ₫',
+    image: null, svgType: 'scooter', body: '#E9ECEF', stripe: '#12A594', rim: '#2A2D33', accent: '#12A594', accentSoft: 'rgba(18,165,148,.22)', ink: '#FFFFFF', available: false, busyUntil: '25.10' },
+  { id: 'wave110', brand: 'Honda', model: 'Wave Alpha 110', tag: 'Самый экономный', featured: true, badge: null, rating: 4.6, engineCc: 110, year: 2022, transmission: 'Полуавтомат',
+    tank: 3.7, fuel: 1.6, topSpeed: 90, extras: ['1 шлем', 'багажник'], pricePerDay: 120000, pricePerWeek: 700000, pricePerMonth: 2000000, deposit: 'паспорт или 1 500 000 ₫',
+    image: null, svgType: 'underbone', body: '#9E1F2A', stripe: '#F2F2F2', rim: '#C3C7CE', accent: '#EE7D2E', accentSoft: 'rgba(238,125,46,.22)', ink: '#16181D', available: true },
+  { id: 'exciter155', brand: 'Yamaha', model: 'Exciter 155', tag: 'Для гор и серпантинов', featured: true, badge: null, rating: 4.8, engineCc: 155, year: 2023, transmission: 'Механика',
+    tank: 5.4, fuel: 2.1, topSpeed: 130, extras: ['2 шлема', 'перчатки'], pricePerDay: 280000, pricePerWeek: 1700000, pricePerMonth: 5000000, deposit: 'паспорт или 5 000 000 ₫',
+    image: null, svgType: 'sport', body: '#1E8E52', stripe: '#111318', rim: '#1A1C21', accent: '#22A861', accentSoft: 'rgba(34,168,97,.22)', ink: '#FFFFFF', available: true },
+  { id: 'sh160', brand: 'Honda', model: 'SH 160i', tag: 'Премиум', featured: false, badge: 'Новинка', rating: 5.0, engineCc: 160, year: 2025, transmission: 'Автомат',
+    tank: 7.8, fuel: 2.3, topSpeed: 120, extras: ['2 шлема', 'ABS', 'Smart Key'], pricePerDay: 450000, pricePerWeek: 2700000, pricePerMonth: 7500000, deposit: 'паспорт или 6 000 000 ₫',
+    image: null, svgType: 'scooter', body: '#3A3F47', stripe: '#C9A227', rim: '#C9CDD3', accent: '#B8913A', accentSoft: 'rgba(184,145,58,.22)', ink: '#FFFFFF', available: true },
+  { id: 'grande125', brand: 'Yamaha', model: 'Grande 125', tag: 'Для девушек', featured: false, badge: null, rating: 4.7, engineCc: 125, year: 2023, transmission: 'Автомат',
+    tank: 4.2, fuel: 1.7, topSpeed: 95, extras: ['2 шлема', 'дождевики'], pricePerDay: 200000, pricePerWeek: 1200000, pricePerMonth: 3500000, deposit: 'паспорт или 2 500 000 ₫',
+    image: null, svgType: 'scooter', body: '#E8D9C6', stripe: '#8A5A3C', rim: '#B9BEC6', accent: '#C77B4A', accentSoft: 'rgba(199,123,74,.22)', ink: '#FFFFFF', available: true },
+  { id: 'lead125', brand: 'Honda', model: 'Lead 125', tag: 'Большой багажник', featured: false, badge: null, rating: 4.6, engineCc: 125, year: 2022, transmission: 'Автомат',
+    tank: 6.0, fuel: 2.0, topSpeed: 95, extras: ['2 шлема', 'багажник 37 л'], pricePerDay: 180000, pricePerWeek: 1100000, pricePerMonth: 3200000, deposit: 'паспорт или 2 500 000 ₫',
+    image: null, svgType: 'scooter', body: '#5B6B7A', stripe: '#F2F2F2', rim: '#2E3138', accent: '#5B7A99', accentSoft: 'rgba(91,122,153,.24)', ink: '#FFFFFF', available: false, busyUntil: '24.10' },
+  { id: 'winnerx', brand: 'Honda', model: 'Winner X 150', tag: 'Спорт', featured: false, badge: null, rating: 4.7, engineCc: 150, year: 2023, transmission: 'Механика',
+    tank: 4.5, fuel: 2.2, topSpeed: 130, extras: ['2 шлема', 'перчатки'], pricePerDay: 260000, pricePerWeek: 1600000, pricePerMonth: 4700000, deposit: 'паспорт или 5 000 000 ₫',
+    image: null, svgType: 'sport', body: '#C62A2A', stripe: '#1A1C21', rim: '#1A1C21', accent: '#E04A3A', accentSoft: 'rgba(224,74,58,.22)', ink: '#FFFFFF', available: true },
+  { id: 'xsr155', brand: 'Yamaha', model: 'XSR 155', tag: 'Неоклассика', featured: false, badge: 'Новинка', rating: 4.9, engineCc: 155, year: 2024, transmission: 'Механика',
+    tank: 10, fuel: 2.4, topSpeed: 130, extras: ['2 шлема', 'ABS'], pricePerDay: 400000, pricePerWeek: 2400000, pricePerMonth: 7000000, deposit: 'паспорт или 7 000 000 ₫',
+    image: null, svgType: 'sport', body: '#2D3A4A', stripe: '#D9A441', rim: '#1A1C21', accent: '#D9A441', accentSoft: 'rgba(217,164,65,.24)', ink: '#16181D', available: true },
+  { id: 'blade110', brand: 'Honda', model: 'Blade 110', tag: 'Бюджетный', featured: false, badge: null, rating: 4.5, engineCc: 110, year: 2021, transmission: 'Полуавтомат',
+    tank: 3.7, fuel: 1.7, topSpeed: 90, extras: ['1 шлем'], pricePerDay: 110000, pricePerWeek: 650000, pricePerMonth: 1800000, deposit: 'паспорт или 1 500 000 ₫',
+    image: null, svgType: 'underbone', body: '#1F2A44', stripe: '#E5484D', rim: '#C3C7CE', accent: '#4A64B8', accentSoft: 'rgba(74,100,184,.22)', ink: '#FFFFFF', available: true },
+];
+let HERO = [], BY_ID = {};
+function setBikes(list) {
+  BIKES = list;
+  HERO = BIKES.filter(b => b.featured);
+  if (HERO.length < 3) HERO = BIKES.slice(0, Math.min(6, BIKES.length));
+  BY_ID = Object.fromEntries(BIKES.map(b => [b.id, b]));
+}
+setBikes(BIKES);
+/* ====== SUPABASE ====== */
+const SB_URL = 'https://roqmejclibyyjlnxshzu.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvcW1lamNsaWJ5eWpsbnhzaHp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMzQ5OTcsImV4cCI6MjEwMTcxMDk5N30.Y4FhKvSa8b515buVumv3UTzX6mLti1aEmbrL38Jnvuc';
+async function rpc(name, params = {}, timeout = 8000) {
+  const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), timeout);
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/rpc/${name}`, { method: 'POST', signal: ctl.signal,
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
+    const j = await r.json().catch(() => null);
+    if (!r.ok) throw new Error(j?.message || 'network');
+    return j;
+  } finally { clearTimeout(t); }
+}
+const normBike = b => ({ ...b, rating: Number(b.rating) || 4.8, tank: b.tank ?? '—', fuel: b.fuel ?? '—', topSpeed: b.topSpeed ?? '—',
+  pricePerWeek: b.pricePerWeek || b.pricePerDay * 6, pricePerMonth: b.pricePerMonth || b.pricePerDay * 18, extras: b.extras?.length ? b.extras : ['шлем'],
+  deposit: b.deposit || 'паспорт', tag: b.tag || 'В наличии', available: true });
+const BLOB_POS = [[-6, -4, 1], [8, -8, 1.08], [-10, 2, .94], [6, 4, 1.12], [-4, -10, 1.02], [10, 0, .98]];
+/* Доставка: стоимость в ₫ */
+const DELIVERY = [
+  { id: 'center', label: 'К отелю в центре Нячанга', price: 0 },
+  { id: 'north', label: 'Северный район / Хон Чонг', price: 50000 },
+  { id: 'airport', label: 'Аэропорт Камрань', price: 250000 },
+  { id: 'pickup', label: 'Самовывоз · Hùng Vương, 52', price: 0 },
+];
+const EXTRA_HELMET = 20000; // ₫ в день
+
+/* ====== TELEGRAM ====== */
+/* tg = null вне Telegram (в обычном браузере initData пустая) — тогда показываем свою кнопку внизу */
+const tg = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData ? window.Telegram.WebApp : null;
+const haptic = {
+  select() { try { tg && tg.HapticFeedback.selectionChanged(); } catch (e) {} },
+  tap() { try { tg && tg.HapticFeedback.impactOccurred('light'); } catch (e) {} },
+  ok() { try { tg && tg.HapticFeedback.notificationOccurred('success'); } catch (e) {} },
+  err() { try { tg && tg.HapticFeedback.notificationOccurred('error'); } catch (e) {} },
+};
+function applyTgTheme() {
+  if (!tg) return;
+  const p = tg.themeParams || {}, r = document.documentElement.style;
+  if (p.bg_color) r.setProperty('--bg', p.bg_color);
+  if (p.text_color) r.setProperty('--fg', p.text_color);
+  if (p.hint_color) r.setProperty('--muted', p.hint_color);
+  if (p.secondary_bg_color) r.setProperty('--surface', p.secondary_bg_color);
+  document.documentElement.dataset.theme = tg.colorScheme === 'dark' ? 'dark' : 'light';
+}
+
+/* ====== SVG-БАЙКИ (рисуются передом вправо и отражаются — едут влево) ====== */
+function alloyWheel(cx, cy, r, rim, disc) {
+  let spokes = '';
+  for (let i = 0; i < 5; i++) {
+    const a = (i * 72 - 90) * Math.PI / 180;
+    spokes += `<line x1="${cx}" y1="${cy}" x2="${(cx + Math.cos(a) * (r - 12)).toFixed(1)}" y2="${(cy + Math.sin(a) * (r - 12)).toFixed(1)}" stroke="#B9BEC7" stroke-width="5" stroke-linecap="round"/>`;
+  }
+  return `<g class="wheel"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#141519"/><circle cx="${cx}" cy="${cy}" r="${r - 5}" fill="none" stroke="#2C2F36" stroke-width="2"/>
+    <circle cx="${cx}" cy="${cy}" r="${r - 10}" fill="${rim}"/>${disc ? `<circle cx="${cx}" cy="${cy}" r="${r - 20}" fill="none" stroke="#8F959E" stroke-width="3" stroke-dasharray="3 3"/>` : ''}
+    ${spokes}<circle cx="${cx}" cy="${cy}" r="8" fill="#D7DBE0"/><circle cx="${cx}" cy="${cy}" r="3" fill="#222"/><circle cx="${cx}" cy="${cy - r + 7}" r="2" fill="#5A5E66"/></g>`;
+}
+function spokeWheel(cx, cy, r, rim) {
+  let spokes = '';
+  for (let i = 0; i < 18; i++) {
+    const a = i * 20 * Math.PI / 180;
+    spokes += `<line x1="${cx}" y1="${cy}" x2="${(cx + Math.cos(a) * (r - 9)).toFixed(1)}" y2="${(cy + Math.sin(a) * (r - 9)).toFixed(1)}" stroke="#A9AEB6" stroke-width="1.2"/>`;
+  }
+  return `<g class="wheel"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#141519"/><circle cx="${cx}" cy="${cy}" r="${r - 7}" fill="none" stroke="${rim}" stroke-width="4"/>
+    ${spokes}<circle cx="${cx}" cy="${cy}" r="9" fill="#C9CDD3"/><circle cx="${cx}" cy="${cy}" r="3" fill="#222"/></g>`;
+}
+function bikeSVG(b) {
+  const B = b.body, S = b.stripe, R = b.rim;
+  let art = '';
+  if (b.svgType === 'scooter') {
+    art = `
+      <path d="M100,190 L178,176 L204,150 L150,140 Z" fill="#2A2C31"/>
+      ${alloyWheel(100, 190, 40, R, false)}${alloyWheel(308, 192, 36, R, true)}
+      <line x1="292" y1="82" x2="308" y2="192" stroke="#7D828B" stroke-width="9" stroke-linecap="round"/>
+      <rect x="34" y="154" width="86" height="15" rx="7.5" fill="#A3A9B2"/><rect x="34" y="154" width="22" height="15" rx="7.5" fill="#5C6068"/>
+      <path d="M30,140 C34,112 70,100 120,98 L215,102 C232,104 236,118 228,132 L205,160 L160,158 C150,140 128,128 104,128 C78,128 60,138 52,152 L36,154 C30,152 29,146 30,140 Z" fill="${B}"/>
+      <path d="M44,124 C80,110 150,106 220,112" stroke="${S}" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M40,138 C70,126 110,118 150,122" stroke="#fff" stroke-opacity=".16" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M27,126 L46,120 L48,133 L29,139 Z" fill="#E23A3A"/>
+      <path d="M58,98 C70,80 130,76 214,86 C224,88 224,100 214,102 L70,104 C58,104 53,102 58,98 Z" fill="#17181C"/>
+      <path d="M160,158 L250,160 L262,146 L205,148 Z" fill="#2E3036"/>
+      <path d="M246,160 C258,128 262,98 268,66 L298,58 C310,86 312,124 300,152 L262,162 Z" fill="${B}"/>
+      <path d="M262,150 C268,120 272,96 276,72" stroke="${S}" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M280,168 C290,146 330,146 342,170 L334,172 C324,156 296,156 288,172 Z" fill="${B}"/>
+      <path d="M296,62 L320,72 L313,92 L298,86 Z" fill="#EEF2F6" stroke="#2A2C31" stroke-width="2"/>
+      <line x1="284" y1="52" x2="276" y2="28" stroke="#333" stroke-width="3"/><ellipse cx="274" cy="23" rx="10" ry="6" fill="#1E2024"/>
+      <path d="M260,60 L302,46" stroke="#1C1D21" stroke-width="7" stroke-linecap="round"/>`;
+  } else if (b.svgType === 'underbone') {
+    art = `
+      <line x1="100" y1="190" x2="190" y2="176" stroke="#2B2D33" stroke-width="5"/>
+      ${spokeWheel(100, 190, 38, R)}${spokeWheel(305, 190, 38, R)}
+      <line x1="290" y1="78" x2="305" y2="190" stroke="#8A8F98" stroke-width="7" stroke-linecap="round"/>
+      <path d="M118,146 L292,72" stroke="#2A2C31" stroke-width="11" stroke-linecap="round"/>
+      <path d="M150,150 L204,140 L226,160 L212,186 L166,188 Z" fill="#7A7F88"/>
+      <path d="M170,152 L208,146 M168,162 L214,156 M170,172 L212,168" stroke="#5B6068" stroke-width="3"/>
+      <rect x="40" y="158" width="92" height="13" rx="6.5" fill="#A3A9B2" transform="rotate(-6 86 164)"/>
+      <path d="M36,128 C44,110 80,104 130,104 L184,108 C192,118 184,130 170,134 L122,142 C100,134 72,134 58,144 L40,144 C34,140 34,134 36,128 Z" fill="${B}"/>
+      <path d="M50,124 C80,114 130,110 178,114" stroke="${S}" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M32,120 L46,116 L47,127 L33,131 Z" fill="#E23A3A"/>
+      <path d="M60,102 C72,90 140,88 200,94 C207,96 205,104 196,105 L66,107 C58,107 56,105 60,102 Z" fill="#17181C"/>
+      <path d="M232,128 C246,104 262,84 284,68 L302,66 C306,86 300,108 284,122 L246,134 Z" fill="${B}"/>
+      <path d="M240,126 C252,108 266,92 284,80" stroke="${S}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M282,170 C290,150 322,150 330,170 L324,172 C318,158 296,158 290,172 Z" fill="#2A2C31"/>
+      <circle cx="306" cy="74" r="10" fill="#EEF2F6" stroke="#2A2C31" stroke-width="2"/>
+      <line x1="286" y1="58" x2="280" y2="34" stroke="#333" stroke-width="3"/><ellipse cx="278" cy="29" rx="9" ry="5.5" fill="#1E2024"/>
+      <path d="M266,62 L304,52" stroke="#1C1D21" stroke-width="6" stroke-linecap="round"/>`;
+  } else {
+    art = `
+      <line x1="100" y1="190" x2="190" y2="170" stroke="#4A4E57" stroke-width="11" stroke-linecap="round"/>
+      ${alloyWheel(100, 190, 38, R, false)}${alloyWheel(308, 190, 38, R, true)}
+      <line x1="292" y1="90" x2="308" y2="190" stroke="#C9A227" stroke-width="9" stroke-linecap="round"/>
+      <path d="M150,140 L216,130 L240,160 L222,188 L166,188 L146,160 Z" fill="#3B3E46"/>
+      <path d="M162,150 L218,142 M160,162 L226,156 M164,174 L224,170" stroke="#2A2C31" stroke-width="3"/>
+      <path d="M196,178 L230,190 L120,196" stroke="#8E949D" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M30,94 L66,100 L120,100 L176,106 L170,128 L110,130 L60,118 Z" fill="${B}"/>
+      <path d="M26,92 L40,90 L42,100 L28,101 Z" fill="#E23A3A"/>
+      <path d="M70,98 L172,100 L176,110 L76,110 Z" fill="#17181C"/>
+      <path d="M174,106 C188,82 240,76 268,90 L262,124 L200,130 Z" fill="${B}"/>
+      <path d="M186,104 C204,90 236,88 258,96" stroke="#fff" stroke-opacity=".22" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M150,138 L230,128 L226,138 L152,148 Z" fill="${S}"/>
+      <path d="M262,92 L302,72 L320,96 L294,122 L258,124 Z" fill="${B}"/>
+      <path d="M302,80 L318,96 L306,102 L296,88 Z" fill="#EEF2F6"/>
+      <path d="M284,170 C292,150 324,150 334,170 L326,172 C318,160 298,160 290,172 Z" fill="${B}"/>
+      <path d="M262,72 L296,64" stroke="#1C1D21" stroke-width="6" stroke-linecap="round"/>`;
+  }
+  return `<svg viewBox="0 0 400 240" role="img" aria-label="${b.brand} ${b.model}"><g transform="matrix(-1 0 0 1 400 0)">${art}</g></svg>`;
+}
+const bikeArt = b => b.image ? `<img src="${b.image}" alt="${b.brand} ${b.model}" loading="lazy" decoding="async">` : bikeSVG(b);
+
+/* ====== УТИЛИТЫ ====== */
+const $ = id => document.getElementById(id);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const EASE = 'cubic-bezier(.65,0,.25,1)', DRIVE = 900, AUTO_MS = 3500;
+const fmt = n => Math.round(n).toLocaleString('ru-RU').replace(/ /g, ' ');
+const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c; };
+const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const ruDate = s => { const [y, m, d] = s.split('-'); return `${d}.${m}`; };
+const shortTrans = t => ({ 'Автомат': 'Авт.', 'Механика': 'Мех.', 'Полуавтомат': 'П/авт.' })[t] || t;
+let toastT;
+function toast(html) { const t = $('toast'); t.innerHTML = html; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3800); }
+const store = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+};
+
+/* =====================================================================
+   HERO-СЛАЙДЕР
+   ===================================================================== */
+let idx = 0, busy = false, pending = null, autoOn = true, autoTimer = null, bikeEl = null, shownDay = 0;
+
+function makeBikeEl(b) { const el = document.createElement('div'); el.className = 'bike' + (b.available ? '' : ' is-busy'); el.innerHTML = bikeArt(b); return el; }
+function preload(i) { const b = HERO[(i + HERO.length) % HERO.length]; if (b.image) { const im = new Image(); im.src = b.image; } }
+function buildThumbs() {
+  $('thumbs').innerHTML = HERO.map((b, i) => `
+    <button class="thumb${b.available ? '' : ' busy'}" role="tab" data-i="${i}" aria-label="${b.brand} ${b.model}">
+      ${bikeArt(b)}<span class="t-model">${b.model}</span><span class="t-price">${b.available ? fmt(b.pricePerDay) + ' ₫' : 'занят до ' + b.busyUntil}</span>
+    </button>`).join('');
+  $('thumbs').addEventListener('click', e => {
+    const t = e.target.closest('.thumb'); if (!t) return;
+    const i = +t.dataset.i; haptic.tap(); go(i, i > idx ? 1 : -1);
+  });
+}
+function markThumb() {
+  const row = $('thumbs');
+  [...row.children].forEach((t, i) => { t.classList.toggle('active', i === idx); t.setAttribute('aria-selected', i === idx); });
+  const a = row.children[idx];
+  row.scrollTo({ left: a.offsetLeft - (row.clientWidth - a.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+}
+function setAccent(b) {
+  const r = document.documentElement.style;
+  r.setProperty('--accent', b.accent); r.setProperty('--accent-soft', b.accentSoft); r.setProperty('--ink', b.ink);
+  const [x, y, s] = BLOB_POS[idx % BLOB_POS.length];
+  $('blob').style.transform = `translate(${x}%, ${y}%) scale(${s})`;
+}
+function fillCard(b) {
+  $('rating').textContent = b.rating.toFixed(1);
+  $('chips').innerHTML = [`${b.engineCc} см³`, b.year, b.transmission, b.extras[0]].map(c => `<span class="chip">${c}</span>`).join('');
+  $('priceWeek').textContent = fmt(b.pricePerWeek) + ' ₫';
+  $('deposit').textContent = b.deposit;
+  $('extras').textContent = b.extras.slice(1).join(', ') || '—';
+  $('busyBadge').hidden = b.available;
+  $('busyBadge').textContent = 'Занят до ' + (b.busyUntil || '');
+}
+function countTo(el, from, to) {
+  if (reduce || from === to) { el.textContent = fmt(to); return; }
+  const t0 = performance.now();
+  const step = t => { const k = Math.min(1, (t - t0) / 500), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(Math.round((from + (to - from) * e) / 1000) * 1000); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function swapLine(el, text) {
+  if (reduce) { el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200 }).finished.then(() => { el.textContent = text; el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300 }); }); return; }
+  const out = el.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(-105%)', opacity: 0 }], { duration: 400, easing: EASE, fill: 'forwards' });
+  out.finished.then(() => { el.textContent = text; out.cancel(); el.animate([{ transform: 'translateY(105%)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], { duration: 700, easing: EASE }); });
+}
+function swapBike(b, dir) {
+  const old = bikeEl, nu = makeBikeEl(b);
+  $('stage').appendChild(nu); bikeEl = nu;
+  if (reduce) {
+    nu.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400 });
+    old.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: 'forwards' }).finished.then(() => old.remove());
+    return 400;
+  }
+  old.animate([{ transform: 'translateX(0) rotate(0)' }, { transform: `translateX(${-120 * dir}%) rotate(${-4 * dir}deg)` }], { duration: DRIVE, easing: EASE, fill: 'forwards' }).finished.then(() => old.remove());
+  nu.animate([{ transform: `translateX(${120 * dir}%) rotate(${4 * dir}deg)` }, { transform: 'translateX(0) rotate(0)' }], { duration: DRIVE, easing: EASE })
+    .finished.then(() => nu.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(4px)' }, { transform: 'translateY(0)' }], { duration: 300, easing: 'ease-out' }));
+  [old, nu].forEach(el => el.querySelectorAll('.wheel').forEach(w =>
+    w.animate([{ transform: 'rotate(0deg)' }, { transform: `rotate(${720 * dir}deg)` }], { duration: DRIVE + 300, easing: 'cubic-bezier(.3,.5,.25,1)' })));
+  $('shadow').animate([
+    { transform: 'translateX(-50%) scaleX(1)', opacity: 1 }, { transform: 'translateX(-50%) scaleX(.4)', opacity: 0, offset: .45 },
+    { transform: 'translateX(-50%) scaleX(.4)', opacity: 0, offset: .55 }, { transform: 'translateX(-50%) scaleX(1)', opacity: 1 }], { duration: DRIVE + 100, easing: EASE });
+  return DRIVE + 300;
+}
+function go(target, dir = 1) {
+  target = (target + HERO.length) % HERO.length;
+  if (target === idx && !busy) return;
+  if (busy) { pending = { target, dir }; return; }
+  busy = true; idx = target;
+  const b = HERO[idx];
+  haptic.select();
+  setAccent(b); markThumb();
+  $('rank').textContent = '#' + (idx + 1);
+  $('counter').textContent = `${idx + 1} / ${HERO.length}`;
+  swapLine($('brand'), b.brand); swapLine($('model'), b.model); swapLine($('tag'), b.tag);
+  const body = $('cardBody'), fromDay = shownDay; shownDay = b.pricePerDay;
+  body.animate([{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(10px)' }], { duration: 380, easing: EASE, fill: 'forwards' })
+    .finished.then(a => { fillCard(b); a.cancel(); body.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 420, easing: EASE }); countTo($('priceDay'), fromDay, b.pricePerDay); });
+  const ms = swapBike(b, dir);
+  preload(idx + 1);
+  if (!autoOn) setProgressManual();
+  syncMain();
+  setTimeout(() => { busy = false; if (pending) { const p = pending; pending = null; if (p.target !== idx) go(p.target, p.dir); } }, ms);
+}
+function restartBar() { const bar = $('progressBar'); bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = `fillbar ${AUTO_MS}ms linear forwards`; }
+function tick() { if (!autoOn) return; restartBar(); autoTimer = setTimeout(() => { if (!view.length) go(idx + 1, 1); tick(); }, AUTO_MS); }
+function setProgressManual() { $('progressBar').style.width = ((idx + 1) / HERO.length * 100) + '%'; }
+function stopAuto() {
+  if (!autoOn) return;
+  autoOn = false; clearTimeout(autoTimer); $('progressBar').style.animation = 'none';
+  $('progress').classList.add('manual'); setProgressManual();
+  $('hintText').textContent = 'Свайпайте фото или выбирайте внизу';
+}
+['pointerdown', 'keydown', 'wheel', 'touchmove'].forEach(ev => addEventListener(ev, stopAuto, { once: true, passive: true }));
+let sx = null, sy = null;
+$('stage').addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
+$('stage').addEventListener('pointerup', e => {
+  if (sx === null) return;
+  const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
+  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(idx + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+  else if (Math.abs(dx) < 8 && Math.abs(dy) < 8) openDetail(HERO[idx].id);
+});
+$('nextBtn').addEventListener('click', () => { haptic.tap(); go(idx + 1, 1); });
+$('prevBtn').addEventListener('click', () => { haptic.tap(); go(idx - 1, -1); });
+$('heroMore').addEventListener('click', () => { haptic.tap(); openDetail(HERO[idx].id); });
+
+/* =====================================================================
+   КАТАЛОГ
+   ===================================================================== */
+const cat = { trans: 'all', freeOnly: false, sort: 'pop' };
+function tileHTML(b, wide) {
+  const badge = !b.available ? `<span class="t-badge busy">До ${b.busyUntil}</span>` : b.badge ? `<span class="t-badge">${b.badge}</span>` : '';
+  return `<article class="tile${wide ? ' wide' : ''}${b.available ? '' : ' busy'}" tabindex="0" role="button" data-id="${b.id}" style="--t-accent:${b.accent}" aria-label="${b.brand} ${b.model}, ${fmt(b.pricePerDay)} донгов в день">
+    <div class="t-head"><span class="t-brand">${b.brand}</span>${badge}</div>
+    <div class="t-name">${b.model}</div>
+    <div class="pricetag">${fmt(b.pricePerDay)} ₫ <small>/ день</small></div>
+    <div class="t-img">${bikeArt(b)}</div>
+    <dl class="specs">
+      <div><dt>Объём</dt><dd>${b.engineCc} <small>см³</small></dd></div>
+      <div><dt>Год</dt><dd>${b.year}</dd></div>
+      <div><dt>КПП</dt><dd>${shortTrans(b.transmission)}</dd></div>
+    </dl>
+    <div class="t-foot"><span class="star">${b.rating.toFixed(1)}</span><span class="more">Подробнее</span></div>
+  </article>`;
+}
+function renderCatalog() {
+  let list = BIKES.filter(b => (cat.trans === 'all' || b.transmission === cat.trans) && (!cat.freeOnly || b.available));
+  const sorters = { pop: (a, b) => b.rating - a.rating || a.pricePerDay - b.pricePerDay, cheap: (a, b) => a.pricePerDay - b.pricePerDay, exp: (a, b) => b.pricePerDay - a.pricePerDay, cc: (a, b) => b.engineCc - a.engineCc };
+  list.sort(sorters[cat.sort]);
+  $('catCount').textContent = `${list.length} ${plural(list.length, 'байк', 'байка', 'байков')} · ${list.filter(b => b.available).length} свободно`;
+  $('grid').innerHTML = list.length
+    ? list.map((b, i) => tileHTML(b, i === 0 && list.length > 2)).join('')
+    : `<div class="empty">По этим фильтрам байков нет.<br><button id="resetF">Сбросить фильтры</button></div>`;
+  const r = $('resetF'); if (r) r.onclick = resetFilters;
+}
+function resetFilters() {
+  cat.trans = 'all'; cat.freeOnly = false; cat.sort = 'pop';
+  $('freeOnly').checked = false; $('sortSel').value = 'pop';
+  [...$('transSeg').children].forEach(x => x.setAttribute('aria-pressed', x.dataset.v === 'all'));
+  renderCatalog();
+}
+$('transSeg').addEventListener('click', e => {
+  const btn = e.target.closest('button'); if (!btn) return;
+  haptic.select(); cat.trans = btn.dataset.v;
+  [...$('transSeg').children].forEach(x => x.setAttribute('aria-pressed', x === btn));
+  renderCatalog();
+});
+$('freeOnly').addEventListener('change', e => { haptic.select(); cat.freeOnly = e.target.checked; renderCatalog(); });
+$('sortSel').addEventListener('change', e => { cat.sort = e.target.value; renderCatalog(); });
+$('grid').addEventListener('click', e => { const t = e.target.closest('.tile'); if (t) { haptic.tap(); openDetail(t.dataset.id); } });
+$('grid').addEventListener('keydown', e => { const t = e.target.closest('.tile'); if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openDetail(t.dataset.id); } });
+$('filterBtn').addEventListener('click', () => { haptic.tap(); $('catalog').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); });
+
+/* =====================================================================
+   ШТОРКИ: стек экранов detail → booking → done; bookings
+   ===================================================================== */
+const view = [];   // [{type, id}]
+let bookings = store.get('veter_bookings', []);
+let form = null;   // состояние формы брони
+
+function openSheet(state) {
+  view.push(state);
+  const sh = $('sheet');
+  if (sh.hidden) { sh.hidden = false; sh.classList.remove('closing'); document.body.classList.add('locked'); }
+  else $('sheetPanel').scrollTop = 0;
+  renderSheet();
+}
+function back() {
+  haptic.tap();
+  view.pop();
+  if (!view.length) return closeSheet(true);
+  renderSheet();
+}
+function closeSheet(already) {
+  if (!already) view.length = 0;
+  const sh = $('sheet');
+  const finish = () => { sh.hidden = true; sh.classList.remove('closing'); document.body.classList.remove('locked'); $('sheetIn').innerHTML = ''; syncMain(); };
+  if (reduce) return finish();
+  sh.classList.add('closing'); setTimeout(finish, 280);
+  if (tg) tg.BackButton.hide();
+}
+$('sheetBg').addEventListener('click', () => closeSheet());
+$('sheetClose').addEventListener('click', () => closeSheet());
+$('sheetBack').addEventListener('click', back);
+addEventListener('keydown', e => {
+  if (e.key === 'Escape' && view.length) closeSheet();
+  if (view.length) return;
+  if (e.key === 'ArrowRight') go(idx + 1, 1);
+  if (e.key === 'ArrowLeft') go(idx - 1, -1);
+});
+
+function renderSheet() {
+  const s = view[view.length - 1], panel = $('sheetPanel'), box = $('sheetIn');
+  const b = s.id ? BY_ID[s.id] : null;
+  if (b) ['--accent', '--accent-soft', '--ink'].forEach((k, i) => panel.style.setProperty(k, [b.accent, b.accentSoft, b.ink][i]));
+  if (s.type === 'detail') { $('sheetTitle').textContent = 'Карточка байка'; box.innerHTML = detailHTML(b); }
+  if (s.type === 'booking') { $('sheetTitle').textContent = 'Бронирование'; box.innerHTML = bookingHTML(b); bindBooking(b); }
+  if (s.type === 'done') { $('sheetTitle').textContent = 'Заявка отправлена'; box.innerHTML = doneHTML(s.booking); }
+  if (s.type === 'bookings') { panel.style.removeProperty('--accent'); panel.style.removeProperty('--accent-soft'); panel.style.removeProperty('--ink'); $('sheetTitle').textContent = 'Мои заявки'; box.innerHTML = bookingsHTML(); }
+  if (tg) view.length > 1 ? tg.BackButton.show() : tg.BackButton.hide();
+  else $('sheetBack').hidden = view.length < 2;
+  syncMain();
+}
+
+/* ---------- Карточка байка ---------- */
+function openDetail(id) { stopAuto(); form = null; view.length = 0; openSheet({ type: 'detail', id }); }
+function detailHTML(b) {
+  const weekDay = Math.round(b.pricePerWeek / 7), monthDay = Math.round(b.pricePerMonth / 30);
+  return `
+    <div class="d-stage${b.available ? '' : ' is-busy'}"><div class="blob"></div><div class="floor-shadow"></div>${bikeArt(b)}</div>
+    <div class="d-title"><div class="eyebrow"><b>${b.rating.toFixed(1)} ★</b> ${b.tag}</div><div class="brand">${b.brand}</div><div class="model">${b.model}</div></div>
+    ${b.available ? '' : `<div class="notice"><b>Занят до ${b.busyUntil}.</b> Нажмите кнопку внизу — напишем, как только байк вернётся, или выберите похожий в каталоге.</div>`}
+    <section class="panel"><h3>Характеристики</h3>
+      <dl class="spec-grid">
+        <div><dt>Объём</dt><dd>${b.engineCc} см³</dd></div>
+        <div><dt>Год</dt><dd>${b.year}</dd></div>
+        <div><dt>Коробка</dt><dd>${b.transmission}</dd></div>
+        <div><dt>Бак</dt><dd>${String(b.tank).replace('.', ',')} л</dd></div>
+        <div><dt>Расход</dt><dd>${String(b.fuel).replace('.', ',')} л/100</dd></div>
+        <div><dt>Макс.</dt><dd>${b.topSpeed} км/ч</dd></div>
+      </dl>
+    </section>
+    <section class="panel"><h3>Тарифы</h3>
+      <div class="tariffs">
+        <div class="tariff"><span>1–6 дней</span><b>${fmt(b.pricePerDay)} ₫</b><i>в день</i></div>
+        <div class="tariff"><span>от 7 дней</span><b>${fmt(weekDay)} ₫</b><i>в день</i></div>
+        <div class="tariff best"><span>от 30 дней</span><b>${fmt(monthDay)} ₫</b><i>в день</i></div>
+      </div>
+    </section>
+    <section class="panel"><h3>В комплекте</h3><ul class="list">${b.extras.map(x => `<li>${x[0].toUpperCase() + x.slice(1)}</li>`).join('')}<li>Полный бак при выдаче</li></ul></section>
+    <section class="panel"><h3>Что понадобится</h3><ul class="list">
+      <li>Залог: ${b.deposit}. Возвращаем сразу при сдаче байка</li>
+      <li>Права категории A или международные — полиция Вьетнама штрафует без них</li>
+      <li>Шлем обязателен для водителя и пассажира, выдаём бесплатно</li>
+    </ul></section>`;
+}
+
+/* ---------- Бронирование ---------- */
+function openBooking(id) {
+  const t = new Date(); t.setDate(t.getDate() + 1);
+  const t2 = new Date(t); t2.setDate(t2.getDate() + 3);
+  form = { from: iso(t), to: iso(t2), time: '10:00', delivery: 'center', address: '', helmets: 0, name: tg?.initDataUnsafe?.user?.first_name || '', contact: tg?.initDataUnsafe?.user?.username ? '@' + tg.initDataUnsafe.user.username : '', pay: 'cash', errors: {} };
+  openSheet({ type: 'booking', id });
+}
+function calc(b) {
+  const d1 = new Date(form.from + 'T00:00'), d2 = new Date(form.to + 'T00:00');
+  const days = Math.max(1, Math.round((d2 - d1) / 864e5));
+  const perDay = days >= 30 ? b.pricePerMonth / 30 : days >= 7 ? b.pricePerWeek / 7 : b.pricePerDay;
+  const rent = Math.round(perDay * days / 1000) * 1000;
+  const deliv = DELIVERY.find(x => x.id === form.delivery).price;
+  const helm = form.helmets * EXTRA_HELMET * days;
+  return { days, perDay, rent, deliv, helm, total: rent + deliv + helm, valid: d2 > d1 };
+}
+function bookingHTML(b) {
+  const f = form, e = f.errors, today = iso(new Date());
+  return `
+    <div class="panel"><div class="mini-bike">${bikeArt(b)}<div><b>${b.model}</b><span>${b.brand} · ${b.engineCc} см³ · ${b.transmission}</span></div></div></div>
+    <section class="panel"><h3>Даты аренды</h3>
+      <div class="two">
+        <div class="field"><label for="fFrom">Взять</label><input type="date" id="fFrom" min="${today}" value="${f.from}"></div>
+        <div class="field${e.dates ? ' err' : ''}"><label for="fTo">Вернуть</label><input type="date" id="fTo" min="${f.from}" value="${f.to}"></div>
+      </div>
+      ${e.dates ? `<div class="field"><span class="msg">Дата возврата должна быть позже даты выдачи</span></div>` : ''}
+      <div class="field"><label for="fTime">Время выдачи</label>
+        <select id="fTime">${['08:00', '09:00', '10:00', '11:00', '12:00', '14:00', '16:00', '18:00', '20:00'].map(t => `<option${t === f.time ? ' selected' : ''}>${t}</option>`).join('')}</select></div>
+    </section>
+    <section class="panel"><h3>Доставка</h3>
+      <div class="opts">${DELIVERY.map(d => `<label class="opt"><input type="radio" name="deliv" value="${d.id}"${d.id === f.delivery ? ' checked' : ''}><span>${d.label}</span><em>${d.price ? '+' + fmt(d.price) + ' ₫' : 'бесплатно'}</em></label>`).join('')}</div>
+      <div class="field${e.address ? ' err' : ''}" id="addrField" ${f.delivery === 'pickup' ? 'hidden' : ''}><label for="fAddr">Отель или адрес</label><input id="fAddr" placeholder="Например, Liberty Central, номер 512" value="${f.address}">${e.address ? '<span class="msg">Укажите, куда привезти байк</span>' : ''}</div>
+    </section>
+    <section class="panel"><h3>Дополнительно</h3>
+      <div class="stepper"><span>Доп. шлем · ${fmt(EXTRA_HELMET)} ₫/день</span><div class="ctrl"><button type="button" id="hMinus" aria-label="Меньше">−</button><output id="hOut">${f.helmets}</output><button type="button" id="hPlus" aria-label="Больше">+</button></div></div>
+    </section>
+    <section class="panel"><h3>Контакты</h3>
+      <div class="field${e.name ? ' err' : ''}"><label for="fName">Имя</label><input id="fName" autocomplete="given-name" value="${f.name}">${e.name ? '<span class="msg">Как к вам обращаться?</span>' : ''}</div>
+      <div class="field${e.contact ? ' err' : ''}"><label for="fContact">Telegram или телефон</label><input id="fContact" placeholder="@username или +84…" value="${f.contact}">${e.contact ? '<span class="msg">Нужен контакт, чтобы подтвердить бронь</span>' : ''}</div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="pay" value="cash"${f.pay === 'cash' ? ' checked' : ''}><span>Наличными при получении</span></label>
+        <label class="opt"><input type="radio" name="pay" value="transfer"${f.pay === 'transfer' ? ' checked' : ''}><span>Переводом (₽ / USDT)</span></label>
+      </div>
+    </section>
+    <section class="panel"><h3>Итого</h3><div class="summary" id="summary">${summaryHTML(b)}</div></section>`;
+}
+function summaryHTML(b) {
+  const c = calc(b);
+  return `
+    <div class="line"><span>${c.days} ${plural(c.days, 'день', 'дня', 'дней')} × ${fmt(c.perDay)} ₫</span><span>${fmt(c.rent)} ₫</span></div>
+    ${c.days >= 7 ? `<div class="line"><span>Скидка за ${c.days >= 30 ? 'месяц' : 'неделю'}</span><span>−${fmt(b.pricePerDay * c.days - c.rent)} ₫</span></div>` : ''}
+    <div class="line"><span>Доставка</span><span>${c.deliv ? fmt(c.deliv) + ' ₫' : 'бесплатно'}</span></div>
+    ${c.helm ? `<div class="line"><span>Доп. шлем × ${form.helmets}</span><span>${fmt(c.helm)} ₫</span></div>` : ''}
+    <div class="line"><span>Залог (вернём)</span><span>${b.deposit}</span></div>
+    <div class="line total"><span>К оплате</span><span>${fmt(c.total)} ₫</span></div>`;
+}
+function bindBooking(b) {
+  const upd = () => { $('summary').innerHTML = summaryHTML(b); syncMain(); };
+  $('fFrom').addEventListener('change', e => {
+    form.from = e.target.value; $('fTo').min = form.from;
+    if (form.to <= form.from) { const d = new Date(form.from + 'T00:00'); d.setDate(d.getDate() + 1); form.to = iso(d); $('fTo').value = form.to; }
+    upd();
+  });
+  $('fTo').addEventListener('change', e => { form.to = e.target.value; upd(); });
+  $('fTime').addEventListener('change', e => { form.time = e.target.value; });
+  document.querySelectorAll('input[name=deliv]').forEach(r => r.addEventListener('change', e => { haptic.select(); form.delivery = e.target.value; $('addrField').hidden = form.delivery === 'pickup'; upd(); }));
+  document.querySelectorAll('input[name=pay]').forEach(r => r.addEventListener('change', e => { haptic.select(); form.pay = e.target.value; }));
+  $('fAddr').addEventListener('input', e => { form.address = e.target.value; });
+  $('fName').addEventListener('input', e => { form.name = e.target.value; });
+  $('fContact').addEventListener('input', e => { form.contact = e.target.value; });
+  $('hMinus').addEventListener('click', () => { haptic.select(); form.helmets = Math.max(0, form.helmets - 1); $('hOut').textContent = form.helmets; upd(); });
+  $('hPlus').addEventListener('click', () => { haptic.select(); form.helmets = Math.min(2, form.helmets + 1); $('hOut').textContent = form.helmets; upd(); });
+}
+async function submitBooking(b) {
+  if (submitting) return;
+  const c = calc(b), e = {};
+  if (!c.valid) e.dates = 1;
+  if (form.delivery !== 'pickup' && !form.address.trim()) e.address = 1;
+  if (!form.name.trim()) e.name = 1;
+  if (form.contact.trim().length < 4) e.contact = 1;
+  form.errors = e;
+  if (Object.keys(e).length) {
+    haptic.err();
+    const scroll = $('sheetPanel').scrollTop; $('sheetIn').innerHTML = bookingHTML(b); bindBooking(b); $('sheetPanel').scrollTop = scroll;
+    const firstErr = document.querySelector('.field.err input'); if (firstErr) firstErr.focus();
+    return;
+  }
+  const booking = {
+    no: '', bike_id: b.id, model: `${b.brand} ${b.model}`,
+    from: form.from, to: form.to, time: form.time, days: c.days, delivery: form.delivery, address: form.address.trim(), helmets: form.helmets,
+    name: form.name.trim(), contact: form.contact.trim(), pay: form.pay, total: c.total, status: 'new', created: Date.now(),
+  };
+  submitting = true; setMainLoading(true);
+  try {
+    const u = tg?.initDataUnsafe?.user;
+    const res = await rpc('bike_submit_booking', { p: { ...booking, tg_user: u ? { id: u.id, username: u.username, first_name: u.first_name } : null } });
+    booking.no = res.no;
+  } catch (err) {
+    haptic.err();
+    toast(err.message === 'too_many_requests' ? 'Слишком много заявок подряд. Напишите менеджеру @veter_bikes.' : 'Не удалось отправить заявку. Проверьте интернет и попробуйте ещё раз.');
+    return;
+  } finally { submitting = false; setMainLoading(false); }
+  bookings.unshift(booking); store.set('veter_bookings', bookings); updateDot();
+  haptic.ok();
+  view.length = 0; form = null;
+  openSheet({ type: 'done', id: b.id, booking });
+}
+function doneHTML(bk) {
+  const d = DELIVERY.find(x => x.id === bk.delivery);
+  return `
+    <div class="done">
+      <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h2>Заявка ${bk.no} принята</h2>
+      <p>Менеджер напишет в Telegram в течение 15 минут и подтвердит байк. Оплата — при получении.</p>
+    </div>
+    <section class="panel"><div class="summary">
+      <div class="line"><span>Байк</span><span>${bk.model}</span></div>
+      <div class="line"><span>Даты</span><span>${ruDate(bk.from)} → ${ruDate(bk.to)} · ${bk.days} ${plural(bk.days, 'день', 'дня', 'дней')}</span></div>
+      <div class="line"><span>Выдача</span><span>${bk.time} · ${bk.delivery === 'pickup' ? 'самовывоз' : bk.address}</span></div>
+      <div class="line"><span>Доставка</span><span>${d.label}</span></div>
+      <div class="line total"><span>К оплате</span><span>${fmt(bk.total)} ₫</span></div>
+    </div></section>
+`;
+}
+function notifyMe(b) {
+  if (!bookings.some(x => x.status === 'notify' && x.bike_id === b.id)) {
+    bookings.unshift({ no: '—', bike_id: b.id, model: `${b.brand} ${b.model}`, status: 'notify', busyUntil: b.busyUntil, created: Date.now() });
+    store.set('veter_bookings', bookings); updateDot();
+  }
+  haptic.ok();
+  if (tg) { try { tg.sendData(JSON.stringify({ action: 'notify', bike_id: b.id })); } catch (e) {} }
+  toast(`Напишем, когда ${b.model} освободится (ожидаем ${b.busyUntil}).`);
+  closeSheet();
+}
+
+/* ---------- Мои заявки ---------- */
+function updateDot() { const n = bookings.length; $('bookingsDot').hidden = !n; $('bookingsDot').textContent = n; }
+function bookingsHTML() {
+  if (!bookings.length) return `<div class="empty" style="margin-top:4px">Заявок пока нет.<br>Выберите байк в каталоге — заявка появится здесь.</div>`;
+  return bookings.map(bk => bk.status === 'notify'
+    ? `<div class="booking-item"><div class="top"><b>${bk.model}</b><span class="status notify">Ждём</span></div><div class="meta">Сообщим, когда освободится · ожидаем ${bk.busyUntil}</div></div>`
+    : `<div class="booking-item"><div class="top"><b>${bk.model}</b><span class="status">${bk.no} · новая</span></div><div class="meta">${ruDate(bk.from)} → ${ruDate(bk.to)} · ${bk.days} ${plural(bk.days, 'день', 'дня', 'дней')} · ${fmt(bk.total)} ₫</div></div>`).join('')
+    + `<button class="link-btn" id="clearB" style="justify-self:center;color:var(--muted)">Очистить список</button>`;
+}
+$('bookingsBtn').addEventListener('click', () => { haptic.tap(); stopAuto(); view.length = 0; openSheet({ type: 'bookings' }); bindClear(); });
+function bindClear() { const c = $('clearB'); if (c) c.onclick = () => { bookings = []; store.set('veter_bookings', bookings); updateDot(); renderSheet(); }; }
+
+/* =====================================================================
+   MAIN BUTTON — один обработчик, текст зависит от экрана
+   ===================================================================== */
+function mainState() {
+  const s = view[view.length - 1];
+  if (!s) { const b = HERO[idx]; return { b, text: b.available ? `Забронировать · ${fmt(b.pricePerDay)} ₫/день` : 'Уведомить, когда освободится', act: () => b.available ? openDetail(b.id) : notifyMe(b) }; }
+  const b = s.id ? BY_ID[s.id] : null;
+  if (s.type === 'detail') return b.available
+    ? { b, text: `Выбрать даты · ${fmt(b.pricePerDay)} ₫/день`, act: () => openBooking(b.id) }
+    : { b, text: 'Уведомить, когда освободится', act: () => notifyMe(b) };
+  if (s.type === 'booking') return { b, text: `Отправить заявку · ${fmt(calc(b).total)} ₫`, act: () => submitBooking(b) };
+  if (s.type === 'done') return { b, text: 'Вернуться в каталог', act: () => { closeSheet(); setTimeout(() => $('catalog').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }), 300); } };
+  if (s.type === 'bookings') return { b: null, text: 'Выбрать байк', act: () => { closeSheet(); setTimeout(() => $('catalog').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }), 300); } };
+}
+let mainAct = () => {}, submitting = false;
+function setMainLoading(on) {
+  if (tg) { try { on ? tg.MainButton.showProgress() : tg.MainButton.hideProgress(); } catch (e) {} }
+  const b = $('mainBtn'); b.disabled = on; b.style.opacity = on ? .6 : 1; if (on) b.textContent = 'Отправляем…'; else syncMain();
+}
+function syncMain() {
+  const st = mainState(); mainAct = st.act;
+  const btn = $('mainBtn');
+  if (view.length && st.b) { btn.style.setProperty('--accent', st.b.accent); btn.style.setProperty('--ink', st.b.ink); }
+  else if (view.length) { btn.style.setProperty('--accent', '#F5B700'); btn.style.setProperty('--ink', '#16181D'); }
+  else { btn.style.removeProperty('--accent'); btn.style.removeProperty('--ink'); }
+  if (tg) {
+    const b = st.b || { accent: '#F5B700', ink: '#16181D' };
+    tg.MainButton.setParams({ text: st.text, color: b.accent, text_color: b.ink, is_visible: true });
+  } else btn.textContent = st.text;
+}
+function onMain() { haptic.tap(); mainAct(); }
+$('mainBtn').addEventListener('click', onMain);
+
+document.querySelectorAll('.copy').forEach(btn => btn.addEventListener('click', () => {
+  const v = btn.dataset.copy;
+  const done = () => { btn.textContent = 'Скопировано'; setTimeout(() => btn.textContent = 'Скопировать', 1600); };
+  if (navigator.clipboard) navigator.clipboard.writeText(v).then(done, () => toast(v)); else toast(v);
+}));
+
+/* ====== СТАРТ ====== */
+(async function init() {
+  try { const live = await rpc('bike_public_list', {}, 6000); if (Array.isArray(live) && live.length) setBikes(live.map(normBike)); } catch (e) { /* офлайн — встроенные данные */ }
+  if (tg) {
+    tg.ready(); tg.expand(); applyTgTheme(); tg.onEvent('themeChanged', applyTgTheme);
+    tg.MainButton.onClick(onMain); tg.BackButton.onClick(back); $('mainbar').hidden = true;
+    try { tg.enableClosingConfirmation && tg.disableClosingConfirmation(); } catch (e) {}
+  }
+  buildThumbs();
+  const b = HERO[0];
+  bikeEl = makeBikeEl(b); $('stage').appendChild(bikeEl);
+  shownDay = b.pricePerDay;
+  $('brand').textContent = b.brand; $('model').textContent = b.model; $('tag').textContent = b.tag;
+  setAccent(b); fillCard(b); markThumb();
+  $('priceDay').textContent = fmt(b.pricePerDay);
+  $('counter').textContent = `1 / ${HERO.length}`;
+  renderCatalog(); updateDot(); syncMain(); preload(1);
+  if (reduce) stopAuto(); else tick();
+})();
+</script>
+
+</body>
+</html>

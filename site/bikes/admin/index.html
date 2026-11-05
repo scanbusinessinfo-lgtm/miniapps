@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Ветер · админка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@300;800&display=swap">
+<style>
+/* Layout: шапка + сводка-плитки + вкладки (Аренды / Байки / Заявки / Настройки); формы в модальной шторке */
+:root {
+  --bg: #ECEEF1; --surface: #FFFFFF; --surface-2: #F5F6F8; --fg: #16181D; --muted: #687080; --line: #DADDE3;
+  --head: #1C1E23; --head-fg: #F3F4F6; --brand: #F5B700; --brand-ink: #16181D;
+  --danger: #D93A3F; --danger-bg: #FCE9EA; --warn: #B7791F; --warn-bg: #FFF4D6; --ok: #1E9E5A; --ok-bg: #E3F5EA;
+  --f-display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --f-body: "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ease: cubic-bezier(.65,0,.25,1);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #111318; --surface: #1B1E25; --surface-2: #22262E; --fg: #F2F3F5; --muted: #8E95A3; --line: #2C303A; --head: #0B0C0F;
+    --danger: #F0656A; --danger-bg: #3A1D20; --warn: #F2B84B; --warn-bg: #3A3018; --ok: #3CC77E; --ok-bg: #173225; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; overflow-x: clip; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.4 var(--f-body); -webkit-tap-highlight-color: transparent; padding-bottom: env(safe-area-inset-bottom, 0px); }
+body.locked { overflow: hidden; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2 { font-family: var(--f-display); font-weight: 800; font-style: italic; text-transform: uppercase; letter-spacing: -.02em; margin: 0; }
+h2 { font-size: 18px; }
+.muted { color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* шапка */
+.top { background: var(--head); color: var(--head-fg); position: sticky; top: 0; z-index: 10; padding-top: env(safe-area-inset-top, 0px); }
+.top-in { display: flex; align-items: center; gap: 12px; padding-block: 12px; }
+.logo { font: 800 18px/1 var(--f-display); font-style: italic; }
+.logo span { color: var(--brand); }
+.logo small { display: block; font: 500 11px var(--f-body); color: #A4AAB6; margin-top: 3px; font-style: normal; letter-spacing: .04em; }
+.top-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.ibtn { position: relative; height: 38px; min-width: 38px; padding: 0 10px; border-radius: 11px; background: rgba(255,255,255,.08); color: var(--head-fg); display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 600; }
+.ibtn svg { width: 18px; height: 18px; }
+.ibtn .dot { position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--danger); color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; }
+.spin svg { animation: rot 1s linear infinite; }
+@keyframes rot { to { transform: rotate(360deg); } }
+.tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; color: #A4AAB6; white-space: nowrap; display: inline-flex; gap: 6px; align-items: center; }
+.tab[aria-selected="true"] { background: var(--brand); color: var(--brand-ink); }
+.tab .cnt { font-size: 11px; background: rgba(255,255,255,.14); padding: 1px 7px; border-radius: 8px; }
+.tab[aria-selected="true"] .cnt { background: rgba(0,0,0,.14); }
+
+main { padding-block: 16px 60px; display: grid; gap: 16px; }
+
+/* алерты */
+.alerts { display: grid; gap: 8px; }
+.alert { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 14px; font-size: 14px; }
+.alert.overdue { background: var(--danger-bg); }
+.alert.soon { background: var(--warn-bg); }
+.alert.booking { background: var(--surface); border: 1.5px dashed var(--line); }
+.alert .ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; font-weight: 800; color: #fff; }
+.alert.overdue .ico { background: var(--danger); }
+.alert.soon .ico { background: var(--warn); }
+.alert.booking .ico { background: var(--head); color: var(--brand); }
+.alert b { display: block; }
+.alert .act { font-size: 13px; font-weight: 700; padding: 8px 12px; border-radius: 10px; background: var(--surface); white-space: nowrap; }
+
+/* сводка */
+.stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.stat { background: var(--surface); border-radius: 14px; padding: 12px 14px; }
+.stat span { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.stat b { display: block; font: 800 24px/1.1 var(--f-display); margin-top: 4px; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.stat.red b { color: var(--danger); }
+.stat.yel b { color: var(--warn); }
+
+.bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.seg { display: flex; background: var(--surface); border-radius: 12px; padding: 3px; gap: 2px; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+.seg button { padding: 7px 12px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.seg button[aria-pressed="true"] { background: var(--head); color: var(--head-fg); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 42px; padding: 0 16px; border-radius: 12px; font-weight: 600; font-size: 14px; background: var(--surface); border: 1.5px solid var(--line); white-space: nowrap; }
+.btn.primary { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+.btn.dark { background: var(--head); color: var(--head-fg); border-color: var(--head); }
+.btn.danger { color: var(--danger); }
+.btn.sm { height: 34px; padding: 0 12px; font-size: 13px; border-radius: 10px; }
+.btn:disabled { opacity: .5; cursor: default; }
+.list { display: grid; gap: 10px; }
+.grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+
+/* карточка аренды */
+.rent { background: var(--surface); border-radius: 18px; padding: 14px; display: grid; gap: 12px; border-left: 5px solid var(--ok); }
+.rent.soon { border-left-color: var(--warn); }
+.rent.overdue { border-left-color: var(--danger); }
+.rent.closed { border-left-color: var(--line); opacity: .85; }
+.r-head { display: flex; gap: 12px; align-items: center; }
+.r-head .pic { flex: 0 0 82px; }
+.r-head .pic svg, .r-head .pic img { width: 82px; height: auto; display: block; }
+.r-title b { font: 800 15px/1.15 var(--f-display); text-transform: uppercase; font-style: italic; letter-spacing: -.02em; display: block; }
+.r-title span { font-size: 12px; color: var(--muted); }
+.pill { margin-left: auto; align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 4px 9px; border-radius: 8px; white-space: nowrap; }
+.pill.ok { background: var(--ok-bg); color: var(--ok); }
+.pill.soon { background: var(--warn-bg); color: var(--warn); }
+.pill.overdue { background: var(--danger-bg); color: var(--danger); }
+.pill.off { background: var(--surface-2); color: var(--muted); }
+.pill.new { background: var(--brand); color: var(--brand-ink); }
+.timeline { display: grid; gap: 6px; }
+.timeline .tl-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); gap: 8px; }
+.timeline .tl-left { font-size: 14px; font-weight: 700; color: var(--fg); }
+.track { height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
+.track i { display: block; height: 100%; background: var(--ok); border-radius: 3px; }
+.rent.soon .track i { background: var(--warn); }
+.rent.overdue .track i { background: var(--danger); }
+.kv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; margin: 0; font-size: 13px; }
+.kv div { min-width: 0; }
+.kv dt { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.kv dd { margin: 2px 0 0; font-weight: 600; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* карточка байка */
+.bk { background: var(--surface); border-radius: 18px; padding: 12px; display: grid; grid-template-columns: 110px 1fr; gap: 12px; align-items: start; }
+.bk.hidden-bike { opacity: .7; }
+.bk .pic { aspect-ratio: 400/240; display: grid; place-items: center; background: var(--surface-2); border-radius: 12px; overflow: hidden; }
+.bk .pic svg, .bk .pic img { width: 100%; height: auto; display: block; }
+.bk .info { min-width: 0; display: grid; gap: 6px; }
+.bk .t { display: flex; gap: 8px; align-items: flex-start; }
+.bk .t b { font: 800 14px/1.15 var(--f-display); text-transform: uppercase; font-style: italic; letter-spacing: -.02em; }
+.bk .meta { font-size: 12px; color: var(--muted); }
+.bk .actions { grid-column: 1 / -1; }
+.switch { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.switch input { appearance: none; width: 38px; height: 22px; border-radius: 11px; background: var(--line); position: relative; transition: background .2s; margin: 0; cursor: pointer; flex: 0 0 38px; }
+.switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s var(--ease); }
+.switch input:checked { background: var(--ok); }
+.switch input:checked::after { transform: translateX(16px); }
+
+/* заявки */
+.bkg { background: var(--surface); border-radius: 16px; padding: 14px; display: grid; gap: 10px; }
+.bkg .t { display: flex; gap: 8px; align-items: center; }
+.bkg .t b { font-size: 15px; }
+.bkg.new { box-shadow: inset 0 0 0 2px var(--brand); }
+
+.empty { text-align: center; padding: 28px 16px; background: var(--surface); border-radius: 16px; color: var(--muted); }
+.panel { background: var(--surface); border-radius: 18px; padding: 16px; display: grid; gap: 12px; }
+.panel h3 { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.panel p { margin: 0; font-size: 14px; line-height: 1.5; }
+details.closed-list summary { cursor: pointer; font-weight: 600; padding: 8px 0; color: var(--muted); }
+
+/* формы */
+.field { display: grid; gap: 5px; min-width: 0; }
+.field label, .field .lbl { font-size: 12px; font-weight: 600; color: var(--muted); }
+.field input, .field select, .field textarea { width: 100%; border: 1.5px solid var(--line); background: var(--surface-2); border-radius: 11px; padding: 10px 12px; font-size: 15px; min-width: 0; }
+.field textarea { min-height: 70px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--brand); outline: none; }
+.field .hint { font-size: 11px; color: var(--muted); }
+.field input[type=color] { padding: 3px; height: 42px; }
+.row2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.row3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { padding: 6px 11px; border-radius: 999px; font-size: 13px; font-weight: 600; background: var(--surface-2); border: 1.5px solid var(--line); }
+.chip[aria-pressed="true"] { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 18%, var(--surface)); }
+.photo-drop { position: relative; display: grid; place-items: center; aspect-ratio: 400/240; max-height: 220px; border: 2px dashed var(--line); border-radius: 14px; background: var(--surface-2); cursor: pointer; overflow: hidden; text-align: center; color: var(--muted); font-size: 13px; padding: 10px; }
+.photo-drop img, .photo-drop svg { width: 100%; height: 100%; object-fit: contain; display: block; }
+.photo-drop.over { border-color: var(--brand); }
+.photo-drop .up { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.45); color: #fff; font-weight: 600; }
+.sumline { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 10px; border-top: 1px dashed var(--line); font-size: 14px; }
+.sumline b { font: 800 20px var(--f-display); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.err-msg { color: var(--danger); font-size: 13px; font-weight: 600; }
+
+/* модалка */
+.modal { position: fixed; inset: 0; z-index: 30; display: flex; align-items: flex-end; justify-content: center; }
+.modal-bg { position: absolute; inset: 0; background: rgba(8,9,12,.55); }
+.modal-panel { position: relative; width: 100%; max-width: 640px; max-height: 94%; overflow-y: auto; overscroll-behavior: contain; background: var(--bg); border-radius: 22px 22px 0 0; animation: up .4s var(--ease) both; }
+@keyframes up { from { transform: translateY(100%); } }
+.m-head { position: sticky; top: 0; z-index: 2; background: var(--bg); display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; gap: 10px; }
+.m-head h2 { font-size: 16px; }
+.m-body { padding: 0 16px 16px; display: grid; gap: 12px; }
+.m-foot { position: sticky; bottom: 0; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); display: flex; gap: 8px; border-top: 1px solid var(--line); }
+.m-foot .btn { flex: 1; height: 48px; }
+.xbtn { width: 34px; height: 34px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; }
+.xbtn svg { width: 16px; height: 16px; }
+
+/* вход */
+.login { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
+.login-box { width: min(100%, 380px); background: var(--surface); border-radius: 22px; padding: 24px; display: grid; gap: 14px; }
+.login-box .logo { color: var(--fg); font-size: 22px; }
+
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 12px); z-index: 50; width: min(92vw, 440px);
+  background: var(--head); color: var(--head-fg); border-radius: 14px; padding: 12px 14px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s var(--ease); }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.bad { background: var(--danger); color: #fff; }
+.wheel { transform-box: fill-box; transform-origin: center; }
+
+@media (min-width: 640px) {
+  .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kv { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (min-width: 980px) {
+  .grid.rentals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid.bikes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .modal { align-items: center; }
+  .modal-panel { border-radius: 22px; max-height: 90%; }
+}
+@media (prefers-reduced-motion: reduce) { .modal-panel { animation: none; } .spin svg { animation: none; } }
+</style>
+</head>
+<body>
+
+<!-- ===== Вход ===== -->
+<section class="login" id="loginView" hidden>
+  <form class="login-box" id="loginForm">
+    <div class="logo">ВЕТЕР<span>.</span><small>Админка проката</small></div>
+    <div class="field"><label for="tokenIn">Ключ доступа</label><input id="tokenIn" autocomplete="current-password" type="password" placeholder="32 символа" required></div>
+    <div class="err-msg" id="loginErr" hidden>Ключ не подошёл. Проверьте и введите ещё раз.</div>
+    <button class="btn primary" type="submit">Войти</button>
+    <p class="muted" style="margin:0;font-size:12px">Ключ хранится только в этом браузере. Ссылку с ключом можно сохранить в закладки.</p>
+  </form>
+</section>
+
+<!-- ===== Приложение ===== -->
+<div id="appView" hidden>
+  <header class="top">
+    <div class="wrap top-in">
+      <div class="logo">ВЕТЕР<span>.</span><small>Админка проката</small></div>
+      <div class="top-actions">
+        <button class="ibtn" id="notifBtn" title="Уведомления в браузере" aria-label="Уведомления"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 004 0"/></svg><span class="dot" id="alertDot" hidden>0</span></button>
+        <button class="ibtn" id="refreshBtn" aria-label="Обновить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 11-2.3-5.7L20 8"/><path d="M20 3v5h-5"/></svg></button>
+        <button class="ibtn" id="logoutBtn">Выйти</button>
+      </div>
+    </div>
+    <nav class="wrap tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="rentals" aria-selected="true">Аренды <span class="cnt" id="cntRentals">0</span></button>
+      <button class="tab" role="tab" data-tab="bikes" aria-selected="false">Байки <span class="cnt" id="cntBikes">0</span></button>
+      <button class="tab" role="tab" data-tab="bookings" aria-selected="false">Заявки <span class="cnt" id="cntBookings">0</span></button>
+      <button class="tab" role="tab" data-tab="settings" aria-selected="false">Настройки</button>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="alerts" id="alerts"></div>
+    <div class="stats" id="stats"></div>
+
+    <section id="tab-rentals" class="list">
+      <div class="bar"><h2>Сейчас в аренде</h2><button class="btn primary" id="newRentalBtn">+ Новая аренда</button></div>
+      <div class="grid rentals" id="rentalList"></div>
+      <details class="closed-list"><summary id="closedSummary">Завершённые за 30 дней</summary><div class="grid rentals" id="closedList"></div></details>
+    </section>
+
+    <section id="tab-bikes" class="list" hidden>
+      <div class="bar">
+        <div class="seg" id="bikeFilter">
+          <button data-v="all" aria-pressed="true">Все</button>
+          <button data-v="free" aria-pressed="false">Свободные</button>
+          <button data-v="rented" aria-pressed="false">В аренде</button>
+          <button data-v="hidden" aria-pressed="false">Скрытые</button>
+        </div>
+        <button class="btn primary" id="newBikeBtn">+ Добавить байк</button>
+      </div>
+      <div class="grid bikes" id="bikeList"></div>
+    </section>
+
+    <section id="tab-bookings" class="list" hidden>
+      <div class="bar">
+        <div class="seg" id="bookingFilter">
+          <button data-v="open" aria-pressed="true">Новые и подтверждённые</button>
+          <button data-v="all" aria-pressed="false">Все</button>
+        </div>
+      </div>
+      <div class="grid" id="bookingList"></div>
+    </section>
+
+    <section id="tab-settings" class="list" hidden>
+      <form class="panel" id="settingsForm">
+        <h3>Уведомления в Telegram</h3>
+        <p class="muted">Бот присылает сообщения о новых заявках, о скором конце аренды и о просрочке. Проверка идёт каждые 10 минут.</p>
+        <div class="field"><label for="sChats">Telegram ID получателей, через запятую</label><input id="sChats" inputmode="numeric" placeholder="7829104920, 123456789">
+          <span class="hint">Чтобы узнать свой ID, отправьте боту проката команду /id. Получатель должен один раз нажать «Старт» в боте.</span></div>
+        <div class="field"><label for="sHours">Предупреждать за, часов до конца аренды</label><input id="sHours" type="number" min="1" max="48"></div>
+        <div class="actions"><button class="btn primary" type="submit">Сохранить</button><button class="btn" type="button" id="testTgBtn">Отправить тестовое сообщение</button></div>
+      </form>
+      <div class="panel">
+        <h3>Уведомления в браузере</h3>
+        <p class="muted" id="notifState">Админка сама обновляется раз в минуту и показывает новые события всплывающим окном.</p>
+        <div class="actions"><button class="btn" id="notifBtn2">Разрешить уведомления</button></div>
+      </div>
+      <div class="panel">
+        <h3>Ссылки</h3>
+        <p>Мини-апп для клиентов: <b>https://app.scanbusiness.info/bikes/</b></p>
+        <p>Админка: <b>https://app.scanbusiness.info/bikes/admin/</b></p>
+        <p class="muted">Арендованные и скрытые байки автоматически убираются из каталога мини-аппа. Когда аренда завершается, байк возвращается в каталог.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- модалка -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-bg" id="modalBg"></div>
+  <form class="modal-panel" id="modalForm" novalidate>
+    <div class="m-head"><h2 id="mTitle"></h2><button type="button" class="xbtn" id="mClose" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="m-body" id="mBody"></div>
+    <div class="m-foot" id="mFoot"></div>
+  </form>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const SB_URL = 'https://roqmejclibyyjlnxshzu.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvcW1lamNsaWJ5eWpsbnhzaHp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMzQ5OTcsImV4cCI6MjEwMTcxMDk5N30.Y4FhKvSa8b515buVumv3UTzX6mLti1aEmbrL38Jnvuc';
+const TZ = 'Asia/Ho_Chi_Minh';
+
+function alloyWheel(cx, cy, r, rim, disc) {
+  let spokes = '';
+  for (let i = 0; i < 5; i++) {
+    const a = (i * 72 - 90) * Math.PI / 180;
+    spokes += `<line x1="${cx}" y1="${cy}" x2="${(cx + Math.cos(a) * (r - 12)).toFixed(1)}" y2="${(cy + Math.sin(a) * (r - 12)).toFixed(1)}" stroke="#B9BEC7" stroke-width="5" stroke-linecap="round"/>`;
+  }
+  return `<g class="wheel"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#141519"/><circle cx="${cx}" cy="${cy}" r="${r - 5}" fill="none" stroke="#2C2F36" stroke-width="2"/>
+    <circle cx="${cx}" cy="${cy}" r="${r - 10}" fill="${rim}"/>${disc ? `<circle cx="${cx}" cy="${cy}" r="${r - 20}" fill="none" stroke="#8F959E" stroke-width="3" stroke-dasharray="3 3"/>` : ''}
+    ${spokes}<circle cx="${cx}" cy="${cy}" r="8" fill="#D7DBE0"/><circle cx="${cx}" cy="${cy}" r="3" fill="#222"/><circle cx="${cx}" cy="${cy - r + 7}" r="2" fill="#5A5E66"/></g>`;
+}
+function spokeWheel(cx, cy, r, rim) {
+  let spokes = '';
+  for (let i = 0; i < 18; i++) {
+    const a = i * 20 * Math.PI / 180;
+    spokes += `<line x1="${cx}" y1="${cy}" x2="${(cx + Math.cos(a) * (r - 9)).toFixed(1)}" y2="${(cy + Math.sin(a) * (r - 9)).toFixed(1)}" stroke="#A9AEB6" stroke-width="1.2"/>`;
+  }
+  return `<g class="wheel"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#141519"/><circle cx="${cx}" cy="${cy}" r="${r - 7}" fill="none" stroke="${rim}" stroke-width="4"/>
+    ${spokes}<circle cx="${cx}" cy="${cy}" r="9" fill="#C9CDD3"/><circle cx="${cx}" cy="${cy}" r="3" fill="#222"/></g>`;
+}
+function bikeSVG(b) {
+  const B = b.body, S = b.stripe, R = b.rim;
+  let art = '';
+  if (b.svgType === 'scooter') {
+    art = `
+      <path d="M100,190 L178,176 L204,150 L150,140 Z" fill="#2A2C31"/>
+      ${alloyWheel(100, 190, 40, R, false)}${alloyWheel(308, 192, 36, R, true)}
+      <line x1="292" y1="82" x2="308" y2="192" stroke="#7D828B" stroke-width="9" stroke-linecap="round"/>
+      <rect x="34" y="154" width="86" height="15" rx="7.5" fill="#A3A9B2"/><rect x="34" y="154" width="22" height="15" rx="7.5" fill="#5C6068"/>
+      <path d="M30,140 C34,112 70,100 120,98 L215,102 C232,104 236,118 228,132 L205,160 L160,158 C150,140 128,128 104,128 C78,128 60,138 52,152 L36,154 C30,152 29,146 30,140 Z" fill="${B}"/>
+      <path d="M44,124 C80,110 150,106 220,112" stroke="${S}" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M40,138 C70,126 110,118 150,122" stroke="#fff" stroke-opacity=".16" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M27,126 L46,120 L48,133 L29,139 Z" fill="#E23A3A"/>
+      <path d="M58,98 C70,80 130,76 214,86 C224,88 224,100 214,102 L70,104 C58,104 53,102 58,98 Z" fill="#17181C"/>
+      <path d="M160,158 L250,160 L262,146 L205,148 Z" fill="#2E3036"/>
+      <path d="M246,160 C258,128 262,98 268,66 L298,58 C310,86 312,124 300,152 L262,162 Z" fill="${B}"/>
+      <path d="M262,150 C268,120 272,96 276,72" stroke="${S}" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M280,168 C290,146 330,146 342,170 L334,172 C324,156 296,156 288,172 Z" fill="${B}"/>
+      <path d="M296,62 L320,72 L313,92 L298,86 Z" fill="#EEF2F6" stroke="#2A2C31" stroke-width="2"/>
+      <line x1="284" y1="52" x2="276" y2="28" stroke="#333" stroke-width="3"/><ellipse cx="274" cy="23" rx="10" ry="6" fill="#1E2024"/>
+      <path d="M260,60 L302,46" stroke="#1C1D21" stroke-width="7" stroke-linecap="round"/>`;
+  } else if (b.svgType === 'underbone') {
+    art = `
+      <line x1="100" y1="190" x2="190" y2="176" stroke="#2B2D33" stroke-width="5"/>
+      ${spokeWheel(100, 190, 38, R)}${spokeWheel(305, 190, 38, R)}
+      <line x1="290" y1="78" x2="305" y2="190" stroke="#8A8F98" stroke-width="7" stroke-linecap="round"/>
+      <path d="M118,146 L292,72" stroke="#2A2C31" stroke-width="11" stroke-linecap="round"/>
+      <path d="M150,150 L204,140 L226,160 L212,186 L166,188 Z" fill="#7A7F88"/>
+      <path d="M170,152 L208,146 M168,162 L214,156 M170,172 L212,168" stroke="#5B6068" stroke-width="3"/>
+      <rect x="40" y="158" width="92" height="13" rx="6.5" fill="#A3A9B2" transform="rotate(-6 86 164)"/>
+      <path d="M36,128 C44,110 80,104 130,104 L184,108 C192,118 184,130 170,134 L122,142 C100,134 72,134 58,144 L40,144 C34,140 34,134 36,128 Z" fill="${B}"/>
+      <path d="M50,124 C80,114 130,110 178,114" stroke="${S}" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M32,120 L46,116 L47,127 L33,131 Z" fill="#E23A3A"/>
+      <path d="M60,102 C72,90 140,88 200,94 C207,96 205,104 196,105 L66,107 C58,107 56,105 60,102 Z" fill="#17181C"/>
+      <path d="M232,128 C246,104 262,84 284,68 L302,66 C306,86 300,108 284,122 L246,134 Z" fill="${B}"/>
+      <path d="M240,126 C252,108 266,92 284,80" stroke="${S}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M282,170 C290,150 322,150 330,170 L324,172 C318,158 296,158 290,172 Z" fill="#2A2C31"/>
+      <circle cx="306" cy="74" r="10" fill="#EEF2F6" stroke="#2A2C31" stroke-width="2"/>
+      <line x1="286" y1="58" x2="280" y2="34" stroke="#333" stroke-width="3"/><ellipse cx="278" cy="29" rx="9" ry="5.5" fill="#1E2024"/>
+      <path d="M266,62 L304,52" stroke="#1C1D21" stroke-width="6" stroke-linecap="round"/>`;
+  } else {
+    art = `
+      <line x1="100" y1="190" x2="190" y2="170" stroke="#4A4E57" stroke-width="11" stroke-linecap="round"/>
+      ${alloyWheel(100, 190, 38, R, false)}${alloyWheel(308, 190, 38, R, true)}
+      <line x1="292" y1="90" x2="308" y2="190" stroke="#C9A227" stroke-width="9" stroke-linecap="round"/>
+      <path d="M150,140 L216,130 L240,160 L222,188 L166,188 L146,160 Z" fill="#3B3E46"/>
+      <path d="M162,150 L218,142 M160,162 L226,156 M164,174 L224,170" stroke="#2A2C31" stroke-width="3"/>
+      <path d="M196,178 L230,190 L120,196" stroke="#8E949D" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M30,94 L66,100 L120,100 L176,106 L170,128 L110,130 L60,118 Z" fill="${B}"/>
+      <path d="M26,92 L40,90 L42,100 L28,101 Z" fill="#E23A3A"/>
+      <path d="M70,98 L172,100 L176,110 L76,110 Z" fill="#17181C"/>
+      <path d="M174,106 C188,82 240,76 268,90 L262,124 L200,130 Z" fill="${B}"/>
+      <path d="M186,104 C204,90 236,88 258,96" stroke="#fff" stroke-opacity=".22" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M150,138 L230,128 L226,138 L152,148 Z" fill="${S}"/>
+      <path d="M262,92 L302,72 L320,96 L294,122 L258,124 Z" fill="${B}"/>
+      <path d="M302,80 L318,96 L306,102 L296,88 Z" fill="#EEF2F6"/>
+      <path d="M284,170 C292,150 324,150 334,170 L326,172 C318,160 298,160 290,172 Z" fill="${B}"/>
+      <path d="M262,72 L296,64" stroke="#1C1D21" stroke-width="6" stroke-linecap="round"/>`;
+  }
+  return `<svg viewBox="0 0 400 240" role="img" aria-label="${b.brand} ${b.model}"><g transform="matrix(-1 0 0 1 400 0)">${art}</g></svg>`;
+}
+
+
+/* ====== утилиты ====== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const fmt = n => n == null || n === '' ? '—' : Math.round(n).toLocaleString('ru-RU').replace(/ /g, ' ');
+const money = n => n ? fmt(n) + ' ₫' : '—';
+const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c; };
+const dt = iso => new Date(iso).toLocaleString('ru-RU', { timeZone: TZ, day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+const toInput = d => { const p = new Intl.DateTimeFormat('sv-SE', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).format(d); return p.replace(' ', 'T'); };
+const fromInput = v => v ? new Date(v + ':00+07:00').toISOString() : null;
+const left = ms => { const neg = ms < 0; ms = Math.abs(ms); const d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+  const s = d ? `${d} д ${h} ч` : h ? `${h} ч ${m} мин` : `${m} мин`; return neg ? 'просрочено на ' + s : 'осталось ' + s; };
+const DEPOSIT = { passport: 'Паспорт', cash: 'Деньги', passport_cash: 'Паспорт + деньги', none: 'Без залога' };
+const ERR = { forbidden: 'Нет доступа — войдите заново', bike_is_rented: 'Этот байк уже в аренде', bad_dates: 'Конец аренды должен быть позже начала',
+  renter_required: 'Укажите имя арендатора', brand_model_price_required: 'Заполните марку, модель и цену за день' };
+const bikeArt = b => b.image_url ? `<img src="${esc(b.image_url)}" alt="" loading="lazy">` : bikeSVG({ svgType: b.svg_type, body: b.body, stripe: b.stripe, rim: b.rim, brand: b.brand, model: b.model });
+let toastT;
+function toast(msg, bad) { const t = $('toast'); t.textContent = msg; t.className = 'toast show' + (bad ? ' bad' : ''); clearTimeout(toastT); toastT = setTimeout(() => t.className = 'toast', 3500); }
+const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} } };
+
+let TOKEN = null;
+async function rpc(name, params = {}) {
+  const r = await fetch(`${SB_URL}/rest/v1/rpc/${name}`, { method: 'POST', headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
+  const text = await r.text(); let data = null; try { data = text ? JSON.parse(text) : null; } catch (e) {}
+  if (!r.ok) { const code = data?.message || 'error'; if (code === 'forbidden') logout(true); throw new Error(ERR[code] || code); }
+  return data;
+}
+
+/* ====== состояние ====== */
+let S = { bikes: [], rentals: [], bookings: [], settings: {} };
+let tab = 'rentals', bikeF = 'all', bookF = 'open', seenAlerts = null;
+const activeRental = id => S.rentals.find(r => r.bike_id === id && r.status === 'active');
+const bikeById = id => S.bikes.find(b => b.id === id);
+const remindMs = () => (S.settings.remind_hours || 3) * 36e5;
+function rentState(r) { if (r.status !== 'active') return 'closed'; const ms = new Date(r.end_at) - Date.now(); return ms < 0 ? 'overdue' : ms < remindMs() ? 'soon' : 'ok'; }
+
+async function load(silent) {
+  const b = $('refreshBtn'); b.classList.add('spin');
+  try {
+    S = await rpc('bike_admin_state', { p_token: TOKEN });
+    render(); checkNew(); if (!silent) {}
+  } catch (e) { if (!silent) toast(e.message, true); }
+  finally { b.classList.remove('spin'); }
+}
+
+/* ====== рендер ====== */
+function render() {
+  const act = S.rentals.filter(r => r.status === 'active');
+  const visibleBikes = S.bikes.filter(b => !b.archived);
+  const newBookings = S.bookings.filter(k => k.status === 'new');
+  $('cntRentals').textContent = act.length; $('cntBikes').textContent = visibleBikes.length; $('cntBookings').textContent = newBookings.length;
+  renderAlerts(act, newBookings); renderStats(act, visibleBikes);
+  renderRentals(); renderBikes(); renderBookings(); renderSettings();
+}
+function renderAlerts(act, newB) {
+  const items = [];
+  act.forEach(r => { const st = rentState(r), b = bikeById(r.bike_id); if (st === 'overdue' || st === 'soon') items.push({ st, r, b }); });
+  items.sort((a, b) => new Date(a.r.end_at) - new Date(b.r.end_at));
+  let html = items.map(({ st, r, b }) => `<div class="alert ${st}"><div class="ico">${st === 'overdue' ? '!' : '⏱'}</div>
+    <div><b>${st === 'overdue' ? 'Просрочен возврат' : 'Скоро конец аренды'} · ${esc(b?.brand)} ${esc(b?.model)}</b><span class="muted">${esc(r.renter_name)} · ${left(new Date(r.end_at) - Date.now())} · до ${dt(r.end_at)}</span></div>
+    <button class="act" data-act="close" data-id="${r.id}">Принять байк</button></div>`).join('');
+  if (newB.length) html += `<div class="alert booking"><div class="ico">${newB.length}</div><div><b>${newB.length} ${plural(newB.length, 'новая заявка', 'новые заявки', 'новых заявок')} из мини-аппа</b><span class="muted">${esc(newB[0].name)} · ${esc(bikeById(newB[0].bike_id)?.model || '')}</span></div><button class="act" data-goto="bookings">Открыть</button></div>`;
+  $('alerts').innerHTML = html;
+  const n = items.length + newB.length;
+  $('alertDot').hidden = !n; $('alertDot').textContent = n;
+  document.title = (n ? `(${n}) ` : '') + 'Ветер · админка';
+}
+function renderStats(act, bikes) {
+  const rented = new Set(act.map(r => r.bike_id));
+  const free = bikes.filter(b => b.active && !rented.has(b.id)).length;
+  const today = act.filter(r => new Date(r.end_at).toLocaleDateString('ru-RU', { timeZone: TZ }) === new Date().toLocaleDateString('ru-RU', { timeZone: TZ })).length;
+  const over = act.filter(r => rentState(r) === 'overdue').length;
+  const deposits = act.reduce((s, r) => s + (r.deposit_amount || 0), 0);
+  $('stats').innerHTML = `
+    <div class="stat"><span>В аренде</span><b>${act.length}</b></div>
+    <div class="stat"><span>Свободно в каталоге</span><b>${free}</b></div>
+    <div class="stat ${today ? 'yel' : ''}"><span>Возврат сегодня</span><b>${today}</b></div>
+    <div class="stat ${over ? 'red' : ''}"><span>Просрочено</span><b>${over}</b></div>` +
+    (deposits ? `<div class="stat" style="grid-column:1/-1"><span>Залогов на руках</span><b>${fmt(deposits)} ₫</b></div>` : '');
+}
+function rentalCard(r) {
+  const b = bikeById(r.bike_id) || {}, st = rentState(r);
+  const start = new Date(r.start_at), end = new Date(r.end_at);
+  const pct = Math.max(0, Math.min(100, (Date.now() - start) / (end - start) * 100));
+  const pill = { ok: ['ok', 'Идёт'], soon: ['soon', 'Скоро конец'], overdue: ['overdue', 'Просрочка'], closed: ['off', 'Завершена'] }[st];
+  const km = r.mileage_end != null && r.mileage_start != null ? r.mileage_end - r.mileage_start : null;
+  return `<article class="rent ${st}">
+    <div class="r-head"><div class="pic">${bikeArt(b)}</div>
+      <div class="r-title"><b>${esc(b.brand)} ${esc(b.model)}</b><span>${esc(b.plate || 'без номера')}</span></div>
+      <span class="pill ${pill[0]}">${pill[1]}</span></div>
+    ${st !== 'closed' ? `<div class="timeline"><div class="tl-row"><span class="tl-left">${left(end - Date.now())}</span><span>до ${dt(r.end_at)}</span></div><div class="track"><i style="width:${pct}%"></i></div>
+      <div class="tl-row"><span>с ${dt(r.start_at)}</span><span>${Math.max(1, Math.round((end - start) / 864e5))} ${plural(Math.max(1, Math.round((end - start) / 864e5)), 'день', 'дня', 'дней')}</span></div></div>` :
+      `<div class="tl-row muted" style="font-size:12px">${dt(r.start_at)} → ${dt(r.closed_at)}</div>`}
+    <dl class="kv">
+      <div><dt>Арендатор</dt><dd>${esc(r.renter_name)}</dd></div>
+      <div><dt>Контакт</dt><dd>${esc(r.renter_contact || '—')}</dd></div>
+      <div><dt>Отель</dt><dd>${esc(r.renter_hotel || '—')}</dd></div>
+      <div><dt>Залог</dt><dd>${DEPOSIT[r.deposit_type] || '—'}${r.deposit_amount ? ' · ' + fmt(r.deposit_amount) + ' ₫' : ''}${st === 'closed' ? (r.deposit_returned ? ' · возвращён' : ' · не возвращён') : ''}</dd></div>
+      <div><dt>Пробег на выдаче</dt><dd>${r.mileage_start != null ? fmt(r.mileage_start) + ' км' : '—'}</dd></div>
+      ${st === 'closed' ? `<div><dt>Пробег при сдаче</dt><dd>${r.mileage_end != null ? fmt(r.mileage_end) + ' км' + (km != null ? ` (+${fmt(km)})` : '') : '—'}</dd></div>` : ''}
+      <div><dt>Сумма</dt><dd>${money(r.price_total)}${r.paid ? ' · оплачено' : ' · <span style="color:var(--danger)">не оплачено</span>'}</dd></div>
+      ${r.renter_note ? `<div style="grid-column:1/-1"><dt>Заметка</dt><dd style="font-weight:500">${esc(r.renter_note)}</dd></div>` : ''}
+    </dl>
+    ${st !== 'closed' ? `<div class="actions">
+      <button class="btn sm" data-act="extend1" data-id="${r.id}">+1 день</button>
+      <button class="btn sm" data-act="edit-rental" data-id="${r.id}">Изменить / продлить</button>
+      <button class="btn sm dark" data-act="close" data-id="${r.id}">Принять байк</button></div>` : ''}
+  </article>`;
+}
+function renderRentals() {
+  const act = S.rentals.filter(r => r.status === 'active').sort((a, b) => new Date(a.end_at) - new Date(b.end_at));
+  const closed = S.rentals.filter(r => r.status === 'closed').sort((a, b) => new Date(b.closed_at) - new Date(a.closed_at));
+  $('rentalList').innerHTML = act.length ? act.map(rentalCard).join('') : `<div class="empty">Сейчас все байки свободны. Нажмите «Новая аренда», когда выдаёте байк.</div>`;
+  $('closedSummary').textContent = `Завершённые за 30 дней · ${closed.length}`;
+  $('closedList').innerHTML = closed.map(rentalCard).join('') || '<div class="empty">Пока нет</div>';
+}
+function renderBikes() {
+  let list = S.bikes.filter(b => !b.archived);
+  if (bikeF === 'free') list = list.filter(b => b.active && !activeRental(b.id));
+  if (bikeF === 'rented') list = list.filter(b => activeRental(b.id));
+  if (bikeF === 'hidden') list = list.filter(b => !b.active);
+  $('bikeList').innerHTML = list.length ? list.map(b => {
+    const r = activeRental(b.id);
+    const pill = r ? `<span class="pill ${rentState(r)}">В аренде до ${dt(r.end_at).slice(0, 5)}</span>` : b.active ? '<span class="pill ok">Свободен</span>' : '<span class="pill off">Скрыт</span>';
+    return `<article class="bk${b.active ? '' : ' hidden-bike'}">
+      <div class="pic">${bikeArt(b)}</div>
+      <div class="info">
+        <div class="t"><b>${esc(b.brand)} ${esc(b.model)}</b>${pill}</div>
+        <div class="meta">${esc(b.plate || 'без номера')} · ${fmt(b.odometer)} км · ${b.engine_cc || '—'} см³ · ${esc(b.transmission)}</div>
+        <div class="meta"><b style="color:var(--fg)">${fmt(b.price_day)} ₫</b>/день · ${fmt(b.price_week)} /нед · ${fmt(b.price_month)} /мес</div>
+        <label class="switch"><input type="checkbox" data-act="toggle" data-id="${b.id}" ${b.active ? 'checked' : ''}> В каталоге${b.featured ? ' · в слайдере' : ''}</label>
+      </div>
+      <div class="actions">
+        ${r ? `<button class="btn sm dark" data-act="close" data-id="${r.id}">Принять байк</button>` : `<button class="btn sm primary" data-act="rent" data-bike="${b.id}">Сдать в аренду</button>`}
+        <button class="btn sm" data-act="edit-bike" data-bike="${b.id}">Изменить</button>
+      </div></article>`;
+  }).join('') : '<div class="empty">В этом фильтре байков нет</div>';
+}
+const BK_STATUS = { new: ['new', 'Новая'], confirmed: ['ok', 'Подтверждена'], rejected: ['off', 'Отклонена'], converted: ['off', 'Оформлена'] };
+function renderBookings() {
+  let list = S.bookings; if (bookF === 'open') list = list.filter(k => k.status === 'new' || k.status === 'confirmed');
+  $('bookingList').innerHTML = list.length ? list.map(k => {
+    const b = bikeById(k.bike_id) || {}, st = BK_STATUS[k.status], busy = activeRental(k.bike_id);
+    return `<article class="bkg ${k.status}">
+      <div class="t"><b>${esc(k.no)} · ${esc(b.brand)} ${esc(b.model)}</b><span class="pill ${st[0]}" style="margin-left:auto">${st[1]}</span></div>
+      <dl class="kv">
+        <div><dt>Клиент</dt><dd>${esc(k.name)}</dd></div><div><dt>Контакт</dt><dd>${esc(k.contact)}</dd></div>
+        <div><dt>Даты</dt><dd>${k.date_from ? new Date(k.date_from).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }) : '—'} → ${k.date_to ? new Date(k.date_to).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }) : '—'} · ${esc(k.pickup_time || '')}</dd></div>
+        <div><dt>Куда</dt><dd>${esc(k.address || 'самовывоз')}</dd></div>
+        <div><dt>Сумма</dt><dd>${money(k.total)}</dd></div><div><dt>Оплата</dt><dd>${k.pay === 'transfer' ? 'перевод' : 'наличные'}</dd></div>
+        <div><dt>Получена</dt><dd>${dt(k.created_at)}</dd></div>${k.helmets ? `<div><dt>Доп. шлемы</dt><dd>${k.helmets}</dd></div>` : ''}
+      </dl>
+      ${k.status === 'new' || k.status === 'confirmed' ? `<div class="actions">
+        <button class="btn sm primary" data-act="convert" data-id="${k.id}" ${busy ? 'disabled title="Байк сейчас в аренде"' : ''}>Выдать байк</button>
+        ${k.status === 'new' ? `<button class="btn sm" data-act="bk-status" data-status="confirmed" data-id="${k.id}">Подтвердить</button>` : ''}
+        <button class="btn sm danger" data-act="bk-status" data-status="rejected" data-id="${k.id}">Отклонить</button></div>` : ''}
+      ${busy && (k.status === 'new' || k.status === 'confirmed') ? `<div class="muted" style="font-size:12px">Байк сейчас в аренде до ${dt(busy.end_at)}</div>` : ''}
+    </article>`;
+  }).join('') : '<div class="empty">Заявок нет. Они появятся здесь, когда клиент отправит бронь из мини-аппа.</div>';
+}
+function renderSettings() {
+  if (document.activeElement?.closest('#settingsForm')) return;
+  $('sChats').value = S.settings.tg_admin_chats || ''; $('sHours').value = S.settings.remind_hours || 3;
+  $('notifState').textContent = !('Notification' in window) ? 'Этот браузер не поддерживает системные уведомления. Новые события показываются внутри админки.' :
+    Notification.permission === 'granted' ? 'Уведомления разрешены. При открытой админке они придут о просрочке, скором возврате и новых заявках.' :
+    'Админка сама обновляется раз в минуту. Разрешите уведомления, чтобы видеть события, даже когда вкладка в фоне.';
+}
+
+/* ====== новые события → уведомление ====== */
+function checkNew() {
+  const keys = new Map();
+  S.rentals.filter(r => r.status === 'active').forEach(r => { const st = rentState(r); if (st !== 'ok') { const b = bikeById(r.bike_id); keys.set(r.id + st, `${st === 'overdue' ? 'Просрочка' : 'Скоро возврат'}: ${b?.model} · ${r.renter_name}`); } });
+  S.bookings.filter(k => k.status === 'new').forEach(k => keys.set('b' + k.id, `Новая заявка ${k.no}: ${k.name}`));
+  if (seenAlerts) {
+    const fresh = [...keys].filter(([k]) => !seenAlerts.has(k));
+    if (fresh.length) {
+      toast(fresh.map(x => x[1]).join(' · '));
+      try { navigator.vibrate && navigator.vibrate(120); } catch (e) {}
+      if ('Notification' in window && Notification.permission === 'granted') fresh.slice(0, 3).forEach(([, t]) => { try { new Notification('Ветер · прокат', { body: t, tag: t }); } catch (e) {} });
+    }
+  }
+  seenAlerts = new Set(keys.keys());
+}
+async function askNotif() {
+  if (!('Notification' in window)) return toast('Браузер не поддерживает уведомления');
+  const p = await Notification.requestPermission();
+  toast(p === 'granted' ? 'Уведомления включены' : 'Уведомления не разрешены в браузере', p !== 'granted'); renderSettings();
+}
+
+/* ====== модалка ====== */
+let onSubmit = null;
+function openModal(title, body, foot, submit) {
+  $('mTitle').textContent = title; $('mBody').innerHTML = body; $('mFoot').innerHTML = foot; onSubmit = submit;
+  $('modal').hidden = false; document.body.classList.add('locked'); $('modalForm').scrollTop = 0;
+}
+function closeModal() { $('modal').hidden = true; document.body.classList.remove('locked'); onSubmit = null; }
+$('modalBg').onclick = closeModal; $('mClose').onclick = closeModal;
+$('modalForm').addEventListener('submit', async e => {
+  e.preventDefault(); if (!onSubmit) return;
+  const btn = $('mFoot').querySelector('[type=submit]'); if (btn) btn.disabled = true;
+  try { await onSubmit(); } catch (err) { const m = $('mErr'); if (m) { m.textContent = err.message; m.hidden = false; } else toast(err.message, true); }
+  finally { if (btn) btn.disabled = false; }
+});
+const val = id => $(id) ? $(id).value.trim() : '';
+const numv = id => { const v = val(id).replace(/\s/g, ''); return v === '' ? null : Number(v); };
+
+/* ---------- байк: создать / изменить ---------- */
+let photoUrl = null;
+function bikeForm(b) {
+  b = b || { transmission: 'Автомат', svg_type: 'scooter', accent: '#F5B700', body: '#22252B', rating: 4.8, active: true, featured: false, extras: ['2 шлема'], sort: 100 };
+  photoUrl = b.image_url || null;
+  const opt = (v, cur) => `<option${v === cur ? ' selected' : ''}>${v}</option>`;
+  openModal(b.id ? 'Изменить байк' : 'Новый байк', `
+    <div class="field"><span class="lbl">Фото (PNG без фона, вид сбоку)</span>
+      <label class="photo-drop" id="drop" for="fPhoto">${photoUrl ? `<img src="${esc(photoUrl)}" alt="">` : '<span>Нажмите или перетащите фото сюда<br><small>Можно JPG/PNG до 10 МБ — сожмём автоматически</small></span>'}</label>
+      <input type="file" id="fPhoto" accept="image/*" hidden>
+      <div class="actions"><label class="switch"><input type="checkbox" id="fFlip"> Отзеркалить (байк должен смотреть влево)</label>
+        ${photoUrl ? '<button type="button" class="btn sm danger" id="rmPhoto">Убрать фото</button>' : ''}</div>
+      <span class="hint">Без фото в мини-аппе рисуется схематичный байк выбранного типа и цвета.</span></div>
+    <div class="row2"><div class="field"><label for="fBrand">Марка *</label><input id="fBrand" value="${esc(b.brand || '')}" placeholder="Honda" required></div>
+      <div class="field"><label for="fModel">Модель *</label><input id="fModel" value="${esc(b.model || '')}" placeholder="Air Blade 160" required></div></div>
+    <div class="row3"><div class="field"><label for="fPlate">Госномер</label><input id="fPlate" value="${esc(b.plate || '')}" placeholder="79-H1 234.56"></div>
+      <div class="field"><label for="fYear">Год</label><input id="fYear" type="number" value="${b.year || ''}" placeholder="2024"></div>
+      <div class="field"><label for="fOdo">Пробег, км</label><input id="fOdo" type="number" value="${b.odometer ?? ''}" placeholder="8420"></div></div>
+    <div class="row3"><div class="field"><label for="fCc">Объём, см³</label><input id="fCc" type="number" value="${b.engine_cc || ''}"></div>
+      <div class="field"><label for="fTrans">Коробка</label><select id="fTrans">${['Автомат', 'Полуавтомат', 'Механика'].map(v => opt(v, b.transmission)).join('')}</select></div>
+      <div class="field"><label for="fSpeed">Макс., км/ч</label><input id="fSpeed" type="number" value="${b.top_speed || ''}"></div></div>
+    <div class="row3"><div class="field"><label for="fTank">Бак, л</label><input id="fTank" type="number" step="0.1" value="${b.tank || ''}"></div>
+      <div class="field"><label for="fFuel">Расход л/100</label><input id="fFuel" type="number" step="0.1" value="${b.fuel || ''}"></div>
+      <div class="field"><label for="fRating">Рейтинг</label><input id="fRating" type="number" step="0.1" min="1" max="5" value="${b.rating || 4.8}"></div></div>
+    <div class="row3"><div class="field"><label for="fDay">Цена/день *</label><input id="fDay" type="number" step="1000" value="${b.price_day || ''}" required></div>
+      <div class="field"><label for="fWeek">Неделя</label><input id="fWeek" type="number" step="1000" value="${b.price_week || ''}"></div>
+      <div class="field"><label for="fMonth">Месяц</label><input id="fMonth" type="number" step="1000" value="${b.price_month || ''}"></div></div>
+    <div class="field"><span class="hint" id="priceHint">Пусто в «Неделя» и «Месяц» — подставим ×6 и ×18 от дневной цены.</span></div>
+    <div class="field"><label for="fDeposit">Залог (как увидит клиент)</label><input id="fDeposit" value="${esc(b.deposit_text || '')}" placeholder="паспорт или 3 000 000 ₫"></div>
+    <div class="field"><label for="fExtras">В комплекте, через запятую</label><input id="fExtras" value="${esc((b.extras || []).join(', '))}" placeholder="2 шлема, дождевики"></div>
+    <div class="row2"><div class="field"><label for="fTag">Подпись в слайдере</label><input id="fTag" value="${esc(b.tag || '')}" placeholder="Самый популярный"></div>
+      <div class="field"><label for="fBadge">Бейдж в каталоге</label><select id="fBadge">${['', 'Хит', 'Новинка', 'Скидка'].map(v => `<option value="${v}"${v === (b.badge || '') ? ' selected' : ''}>${v || 'нет'}</option>`).join('')}</select></div></div>
+    <div class="row3"><div class="field"><label for="fAccent">Акцент</label><input id="fAccent" type="color" value="${b.accent || '#F5B700'}"></div>
+      <div class="field"><label for="fBody">Цвет корпуса</label><input id="fBody" type="color" value="${b.body || '#22252B'}"></div>
+      <div class="field"><label for="fType">Тип (для схемы)</label><select id="fType">${[['scooter', 'Скутер'], ['underbone', 'Полуавтомат'], ['sport', 'Спорт']].map(([v, l]) => `<option value="${v}"${v === b.svg_type ? ' selected' : ''}>${l}</option>`).join('')}</select></div></div>
+    <div class="row2"><div class="field"><label for="fSort">Порядок в каталоге</label><input id="fSort" type="number" value="${b.sort ?? 100}"><span class="hint">Меньше — выше</span></div>
+      <div class="field" style="align-content:end;gap:10px"><label class="switch"><input type="checkbox" id="fActive" ${b.active ? 'checked' : ''}> Показывать в каталоге</label>
+        <label class="switch"><input type="checkbox" id="fFeat" ${b.featured ? 'checked' : ''}> В верхнем слайдере</label></div></div>
+    <div class="err-msg" id="mErr" hidden></div>`,
+    `${b.id ? '<button type="button" class="btn danger" id="archBtn" style="flex:0 0 auto">В архив</button>' : ''}<button type="submit" class="btn primary">${b.id ? 'Сохранить' : 'Добавить байк'}</button>`,
+    async () => {
+      const day = numv('fDay'); const accent = val('fAccent');
+      const p = { id: b.id || '', brand: val('fBrand'), model: val('fModel'), plate: val('fPlate'), year: numv('fYear'), odometer: numv('fOdo') ?? 0,
+        engine_cc: numv('fCc'), transmission: val('fTrans'), top_speed: numv('fSpeed'), tank: numv('fTank'), fuel: numv('fFuel'), rating: numv('fRating') ?? 4.8,
+        price_day: day, price_week: numv('fWeek') ?? (day ? day * 6 : null), price_month: numv('fMonth') ?? (day ? day * 18 : null),
+        deposit_text: val('fDeposit') || (day ? 'паспорт или ' + fmt(day * 12) + ' ₫' : ''), extras: val('fExtras').split(',').map(s => s.trim()).filter(Boolean),
+        tag: val('fTag'), badge: val('fBadge'), accent, accent_soft: softOf(accent), ink: inkOf(accent), body: val('fBody'), stripe: accent,
+        rim: b.rim || '#2E3138', svg_type: val('fType'), sort: numv('fSort') ?? 100, active: $('fActive').checked, featured: $('fFeat').checked, image_url: photoUrl || '' };
+      await rpc('bike_admin_save_bike', { p_token: TOKEN, p }); closeModal(); toast(b.id ? 'Байк сохранён' : 'Байк добавлен в каталог'); load(true);
+    });
+  const drop = $('drop'), inp = $('fPhoto');
+  ['dragover', 'dragenter'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, () => drop.classList.remove('over')));
+  drop.addEventListener('drop', e => { e.preventDefault(); if (e.dataTransfer.files[0]) uploadPhoto(e.dataTransfer.files[0]); });
+  inp.addEventListener('change', () => inp.files[0] && uploadPhoto(inp.files[0]));
+  if ($('rmPhoto')) $('rmPhoto').onclick = () => { photoUrl = null; drop.innerHTML = '<span>Фото убрано. Нажмите, чтобы загрузить новое</span>'; };
+  if ($('archBtn')) $('archBtn').onclick = async () => {
+    if ($('archBtn').dataset.sure !== '1') { $('archBtn').dataset.sure = '1'; $('archBtn').textContent = 'Точно в архив?'; return; }
+    try { await rpc('bike_admin_archive_bike', { p_token: TOKEN, p_id: b.id }); closeModal(); toast('Байк убран в архив'); load(true); } catch (err) { toast(err.message, true); }
+  };
+  $('fDay').addEventListener('input', () => { const d = numv('fDay'); $('priceHint').textContent = d ? `Подсказка: неделя ≈ ${fmt(d * 6)} ₫, месяц ≈ ${fmt(d * 18)} ₫` : 'Пусто в «Неделя» и «Месяц» — подставим ×6 и ×18 от дневной цены.'; });
+}
+function hexRgb(h) { const n = parseInt(h.replace('#', ''), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+const softOf = h => { const [r, g, b] = hexRgb(h); return `rgba(${r},${g},${b},.22)`; };
+const inkOf = h => { const [r, g, b] = hexRgb(h); return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > .6 ? '#16181D' : '#FFFFFF'; };
+async function uploadPhoto(file) {
+  const drop = $('drop');
+  if (!file.type.startsWith('image/')) return toast('Нужен файл изображения', true);
+  drop.insertAdjacentHTML('beforeend', '<div class="up">Загружаю…</div>');
+  try {
+    const bmp = await createImageBitmap(file);
+    const k = Math.min(1, 1200 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    const ctx = c.getContext('2d');
+    if ($('fFlip').checked) { ctx.translate(c.width, 0); ctx.scale(-1, 1); }
+    ctx.drawImage(bmp, 0, 0, c.width, c.height);
+    let blob = await new Promise(r => c.toBlob(r, 'image/webp', .86));
+    if (!blob || blob.type !== 'image/webp') blob = await new Promise(r => c.toBlob(r, 'image/png'));
+    const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(',')[1]); fr.readAsDataURL(blob); });
+    const res = await fetch(`${SB_URL}/functions/v1/bike-upload`, { method: 'POST', headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: TOKEN, contentType: blob.type, data: b64 }) });
+    const j = await res.json();
+    if (!res.ok || !j.url) throw new Error(j.error === 'forbidden' ? 'Нет доступа' : 'Не удалось загрузить фото');
+    photoUrl = j.url; drop.innerHTML = `<img src="${esc(photoUrl)}" alt="">`; toast('Фото загружено. Не забудьте сохранить байк');
+  } catch (e) { drop.querySelector('.up')?.remove(); toast(e.message || 'Ошибка загрузки', true); }
+}
+
+/* ---------- аренда: выдать ---------- */
+function rateFor(b, days) { return days >= 30 && b.price_month ? b.price_month / 30 : days >= 7 && b.price_week ? b.price_week / 7 : b.price_day; }
+function rentalForm(pre = {}) {
+  const free = S.bikes.filter(b => !b.archived && !activeRental(b.id));
+  if (!free.length) return toast('Свободных байков нет', true);
+  const bikeId = pre.bike_id && free.some(b => b.id === pre.bike_id) ? pre.bike_id : free[0].id;
+  const now = new Date(), start = pre.start ? new Date(pre.start) : now;
+  const end = pre.end ? new Date(pre.end) : new Date(start.getTime() + 3 * 864e5);
+  openModal('Выдача байка', `
+    <div class="field"><label for="rBike">Байк</label><select id="rBike">${free.map(b => `<option value="${b.id}"${b.id === bikeId ? ' selected' : ''}>${esc(b.brand)} ${esc(b.model)} · ${esc(b.plate || 'без номера')} · ${fmt(b.price_day)} ₫</option>`).join('')}</select></div>
+    <div class="row2"><div class="field"><label for="rName">Арендатор *</label><input id="rName" value="${esc(pre.name || '')}" placeholder="Имя и фамилия" required></div>
+      <div class="field"><label for="rContact">Telegram / телефон</label><input id="rContact" value="${esc(pre.contact || '')}" placeholder="@username или +84…"></div></div>
+    <div class="field"><label for="rHotel">Отель, номер</label><input id="rHotel" value="${esc(pre.hotel || '')}" placeholder="Liberty Central, 512"></div>
+    <div class="row2"><div class="field"><label for="rStart">Начало</label><input id="rStart" type="datetime-local" value="${toInput(start)}"></div>
+      <div class="field"><label for="rEnd">Конец аренды</label><input id="rEnd" type="datetime-local" value="${toInput(end)}"></div></div>
+    <div class="chips" id="rQuick">${[1, 3, 7, 14, 30].map(d => `<button type="button" class="chip" data-d="${d}">${d} ${plural(d, 'день', 'дня', 'дней')}</button>`).join('')}</div>
+    <div class="row2"><div class="field"><label for="rDepType">Залог</label><select id="rDepType">${Object.entries(DEPOSIT).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
+      <div class="field"><label for="rDepAmt">Сумма залога, ₫</label><input id="rDepAmt" type="number" step="100000" placeholder="0"></div></div>
+    <div class="row2"><div class="field"><label for="rMileage">Пробег на выдаче, км</label><input id="rMileage" type="number"></div>
+      <div class="field"><label for="rRate">Цена за день, ₫</label><input id="rRate" type="number" step="1000"></div></div>
+    <div class="field"><label for="rNote">Заметка</label><textarea id="rNote" placeholder="Царапина на левом зеркале, 2 шлема">${esc(pre.note || '')}</textarea></div>
+    <label class="switch"><input type="checkbox" id="rPaid"> Оплата получена</label>
+    <div class="sumline"><span id="rDays" class="muted"></span><span>Итого <b id="rTotal">0 ₫</b></span></div>
+    <div class="field"><label for="rTotalIn">Итоговая сумма (можно изменить)</label><input id="rTotalIn" type="number" step="1000"></div>
+    <div class="err-msg" id="mErr" hidden></div>`,
+    `<button type="button" class="btn" id="rCancel" style="flex:0 0 auto">Отмена</button><button type="submit" class="btn primary">Выдать байк</button>`,
+    async () => {
+      if (!val('rName')) throw new Error(ERR.renter_required);
+      const p = { bike_id: val('rBike'), booking_id: pre.booking_id || '', renter_name: val('rName'), renter_contact: val('rContact'), renter_hotel: val('rHotel'),
+        renter_note: val('rNote'), deposit_type: val('rDepType'), deposit_amount: numv('rDepAmt') || 0, mileage_start: numv('rMileage'),
+        start_at: fromInput(val('rStart')), end_at: fromInput(val('rEnd')), rate_day: numv('rRate'), price_total: numv('rTotalIn'), paid: $('rPaid').checked };
+      await rpc('bike_admin_start_rental', { p_token: TOKEN, p }); closeModal(); toast('Байк выдан и убран из каталога'); selectTab('rentals'); load(true);
+    });
+  $('rCancel').onclick = closeModal;
+  let manualTotal = false, manualRate = false;
+  const recalc = () => {
+    const b = bikeById(val('rBike')), s = new Date(fromInput(val('rStart'))), e = new Date(fromInput(val('rEnd')));
+    const days = Math.max(1, Math.ceil((e - s) / 864e5 - 0.01));
+    if (!manualRate) $('rRate').value = Math.round(rateFor(b, days) / 1000) * 1000;
+    const total = Math.round((manualRate ? numv('rRate') || 0 : rateFor(b, days)) * days / 1000) * 1000;
+    $('rDays').textContent = e > s ? `${days} ${plural(days, 'день', 'дня', 'дней')} × ${fmt(numv('rRate'))} ₫` : 'Конец раньше начала';
+    $('rTotal').textContent = fmt(total) + ' ₫'; if (!manualTotal) $('rTotalIn').value = total;
+  };
+  const bikeChanged = () => { const b = bikeById(val('rBike')); $('rMileage').value = b.odometer ?? ''; manualRate = false; recalc(); };
+  $('rBike').onchange = bikeChanged; $('rStart').onchange = recalc; $('rEnd').onchange = recalc;
+  $('rRate').oninput = () => { manualRate = true; recalc(); }; $('rTotalIn').oninput = () => { manualTotal = true; };
+  $('rQuick').onclick = e => { const d = e.target.closest('[data-d]'); if (!d) return; const s = new Date(fromInput(val('rStart'))); $('rEnd').value = toInput(new Date(s.getTime() + d.dataset.d * 864e5)); recalc(); };
+  $('rDepType').onchange = () => { if (val('rDepType') === 'cash' && !numv('rDepAmt')) { const b = bikeById(val('rBike')); $('rDepAmt').value = b.price_day * 12; } };
+  bikeChanged();
+}
+
+/* ---------- аренда: изменить / продлить ---------- */
+function editRentalForm(r) {
+  const b = bikeById(r.bike_id);
+  openModal(`Аренда · ${b.model}`, `
+    <div class="row2"><div class="field"><label for="eName">Арендатор</label><input id="eName" value="${esc(r.renter_name)}"></div>
+      <div class="field"><label for="eContact">Контакт</label><input id="eContact" value="${esc(r.renter_contact || '')}"></div></div>
+    <div class="field"><label for="eHotel">Отель</label><input id="eHotel" value="${esc(r.renter_hotel || '')}"></div>
+    <div class="field"><label for="eEnd">Конец аренды</label><input id="eEnd" type="datetime-local" value="${toInput(new Date(r.end_at))}"></div>
+    <div class="chips" id="eQuick">${[1, 3, 7].map(d => `<button type="button" class="chip" data-d="${d}">+${d} ${plural(d, 'день', 'дня', 'дней')}</button>`).join('')}</div>
+    <div class="row2"><div class="field"><label for="eDepType">Залог</label><select id="eDepType">${Object.entries(DEPOSIT).map(([k, v]) => `<option value="${k}"${k === r.deposit_type ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+      <div class="field"><label for="eDepAmt">Сумма залога, ₫</label><input id="eDepAmt" type="number" value="${r.deposit_amount || ''}"></div></div>
+    <div class="row2"><div class="field"><label for="eMileage">Пробег на выдаче</label><input id="eMileage" type="number" value="${r.mileage_start ?? ''}"></div>
+      <div class="field"><label for="eTotal">Сумма аренды, ₫</label><input id="eTotal" type="number" value="${r.price_total || ''}"></div></div>
+    <div class="field"><label for="eNote">Заметка</label><textarea id="eNote">${esc(r.renter_note || '')}</textarea></div>
+    <label class="switch"><input type="checkbox" id="ePaid" ${r.paid ? 'checked' : ''}> Оплата получена</label>
+    <div class="muted" id="eHint" style="font-size:13px"></div>
+    <div class="err-msg" id="mErr" hidden></div>`,
+    `<button type="submit" class="btn primary">Сохранить</button>`,
+    async () => {
+      const p = { renter_name: val('eName'), renter_contact: val('eContact'), renter_hotel: val('eHotel'), deposit_type: val('eDepType'),
+        deposit_amount: numv('eDepAmt') ?? 0, mileage_start: numv('eMileage'), price_total: numv('eTotal'), renter_note: val('eNote'), paid: $('ePaid').checked };
+      const newEnd = fromInput(val('eEnd')); if (new Date(newEnd).getTime() !== new Date(r.end_at).getTime()) p.end_at = newEnd;
+      await rpc('bike_admin_update_rental', { p_token: TOKEN, p_id: r.id, p }); closeModal(); toast('Аренда обновлена'); load(true);
+    });
+  const base = r.price_total || 0, origEnd = new Date(r.end_at);
+  const hint = () => { const add = Math.round((new Date(fromInput(val('eEnd'))) - origEnd) / 864e5); $('eHint').textContent = add > 0 ? `Продление на ${add} ${plural(add, 'день', 'дня', 'дней')}: +${fmt(add * (r.rate_day || b.price_day))} ₫ к сумме` : ''; };
+  $('eQuick').onclick = e => { const d = e.target.closest('[data-d]'); if (!d) return; const cur = new Date(fromInput(val('eEnd'))); $('eEnd').value = toInput(new Date(cur.getTime() + d.dataset.d * 864e5));
+    const add = Math.round((new Date(fromInput(val('eEnd'))) - origEnd) / 864e5); $('eTotal').value = base + Math.max(0, add) * (r.rate_day || b.price_day); hint(); };
+  $('eEnd').onchange = hint;
+}
+async function extendOne(r) {
+  const b = bikeById(r.bike_id);
+  const end = new Date(new Date(r.end_at).getTime() + 864e5).toISOString();
+  await rpc('bike_admin_update_rental', { p_token: TOKEN, p_id: r.id, p: { end_at: end, price_total: (r.price_total || 0) + (r.rate_day || b.price_day) } });
+  toast(`Продлено до ${dt(end)}`); load(true);
+}
+
+/* ---------- аренда: принять байк ---------- */
+function closeForm(r) {
+  const b = bikeById(r.bike_id), late = Date.now() - new Date(r.end_at);
+  const lateDays = late > 2 * 36e5 ? Math.ceil(late / 864e5) : 0;
+  openModal(`Приём байка · ${b.model}`, `
+    <div class="panel" style="padding:12px 14px"><dl class="kv">
+      <div><dt>Арендатор</dt><dd>${esc(r.renter_name)}</dd></div><div><dt>Залог</dt><dd>${DEPOSIT[r.deposit_type]}${r.deposit_amount ? ' · ' + fmt(r.deposit_amount) + ' ₫' : ''}</dd></div>
+      <div><dt>Пробег на выдаче</dt><dd>${r.mileage_start != null ? fmt(r.mileage_start) + ' км' : '—'}</dd></div><div><dt>Срок</dt><dd>до ${dt(r.end_at)}</dd></div>
+    </dl></div>
+    ${lateDays ? `<div class="alert overdue"><div class="ico">!</div><div><b>Опоздание ${lateDays} ${plural(lateDays, 'день', 'дня', 'дней')}</b><span class="muted">Доплата по тарифу: ${fmt(lateDays * (r.rate_day || b.price_day))} ₫ (уже прибавлена ниже)</span></div><span></span></div>` : ''}
+    <div class="field"><label for="cMileage">Пробег при сдаче, км *</label><input id="cMileage" type="number" min="${r.mileage_start || 0}" placeholder="${r.mileage_start || ''}" required><span class="hint" id="cKm"></span></div>
+    <div class="field"><label for="cTotal">Итоговая сумма аренды, ₫</label><input id="cTotal" type="number" value="${(r.price_total || 0) + lateDays * (r.rate_day || b.price_day)}"></div>
+    <label class="switch"><input type="checkbox" id="cDep" checked> Залог возвращён</label>
+    <label class="switch"><input type="checkbox" id="cPaid" ${r.paid ? 'checked' : ''}> Аренда оплачена</label>
+    <div class="field"><label for="cNote">Состояние, замечания</label><textarea id="cNote" placeholder="Без повреждений"></textarea></div>
+    <div class="err-msg" id="mErr" hidden></div>`,
+    `<button type="submit" class="btn dark">Принять и вернуть в каталог</button>`,
+    async () => {
+      const km = numv('cMileage');
+      if (km == null) throw new Error('Укажите пробег при сдаче');
+      if (r.mileage_start != null && km < r.mileage_start) throw new Error('Пробег при сдаче меньше, чем при выдаче');
+      await rpc('bike_admin_close_rental', { p_token: TOKEN, p_id: r.id, p: { mileage_end: km, price_total: numv('cTotal'), deposit_returned: $('cDep').checked, paid: $('cPaid').checked, note: val('cNote') } });
+      closeModal(); toast(`${b.model} принят и снова в каталоге`); load(true);
+    });
+  $('cMileage').oninput = () => { const v = numv('cMileage'); $('cKm').textContent = v != null && r.mileage_start != null ? `За аренду: ${fmt(v - r.mileage_start)} км` : ''; };
+}
+
+/* ====== события ====== */
+document.addEventListener('click', async e => {
+  const t = e.target.closest('[data-act], [data-goto]'); if (!t) return;
+  if (t.dataset.goto) return selectTab(t.dataset.goto);
+  const a = t.dataset.act, r = S.rentals.find(x => x.id === t.dataset.id);
+  try {
+    if (a === 'close') closeForm(r);
+    if (a === 'extend1') { t.disabled = true; await extendOne(r); }
+    if (a === 'edit-rental') editRentalForm(r);
+    if (a === 'rent') rentalForm({ bike_id: t.dataset.bike });
+    if (a === 'edit-bike') bikeForm(bikeById(t.dataset.bike));
+    if (a === 'bk-status') { await rpc('bike_admin_booking_status', { p_token: TOKEN, p_id: t.dataset.id, p_status: t.dataset.status }); toast(t.dataset.status === 'confirmed' ? 'Заявка подтверждена' : 'Заявка отклонена'); load(true); }
+    if (a === 'convert') {
+      const k = S.bookings.find(x => x.id === t.dataset.id);
+      const [h, m] = (k.pickup_time || '10:00').split(':');
+      rentalForm({ bike_id: k.bike_id, booking_id: k.id, name: k.name, contact: k.contact, hotel: k.address,
+        start: k.date_from ? new Date(`${k.date_from}T${h}:${m}:00+07:00`) : null, end: k.date_to ? new Date(`${k.date_to}T${h}:${m}:00+07:00`) : null,
+        note: [k.no, k.helmets ? `доп. шлемов: ${k.helmets}` : '', k.pay === 'transfer' ? 'оплата переводом' : ''].filter(Boolean).join(' · ') });
+    }
+  } catch (err) { toast(err.message, true); }
+});
+document.addEventListener('change', async e => {
+  const t = e.target; if (t.dataset.act !== 'toggle') return;
+  try { await rpc('bike_admin_set_active', { p_token: TOKEN, p_id: t.dataset.id, p_active: t.checked }); toast(t.checked ? 'Байк снова в каталоге' : 'Байк скрыт из каталога'); load(true); }
+  catch (err) { t.checked = !t.checked; toast(err.message, true); }
+});
+function selectTab(name) {
+  tab = name;
+  document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === name));
+  ['rentals', 'bikes', 'bookings', 'settings'].forEach(n => $('tab-' + n).hidden = n !== name);
+  try { history.replaceState(null, '', '#' + name); } catch (e) {}
+}
+document.querySelector('.tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (b) selectTab(b.dataset.tab); });
+$('bikeFilter').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; bikeF = b.dataset.v; [...$('bikeFilter').children].forEach(x => x.setAttribute('aria-pressed', x === b)); renderBikes(); });
+$('bookingFilter').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; bookF = b.dataset.v; [...$('bookingFilter').children].forEach(x => x.setAttribute('aria-pressed', x === b)); renderBookings(); });
+$('newRentalBtn').onclick = () => rentalForm();
+$('newBikeBtn').onclick = () => bikeForm();
+$('refreshBtn').onclick = () => load();
+$('notifBtn').onclick = () => { if ('Notification' in window && Notification.permission === 'default') askNotif(); else selectTab('rentals'), window.scrollTo({ top: 0, behavior: 'smooth' }); };
+$('notifBtn2').onclick = askNotif;
+$('logoutBtn').onclick = () => logout();
+$('settingsForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  try { await rpc('bike_admin_save_settings', { p_token: TOKEN, p: { tg_admin_chats: val('sChats'), remind_hours: numv('sHours') || 3 } }); toast('Настройки сохранены'); load(true); }
+  catch (err) { toast(err.message, true); }
+});
+$('testTgBtn').onclick = async () => { try { await rpc('bike_admin_test_tg', { p_token: TOKEN }); toast('Тестовое сообщение отправлено в Telegram'); } catch (err) { toast(err.message, true); } };
+addEventListener('keydown', e => { if (e.key === 'Escape' && !$('modal').hidden) closeModal(); });
+
+/* ====== вход ====== */
+function logout(expired) { TOKEN = null; store.set('veter_admin', null); $('appView').hidden = true; $('loginView').hidden = false; if (expired) $('loginErr').hidden = false; }
+async function login(tok) {
+  const ok = await rpc('bike_is_admin', { p_token: tok }).catch(() => false);
+  if (!ok) { $('loginErr').hidden = false; $('loginView').hidden = false; $('appView').hidden = true; return; }
+  TOKEN = tok; store.set('veter_admin', tok);
+  $('loginView').hidden = true; $('appView').hidden = false; $('loginErr').hidden = true;
+  const h = location.hash.slice(1);
+  selectTab(['rentals', 'bikes', 'bookings', 'settings'].includes(h) ? h : 'rentals');
+  await load();
+}
+$('loginForm').addEventListener('submit', e => { e.preventDefault(); login($('tokenIn').value.trim()); });
+(function boot() {
+  const q = new URLSearchParams(location.search).get('key');
+  if (q) { try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {} }
+  const tok = q || store.get('veter_admin');
+  if (tok) login(tok); else $('loginView').hidden = false;
+  setInterval(() => { if (TOKEN && document.visibilityState === 'visible' && $('modal').hidden) load(true); }, 60000);
+  setInterval(() => { if (TOKEN && $('modal').hidden) { renderAlerts(S.rentals.filter(r => r.status === 'active'), S.bookings.filter(k => k.status === 'new')); renderRentals(); checkNew(); } }, 30000);
+  document.addEventListener('visibilitychange', () => { if (TOKEN && document.visibilityState === 'visible') load(true); });
+})();
+</script>
+</body>
+</html>
