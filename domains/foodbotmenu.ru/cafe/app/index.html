@@ -913,6 +913,8 @@ if (tg) {
 }
 
 // ---------- utils ----------
+// photos that are missing on the new host (old /cafe/img/ files): hide the broken image, keep the card
+document.addEventListener('error', e => { const t = e.target; if (t && t.tagName === 'IMG' && !t.dataset.gone) { t.dataset.gone = '1'; t.style.visibility = 'hidden'; } }, true);
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money = n => (Math.round(n || 0)).toLocaleString((venue && venue.locale) || 'ru-RU').replace(/[\u00a0\u202f ]/g, ' ') + ' ' + ((venue && venue.currency_symbol) || '₫');
