@@ -15,9 +15,9 @@
 @property --accent-soft { syntax: '<color>'; inherits: true; initial-value: rgba(245,183,0,.22); }
 @property --ink { syntax: '<color>'; inherits: true; initial-value: #16181D; }
 :root {
-  --bg: #ECEEF1;
+  --bg: #F7F8FA;
   --surface: #FFFFFF;
-  --surface-2: #F5F6F8;
+  --surface-2: #F1F3F6;
   --fg: #16181D;
   --muted: #687080;
   --line: #DADDE3;
@@ -38,13 +38,13 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111318; --surface: #1B1E25; --surface-2: #22262E; --fg: #F2F3F5; --muted: #8E95A3;
+    --bg: #1F232A; --surface: #292E37; --surface-2: #323843; --fg: #F2F3F5; --muted: #8E95A3;
     --line: #2C303A; --head: #0B0C0F; --head-fg: #F3F4F6; --floor: rgba(0,0,0,.6); --danger: #F0656A; --ok: #3CC77E;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111318; --surface: #1B1E25; --surface-2: #22262E; --fg: #F2F3F5; --muted: #8E95A3;
+  --bg: #1F232A; --surface: #292E37; --surface-2: #323843; --fg: #F2F3F5; --muted: #8E95A3;
   --line: #2C303A; --head: #0B0C0F; --head-fg: #F3F4F6; --floor: rgba(0,0,0,.6); --danger: #F0656A; --ok: #3CC77E;
   color-scheme: dark;
 }
@@ -527,10 +527,9 @@ const haptic = {
 function applyTgTheme() {
   if (!tg) return;
   const p = tg.themeParams || {}, r = document.documentElement.style;
-  if (p.bg_color) r.setProperty('--bg', p.bg_color);
+  /* фон и карточки берём из своей палитры (светлее, чем у Telegram) */
   if (p.text_color) r.setProperty('--fg', p.text_color);
   if (p.hint_color) r.setProperty('--muted', p.hint_color);
-  if (p.secondary_bg_color) r.setProperty('--surface', p.secondary_bg_color);
   document.documentElement.dataset.theme = tg.colorScheme === 'dark' ? 'dark' : 'light';
 }
 
