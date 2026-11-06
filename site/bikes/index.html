@@ -212,8 +212,8 @@ h2 { font: 800 22px/1.1 var(--f-display); letter-spacing: -.02em; margin: 0; tex
 @keyframes up { from { transform: translateY(100%); } }
 @keyframes down { to { transform: translateY(100%); } }
 @keyframes fade { from { opacity: 0; } }
-.grab { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: var(--bg); }
-.grab::before { content: ""; position: absolute; left: 50%; top: 6px; width: 40px; height: 4px; border-radius: 2px; background: var(--line); transform: translateX(-50%); }
+.grab { position: sticky; top: 0; z-index: 2; touch-action: none; cursor: grab; user-select: none; display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: var(--bg); }
+.grab::before { content: ""; position: absolute; left: 50%; top: 6px; width: 44px; height: 5px; border-radius: 2px; background: var(--line); transform: translateX(-50%); }
 .grab .g-title { flex: 1; text-align: center; }
 .grab .g-title { font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 6px; }
 .close-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; margin-top: 6px; }
@@ -837,7 +837,7 @@ let form = null;   // состояние формы брони
 function openSheet(state) {
   view.push(state);
   const sh = $('sheet');
-  if (sh.hidden) { sh.hidden = false; sh.classList.remove('closing'); document.body.classList.add('locked'); }
+  if (sh.hidden) { sh.hidden = false; sh.classList.remove('closing'); document.body.classList.add('locked'); resetDrag(); try { tg && tg.disableVerticalSwipes && tg.disableVerticalSwipes(); } catch (e) {} }
   else $('sheetPanel').scrollTop = 0;
   renderSheet();
 }
@@ -850,11 +850,74 @@ function back() {
 function closeSheet(already) {
   if (!already) view.length = 0;
   const sh = $('sheet');
-  const finish = () => { sh.hidden = true; sh.classList.remove('closing'); document.body.classList.remove('locked'); $('sheetIn').innerHTML = ''; syncMain(); };
-  if (reduce) return finish();
-  sh.classList.add('closing'); setTimeout(finish, 280);
   if (tg) tg.BackButton.hide();
+  if (reduce) return finishClose();
+  sh.classList.add('closing'); setTimeout(finishClose, 280);
 }
+function finishClose() {
+  const sh = $('sheet');
+  sh.hidden = true; sh.classList.remove('closing'); document.body.classList.remove('locked'); $('sheetIn').innerHTML = ''; resetDrag(); syncMain();
+  try { tg && tg.enableVerticalSwipes && tg.enableVerticalSwipes(); } catch (e) {}
+}
+
+/* ====== Свайп вниз закрывает шторку ======
+   Тянуть можно за шапку шторки всегда, а за содержимое — когда оно прокручено до самого верха. */
+const drag = { on: false, armed: false, y0: 0, x0: 0, t0: 0, dy: 0, lastY: 0, lastT: 0, v: 0 };
+function resetDrag() {
+  const p = $('sheetPanel'), bg = $('sheetBg');
+  p.style.transition = ''; p.style.transform = ''; bg.style.transition = ''; bg.style.opacity = '';
+  drag.on = drag.armed = false; drag.dy = 0;
+}
+function dragStart(y, x, fromGrab) {
+  const p = $('sheetPanel');
+  drag.grab = fromGrab; drag.armed = fromGrab || p.scrollTop <= 0; drag.on = false;
+  drag.y0 = drag.lastY = y; drag.x0 = x; drag.t0 = drag.lastT = performance.now(); drag.dy = 0; drag.v = 0;
+}
+function dragMove(y, x, e) {
+  if (!drag.armed) return;
+  const dy = y - drag.y0, dx = x - drag.x0, p = $('sheetPanel');
+  if (!drag.on) {
+    if (dy < -4 || Math.abs(dx) > Math.abs(dy) + 4) { drag.armed = false; return; }   // вверх или вбок — обычная прокрутка
+    if (dy < 6) return;
+    if (!drag.grab && p.scrollTop > 0) { drag.armed = false; return; }
+    drag.on = true; p.style.transition = 'none'; $('sheetBg').style.transition = 'none';
+  }
+  if (e && e.cancelable) e.preventDefault();
+  const now = performance.now();
+  drag.v = (y - drag.lastY) / Math.max(1, now - drag.lastT); drag.lastY = y; drag.lastT = now;
+  drag.dy = Math.max(0, dy);
+  p.style.transform = `translateY(${drag.dy}px)`;
+  $('sheetBg').style.opacity = String(Math.max(0, 1 - drag.dy / (p.offsetHeight * 1.1)));
+}
+function dragEnd() {
+  if (!drag.on) { drag.armed = false; return; }
+  const p = $('sheetPanel'), bg = $('sheetBg'), h = p.offsetHeight;
+  drag.on = drag.armed = false;
+  if (drag.dy > Math.min(160, h * 0.28) || (drag.v > 0.55 && drag.dy > 30)) {
+    haptic.tap();
+    const ms = Math.round(Math.max(160, Math.min(320, (h - drag.dy) / Math.max(drag.v, 1.4))));
+    p.style.transition = `transform ${ms}ms cubic-bezier(.2,.7,.3,1)`; p.style.transform = 'translateY(100%)';
+    bg.style.transition = `opacity ${ms}ms ease`; bg.style.opacity = '0';
+    view.length = 0; if (tg) tg.BackButton.hide();
+    setTimeout(finishClose, ms);
+  } else {
+    p.style.transition = 'transform .35s cubic-bezier(.3,1.3,.5,1)'; p.style.transform = 'translateY(0)';
+    bg.style.transition = 'opacity .3s ease'; bg.style.opacity = '1';
+  }
+}
+(() => {
+  const p = $('sheetPanel');
+  p.addEventListener('touchstart', e => { if (e.touches.length !== 1) return; const t = e.touches[0]; dragStart(t.clientY, t.clientX, !!e.target.closest('.grab')); }, { passive: true });
+  p.addEventListener('touchmove', e => { const t = e.touches[0]; dragMove(t.clientY, t.clientX, e); }, { passive: false });
+  p.addEventListener('touchend', dragEnd); p.addEventListener('touchcancel', dragEnd);
+  /* мышью — за шапку шторки (для компьютера) */
+  p.querySelector('.grab').addEventListener('mousedown', e => {
+    if (e.target.closest('button')) return;
+    dragStart(e.clientY, e.clientX, true);
+    const mm = ev => dragMove(ev.clientY, ev.clientX, ev), mu = () => { removeEventListener('mousemove', mm); removeEventListener('mouseup', mu); dragEnd(); };
+    addEventListener('mousemove', mm); addEventListener('mouseup', mu);
+  });
+})();
 $('sheetBg').addEventListener('click', () => closeSheet());
 $('sheetClose').addEventListener('click', () => closeSheet());
 $('sheetBack').addEventListener('click', back);
