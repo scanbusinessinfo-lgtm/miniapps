@@ -271,6 +271,14 @@ h2 { font: 800 22px/1.1 var(--f-display); letter-spacing: -.02em; margin: 0; tex
 .qchip[aria-pressed="true"] { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
 .stepper .ctrl button:disabled { opacity: .35; }
 .return-line { font-size: 14px; color: var(--muted); }
+.day-price { display: grid; gap: 4px; padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, var(--accent) 12%, var(--surface-2)); border: 1.5px solid color-mix(in srgb, var(--accent) 45%, transparent); }
+.dp-main, .dp-total { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-variant-numeric: tabular-nums; }
+.dp-main span { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.dp-main b { font: 800 22px/1.1 var(--f-display); letter-spacing: -.02em; white-space: nowrap; }
+.dp-save { font-size: 13px; font-weight: 600; color: var(--ok); }
+.dp-hint { font-size: 12px; color: var(--muted); }
+.dp-total { font-size: 13px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 6px; margin-top: 2px; }
+.dp-total b { color: var(--fg); font-size: 15px; white-space: nowrap; }
 .return-line b { color: var(--fg); }
 .stepper { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; }
 .stepper .ctrl { display: flex; align-items: center; gap: 4px; background: var(--surface-2); border-radius: 12px; padding: 3px; }
@@ -1001,6 +1009,7 @@ function bookingHTML(b) {
         <div class="ctrl"><button type="button" id="dMinus" aria-label="Меньше дней">−</button><output id="dOut">${f.days}</output><button type="button" id="dPlus" aria-label="Больше дней">+</button></div></div>
       <div class="chips" id="dQuick">${[1, 3, 7, 14, 30].map(d => `<button type="button" class="qchip" data-d="${d}" aria-pressed="${d === f.days}">${d} ${plural(d, 'день', 'дня', 'дней')}</button>`).join('')}</div>
       <div class="return-line" id="retLine">${returnLine()}</div>
+      <div class="day-price" id="dayPrice" aria-live="polite">${dayPriceHTML(b)}</div>
       <div class="field"><label for="fTime">Время выдачи</label>
         <select id="fTime">${['08:00', '09:00', '10:00', '11:00', '12:00', '14:00', '16:00', '18:00', '20:00'].map(t => `<option${t === f.time ? ' selected' : ''}>${t}</option>`).join('')}</select></div>
     </section>
@@ -1036,6 +1045,12 @@ function returnLine() {
   const d = new Date(form.to + 'T00:00');
   return `Вернуть: <b>${WD[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}</b> до ${form.time}`;
 }
+function dayPriceHTML(b) {
+  const c = calc(b), full = b.pricePerDay * c.days, save = full - c.rent;
+  return `<div class="dp-main"><span>${c.days} ${plural(c.days, 'день', 'дня', 'дней')} × ${fmt(c.perDay)} ₫</span><b>${fmt(c.rent)} ₫</b></div>
+    ${save > 0 ? `<div class="dp-save">Скидка за ${c.days >= 30 ? 'месяц' : 'неделю'}: −${fmt(save)} ₫</div>` : c.days < 7 ? `<div class="dp-hint">От 7 дней — ${fmt(b.pricePerWeek / 7)} ₫/день</div>` : ''}
+    ${c.total !== c.rent ? `<div class="dp-total"><span>С доставкой и допами</span><b>${fmt(c.total)} ₫</b></div>` : ''}`;
+}
 function summaryHTML(b) {
   const c = calc(b);
   return `
@@ -1047,7 +1062,7 @@ function summaryHTML(b) {
     <div class="line total"><span>К оплате</span><span>${fmt(c.total)} ₫</span></div>`;
 }
 function bindBooking(b) {
-  const upd = () => { $('summary').innerHTML = summaryHTML(b); syncMain(); };
+  const upd = () => { $('summary').innerHTML = summaryHTML(b); $('dayPrice').innerHTML = dayPriceHTML(b); syncMain(); };
   const updDates = () => {
     syncTo(); $('dOut').textContent = form.days; $('retLine').innerHTML = returnLine();
     $('dQuick').querySelectorAll('.qchip').forEach(c => c.setAttribute('aria-pressed', +c.dataset.d === form.days));
