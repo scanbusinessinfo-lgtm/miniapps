@@ -71,6 +71,10 @@ h2 { font: 800 22px/1.1 var(--f-display); letter-spacing: -.02em; margin: 0; tex
 .top-actions { display: flex; gap: 8px; }
 .icon-btn { position: relative; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(255,255,255,.08); color: var(--head-fg); }
 .icon-btn svg { width: 20px; height: 20px; }
+#themeBtn .i-sun { display: none; }
+:root[data-theme="dark"] #themeBtn .i-sun { display: block; }
+:root[data-theme="dark"] #themeBtn .i-moon { display: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) #themeBtn .i-sun { display: block; } :root:not([data-theme]) #themeBtn .i-moon { display: none; } }
 .icon-btn .dot { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--brand); color: var(--brand-ink); font-size: 11px; font-weight: 700; display: grid; place-items: center; }
 
 /* ---------- Hero ---------- */
@@ -91,6 +95,8 @@ h2 { font: 800 22px/1.1 var(--f-display); letter-spacing: -.02em; margin: 0; tex
   border-radius: 50%; background: var(--accent-soft); transition: transform 1.2s var(--ease); }
 .floor-shadow { position: absolute; left: 50%; bottom: 7%; width: 66%; max-width: 380px; height: 26px; transform: translateX(-50%); background: radial-gradient(closest-side, var(--floor), transparent); }
 .bike { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4%; transform-origin: 50% 88%; will-change: transform; }
+.bike img, .t-img img, .thumb img, .d-stage img, .mini-bike img { -webkit-user-drag: none; user-select: none; }
+.bike img { pointer-events: none; }
 .bike svg, .bike img { width: min(90%, 430px); height: auto; display: block; transition: filter .6s; }
 .is-busy svg, .is-busy img { filter: grayscale(.6) brightness(.95); }
 .wheel { transform-box: fill-box; transform-origin: center; }
@@ -227,10 +233,10 @@ h2 { font: 800 22px/1.1 var(--f-display); letter-spacing: -.02em; margin: 0; tex
 .spec-grid dt { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .spec-grid dd { margin: 4px 0 0; font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; }
 .tariffs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.tariff { border: 1.5px solid var(--line); border-radius: 14px; padding: 10px; text-align: center; }
+.tariff { border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 6px; text-align: center; min-width: 0; }
 .tariff.best { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
 .tariff span { font-size: 11px; color: var(--muted); display: block; }
-.tariff b { display: block; font: 800 14px/1.2 var(--f-display); margin-top: 4px; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.tariff b { display: block; white-space: nowrap; font: 800 clamp(11px, 3.4vw, 14px)/1.2 var(--f-display); margin-top: 4px; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 .tariff i { font-style: normal; font-size: 11px; color: var(--muted); }
 .list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: 14px; }
 .list li { display: flex; gap: 10px; align-items: flex-start; line-height: 1.4; }
@@ -252,6 +258,20 @@ h2 { font: 800 22px/1.1 var(--f-display); letter-spacing: -.02em; margin: 0; tex
 .opt span { flex: 1; min-width: 0; }
 .opt em { font-style: normal; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .opt:has(input:checked) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.daystrip { display: flex; gap: 6px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; padding: 2px 2px 4px; margin: 0 -2px; overscroll-behavior-x: contain; }
+.daystrip::-webkit-scrollbar { display: none; }
+.day { flex: 0 0 58px; scroll-snap-align: start; display: grid; gap: 1px; justify-items: center; padding: 8px 4px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface-2); line-height: 1.15; }
+.day small { font-size: 10px; color: var(--muted); }
+.day b { font: 800 18px/1.1 var(--f-display); }
+.day[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+.day[aria-selected="true"] small { color: inherit; opacity: .8; }
+.days-stepper b { font-weight: 600; }
+.days-stepper output { font: 800 18px var(--f-display); min-width: 40px !important; }
+.qchip { padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; border: 1.5px solid var(--line); background: var(--surface-2); }
+.qchip[aria-pressed="true"] { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.stepper .ctrl button:disabled { opacity: .35; }
+.return-line { font-size: 14px; color: var(--muted); }
+.return-line b { color: var(--fg); }
 .stepper { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; }
 .stepper .ctrl { display: flex; align-items: center; gap: 4px; background: var(--surface-2); border-radius: 12px; padding: 3px; }
 .stepper .ctrl button { width: 34px; height: 34px; border-radius: 9px; background: var(--surface); font-size: 18px; font-weight: 600; }
@@ -331,6 +351,10 @@ h2 { font: 800 22px/1.1 var(--f-display); letter-spacing: -.02em; margin: 0; tex
       <div class="logo-sub">прокат байков<br>Нячанг</div>
     </div>
     <div class="top-actions">
+      <button class="icon-btn" id="themeBtn" aria-label="Тёмная тема" title="Сменить тему">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
       <button class="icon-btn" id="bookingsBtn" aria-label="Мои заявки">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
         <span class="dot" id="bookingsDot" hidden>0</span>
@@ -524,14 +548,27 @@ const haptic = {
   ok() { try { tg && tg.HapticFeedback.notificationOccurred('success'); } catch (e) {} },
   err() { try { tg && tg.HapticFeedback.notificationOccurred('error'); } catch (e) {} },
 };
-function applyTgTheme() {
-  if (!tg) return;
-  const p = tg.themeParams || {}, r = document.documentElement.style;
-  /* фон и карточки берём из своей палитры (светлее, чем у Telegram) */
-  if (p.text_color) r.setProperty('--fg', p.text_color);
-  if (p.hint_color) r.setProperty('--muted', p.hint_color);
-  document.documentElement.dataset.theme = tg.colorScheme === 'dark' ? 'dark' : 'light';
+/* ====== ТЕМА: светлая / тёмная ======
+   По умолчанию — как в Telegram (или в системе). Выбор кнопкой в шапке запоминается. */
+const THEME_KEY = 'veter_theme';
+function savedTheme() { try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; } }
+function baseTheme() { return tg ? (tg.colorScheme === 'dark' ? 'dark' : 'light') : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+function currentTheme() { return savedTheme() || baseTheme(); }
+function applyTheme() {
+  const t = currentTheme(), root = document.documentElement, r = root.style;
+  root.dataset.theme = t;
+  /* фон и карточки — своя палитра; цвета текста Telegram берём, только если тема совпадает с его темой */
+  ['--fg', '--muted'].forEach(k => r.removeProperty(k));
+  if (tg && t === baseTheme()) { const p = tg.themeParams || {}; if (p.text_color) r.setProperty('--fg', p.text_color); if (p.hint_color) r.setProperty('--muted', p.hint_color); }
+  const btn = document.getElementById('themeBtn'); if (btn) btn.setAttribute('aria-label', t === 'dark' ? 'Светлая тема' : 'Тёмная тема');
+  if (tg) { try { const bg = getComputedStyle(root).getPropertyValue('--bg').trim(); tg.setBackgroundColor(bg); tg.setHeaderColor(getComputedStyle(root).getPropertyValue('--head').trim()); } catch (e) {} }
 }
+function toggleTheme() {
+  const next = currentTheme() === 'dark' ? 'light' : 'dark';
+  try { next === baseTheme() ? localStorage.removeItem(THEME_KEY) : localStorage.setItem(THEME_KEY, next); } catch (e) {}
+  applyTheme();
+}
+const applyTgTheme = applyTheme;
 
 /* ====== SVG-БАЙКИ (рисуются передом вправо и отражаются — едут влево) ====== */
 function alloyWheel(cx, cy, r, rim, disc) {
@@ -614,7 +651,7 @@ function bikeSVG(b) {
   }
   return `<svg viewBox="0 0 400 240" role="img" aria-label="${b.brand} ${b.model}"><g transform="matrix(-1 0 0 1 400 0)">${art}</g></svg>`;
 }
-const bikeArt = b => b.image ? `<img src="${b.image}" alt="${b.brand} ${b.model}" loading="lazy" decoding="async">` : bikeSVG(b);
+const bikeArt = b => b.image ? `<img src="${b.image}" alt="${b.brand} ${b.model}" loading="lazy" decoding="async" draggable="false">` : bikeSVG(b);
 
 /* ====== УТИЛИТЫ ====== */
 const $ = id => document.getElementById(id);
@@ -731,6 +768,8 @@ function stopAuto() {
 ['pointerdown', 'keydown', 'wheel', 'touchmove'].forEach(ev => addEventListener(ev, stopAuto, { once: true, passive: true }));
 let sx = null, sy = null;
 $('stage').addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
+$('stage').addEventListener('dragstart', e => e.preventDefault());
+$('stage').addEventListener('pointercancel', () => { sx = null; });
 $('stage').addEventListener('pointerup', e => {
   if (sx === null) return;
   const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
@@ -876,7 +915,7 @@ function detailHTML(b) {
 function openBooking(id) {
   const t = new Date(); t.setDate(t.getDate() + 1);
   const t2 = new Date(t); t2.setDate(t2.getDate() + 3);
-  form = { from: iso(t), to: iso(t2), time: '10:00', delivery: 'center', address: '', helmets: 0, name: tg?.initDataUnsafe?.user?.first_name || '', contact: tg?.initDataUnsafe?.user?.username ? '@' + tg.initDataUnsafe.user.username : '', pay: 'cash', errors: {} };
+  form = { from: iso(t), to: iso(t2), days: 3, time: '10:00', delivery: 'center', address: '', helmets: 0, name: tg?.initDataUnsafe?.user?.first_name || '', contact: tg?.initDataUnsafe?.user?.username ? '@' + tg.initDataUnsafe.user.username : '', pay: 'cash', errors: {} };
   openSheet({ type: 'booking', id });
 }
 function calc(b) {
@@ -893,11 +932,12 @@ function bookingHTML(b) {
   return `
     <div class="panel"><div class="mini-bike">${bikeArt(b)}<div><b>${b.model}</b><span>${b.brand} · ${b.engineCc} см³ · ${b.transmission}</span></div></div></div>
     <section class="panel"><h3>Даты аренды</h3>
-      <div class="two">
-        <div class="field"><label for="fFrom">Взять</label><input type="date" id="fFrom" min="${today}" value="${f.from}"></div>
-        <div class="field${e.dates ? ' err' : ''}"><label for="fTo">Вернуть</label><input type="date" id="fTo" min="${f.from}" value="${f.to}"></div>
-      </div>
-      ${e.dates ? `<div class="field"><span class="msg">Дата возврата должна быть позже даты выдачи</span></div>` : ''}
+      <div class="field"><span class="lbl">Когда взять</span>
+        <div class="daystrip" id="dayStrip" role="listbox" aria-label="Дата выдачи">${dayStripHTML()}</div></div>
+      <div class="stepper days-stepper"><span><b>Сколько дней</b></span>
+        <div class="ctrl"><button type="button" id="dMinus" aria-label="Меньше дней">−</button><output id="dOut">${f.days}</output><button type="button" id="dPlus" aria-label="Больше дней">+</button></div></div>
+      <div class="chips" id="dQuick">${[1, 3, 7, 14, 30].map(d => `<button type="button" class="qchip" data-d="${d}" aria-pressed="${d === f.days}">${d} ${plural(d, 'день', 'дня', 'дней')}</button>`).join('')}</div>
+      <div class="return-line" id="retLine">${returnLine()}</div>
       <div class="field"><label for="fTime">Время выдачи</label>
         <select id="fTime">${['08:00', '09:00', '10:00', '11:00', '12:00', '14:00', '16:00', '18:00', '20:00'].map(t => `<option${t === f.time ? ' selected' : ''}>${t}</option>`).join('')}</select></div>
     </section>
@@ -918,6 +958,21 @@ function bookingHTML(b) {
     </section>
     <section class="panel"><h3>Итого</h3><div class="summary" id="summary">${summaryHTML(b)}</div></section>`;
 }
+const WD = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'], MON = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+function dayStripHTML() {
+  const out = [], d = new Date(); d.setHours(0, 0, 0, 0);
+  for (let i = 0; i < 21; i++) {
+    const v = iso(d), lbl = i === 0 ? 'сегодня' : i === 1 ? 'завтра' : WD[d.getDay()];
+    out.push(`<button type="button" class="day" role="option" data-v="${v}" aria-selected="${v === form.from}"><small>${lbl}</small><b>${d.getDate()}</b><small>${MON[d.getMonth()]}</small></button>`);
+    d.setDate(d.getDate() + 1);
+  }
+  return out.join('');
+}
+function syncTo() { const d = new Date(form.from + 'T00:00'); d.setDate(d.getDate() + form.days); form.to = iso(d); }
+function returnLine() {
+  const d = new Date(form.to + 'T00:00');
+  return `Вернуть: <b>${WD[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}</b> до ${form.time}`;
+}
 function summaryHTML(b) {
   const c = calc(b);
   return `
@@ -930,13 +985,25 @@ function summaryHTML(b) {
 }
 function bindBooking(b) {
   const upd = () => { $('summary').innerHTML = summaryHTML(b); syncMain(); };
-  $('fFrom').addEventListener('change', e => {
-    form.from = e.target.value; $('fTo').min = form.from;
-    if (form.to <= form.from) { const d = new Date(form.from + 'T00:00'); d.setDate(d.getDate() + 1); form.to = iso(d); $('fTo').value = form.to; }
+  const updDates = () => {
+    syncTo(); $('dOut').textContent = form.days; $('retLine').innerHTML = returnLine();
+    $('dQuick').querySelectorAll('.qchip').forEach(c => c.setAttribute('aria-pressed', +c.dataset.d === form.days));
+    $('dMinus').disabled = form.days <= 1; $('dPlus').disabled = form.days >= 90;
     upd();
+  };
+  const setDays = n => { form.days = Math.max(1, Math.min(90, n)); haptic.select(); updDates(); };
+  $('dMinus').addEventListener('click', () => setDays(form.days - 1));
+  $('dPlus').addEventListener('click', () => setDays(form.days + 1));
+  $('dQuick').addEventListener('click', e => { const c = e.target.closest('.qchip'); if (c) setDays(+c.dataset.d); });
+  $('dayStrip').addEventListener('click', e => {
+    const d = e.target.closest('.day'); if (!d) return;
+    haptic.select(); form.from = d.dataset.v;
+    $('dayStrip').querySelectorAll('.day').forEach(x => x.setAttribute('aria-selected', x === d));
+    updDates();
   });
-  $('fTo').addEventListener('change', e => { form.to = e.target.value; upd(); });
-  $('fTime').addEventListener('change', e => { form.time = e.target.value; });
+  requestAnimationFrame(() => { const a = $('dayStrip')?.querySelector('[aria-selected="true"]'); if (a) $('dayStrip').scrollLeft = a.offsetLeft - 8; });
+  $('dMinus').disabled = form.days <= 1;
+  $('fTime').addEventListener('change', e => { form.time = e.target.value; $('retLine').innerHTML = returnLine(); });
   document.querySelectorAll('input[name=deliv]').forEach(r => r.addEventListener('change', e => { haptic.select(); form.delivery = e.target.value; $('addrField').hidden = form.delivery === 'pickup'; upd(); }));
   document.querySelectorAll('input[name=pay]').forEach(r => r.addEventListener('change', e => { haptic.select(); form.pay = e.target.value; }));
   $('fAddr').addEventListener('input', e => { form.address = e.target.value; });
@@ -1059,10 +1126,12 @@ document.querySelectorAll('.copy').forEach(btn => btn.addEventListener('click', 
 }));
 
 /* ====== СТАРТ ====== */
+applyTheme();
+document.getElementById('themeBtn').addEventListener('click', () => { haptic.tap(); toggleTheme(); });
 (async function init() {
   try { const live = await rpc('bike_public_list', {}, 6000); if (Array.isArray(live) && live.length) setBikes(live.map(normBike)); } catch (e) { /* офлайн — встроенные данные */ }
   if (tg) {
-    tg.ready(); tg.expand(); applyTgTheme(); tg.onEvent('themeChanged', applyTgTheme);
+    tg.ready(); tg.expand(); tg.onEvent('themeChanged', applyTheme);
     tg.MainButton.onClick(onMain); tg.BackButton.onClick(back); $('mainbar').hidden = true;
     try { tg.enableClosingConfirmation && tg.disableClosingConfirmation(); } catch (e) {}
   }
