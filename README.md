@@ -10,4 +10,4 @@
 
 ## Сайты на своих доменах
 `domains/<домен>/` → `https://<домен>/` (сервер Reg.ru забирает каждые 10 минут, `rsync --delete`: держите в папке все файлы сайта, включая index.html).
-Подключены: foodbotmenu.ru, scanbusiness.info. Новый домен сначала нужно прописать в Caddy (репозиторий server).
+Подключены: foodbotmenu.ru, scanbusiness.info. Подготовлен: xn--90aihqiaaun.xn--p1ai (ооотимбер.рф, ООО «ТИМБЕР»). Новый домен сначала нужно прописать в Caddy (репозиторий server).
