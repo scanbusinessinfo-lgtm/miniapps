@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Bàn Vietnam Compass</title>
+<meta name="description" content="Вопросы о вьетнамском регулировании для иностранных инвесторов: штрафы, налоги, регистрация. Ответ со ссылкой на документ.">
+<style>
+  :root {
+    --bg: #f6f4ef; --card: #ffffff; --ink: #1d2327; --muted: #5d6870;
+    --line: #dcd6c8; --accent: #b3261e; --accent-ink: #ffffff; --ok: #1c6b3c; --warn: #8a5a00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14181b; --card: #1c2226; --ink: #eceae4; --muted: #9aa5ac;
+            --line: #2f383e; --accent: #e5604f; --accent-ink: #14181b; --ok: #5fc08a; --warn: #e0b04a; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 28px 16px 56px; }
+  h1 { font-size: 1.7rem; line-height: 1.2; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 22px; }
+  .compass { color: var(--accent); }
+  form { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+  textarea { width: 100%; min-height: 96px; resize: vertical; border: 0; outline: 0; background: transparent;
+             color: var(--ink); font: inherit; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; }
+  .count { color: var(--muted); font-size: .85rem; }
+  button.go { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 10px;
+              padding: 11px 20px; font: inherit; font-weight: 600; cursor: pointer; min-height: 44px; }
+  button.go:disabled { opacity: .55; cursor: progress; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+  .chip { background: transparent; border: 1px solid var(--line); color: var(--ink); border-radius: 999px;
+          padding: 8px 14px; font: inherit; font-size: .9rem; cursor: pointer; min-height: 40px; }
+  .chip:hover { border-color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #result { margin-top: 24px; }
+  .answer { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 18px 6px; }
+  .answer p { margin: 0 0 12px; }
+  .status { color: var(--muted); padding: 18px 2px; }
+  .error { background: var(--card); border: 1px solid var(--accent); border-radius: 14px; padding: 14px 18px; }
+  h2 { font-size: 1rem; margin: 22px 0 8px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .src { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+  .src b { font-size: 1rem; }
+  .meta { color: var(--muted); font-size: .88rem; margin-top: 2px; }
+  .badge { display: inline-block; font-size: .78rem; border-radius: 6px; padding: 1px 8px; margin-left: 6px;
+           border: 1px solid currentColor; vertical-align: 1px; }
+  .badge.ok { color: var(--ok); } .badge.warn { color: var(--warn); }
+  .note { color: var(--muted); font-size: .85rem; margin-top: 22px; }
+</style>
+</head>
+<body>
+<main>
+  <h1><span class="compass">La Bàn</span> Vietnam Compass</h1>
+  <p class="sub">Спросите о штрафах, налогах и регистрации бизнеса во Вьетнаме. Ответ строится только по документам из базы и приходит со ссылкой на источник.</p>
+
+  <form id="f">
+    <label for="q" class="count" style="display:block;margin-bottom:6px">Ваш вопрос</label>
+    <textarea id="q" maxlength="600" placeholder="Например: какой штраф за просрочку регистрации изменений в уставных документах на 15 дней?" required></textarea>
+    <div class="row">
+      <span class="count"><span id="n">0</span> / 600</span>
+      <button class="go" id="btn" type="submit">Спросить</button>
+    </div>
+  </form>
+
+  <div class="chips" id="chips"></div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <p class="note">Справочная информация на основе загруженных нормативных документов, не юридическая консультация. Перед принятием решений сверяйте цифры с текстом документа.</p>
+</main>
+
+<script>
+  // Адрес Edge Function. Секретных ключей на странице нет.
+  var ENDPOINT = "https://roqmejclibyyjlnxshzu.supabase.co/functions/v1/laban-query";
+
+  var EXAMPLES = [
+    "Штраф за непредоставление данных о конечном бенефициаре (UBO) при регистрации компании",
+    "Какой штраф за просрочку регистрации изменений в уставных документах на 15 дней",
+    "Ставка налога на прибыль для новых инвестиционных проектов в приоритетных отраслях",
+    "Нужно ли регистрироваться как плательщик НДС при определённом обороте",
+    "Что такое Фонд поддержки инвестиций и кто может претендовать"
+  ];
+
+  var CATEGORY_RU = {
+    sanctions_corporate_registration: "штрафы при регистрации предприятия",
+    sanctions_tax_invoice: "штрафы по налогам и счетам-фактурам",
+    enforcement_procedure: "принудительное взыскание штрафов",
+    investment_law: "инвестиционное законодательство",
+    investment_incentives: "поддержка инвесторов",
+    vat: "НДС", cit: "налог на прибыль", registration_forms: "формы регистрации"
+  };
+
+  var ERRORS = {
+    question_too_short: "Вопрос слишком короткий. Опишите ситуацию подробнее.",
+    question_too_long: "Вопрос слишком длинный. Сократите его до 600 символов.",
+    rate_limited: "Слишком много запросов с вашего адреса. Подождите минуту и попробуйте снова.",
+    not_configured: "Сервис пока не настроен. Попробуйте позже.",
+    upstream_error: "Внешний сервис ИИ сейчас недоступен. Попробуйте через минуту.",
+    internal_error: "Что-то пошло не так на стороне сервера. Попробуйте ещё раз."
+  };
+
+  var q = document.getElementById("q"), n = document.getElementById("n"),
+      btn = document.getElementById("btn"), out = document.getElementById("result"),
+      chips = document.getElementById("chips");
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  // Минимальный безопасный рендер: экранируем всё, затем **жирный** и абзацы.
+  function render(text) {
+    return esc(text).split(/\n{2,}/).map(function (p) {
+      return "<p>" + p.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br>") + "</p>";
+    }).join("");
+  }
+
+  EXAMPLES.forEach(function (t) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.textContent = t.length > 58 ? t.slice(0, 56) + "…" : t;
+    b.title = t;
+    b.onclick = function () { q.value = t; n.textContent = t.length; q.focus(); };
+    chips.appendChild(b);
+  });
+
+  q.addEventListener("input", function () { n.textContent = q.value.length; });
+
+  function showError(msg) { out.innerHTML = '<div class="error">' + esc(msg) + "</div>"; }
+
+  function showResult(d) {
+    var html = '<div class="answer">' + render(d.answer || "") + "</div>";
+    var cat = CATEGORY_RU[d.category];
+    if (d.sources && d.sources.length) {
+      html += "<h2>Источники</h2>";
+      d.sources.forEach(function (s) {
+        var active = s.status === "active";
+        html += '<div class="src"><b>' + esc(s.doc_number) + "</b>" +
+          '<span class="badge ' + (active ? "ok" : "warn") + '">' + (active ? "действует" : esc(s.status || "статус не указан")) + "</span>" +
+          '<div class="meta">' +
+          (s.supersedes_doc_number ? "Изменяет или заменяет " + esc(s.supersedes_doc_number) + ". " : "") +
+          (typeof s.relevance_score === "number" ? "Релевантность: " + s.relevance_score.toFixed(2) : "") +
+          "</div></div>";
+      });
+    }
+    if (cat) html += '<p class="note">Тема вопроса определена как: ' + esc(cat) + ".</p>";
+    out.innerHTML = html;
+  }
+
+  document.getElementById("f").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var text = q.value.trim();
+    if (text.length < 5) { showError(ERRORS.question_too_short); return; }
+    btn.disabled = true; btn.textContent = "Ищу…";
+    out.innerHTML = '<div class="status">Классифицирую вопрос и ищу в документах. Обычно это занимает 5–15 секунд.</div>';
+
+    var ctl = new AbortController();
+    var timer = setTimeout(function () { ctl.abort(); }, 60000);
+
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: text }),
+      signal: ctl.signal
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; });
+    }).then(function (res) {
+      if (!res.ok) { showError(ERRORS[res.d.error] || "Не удалось получить ответ. Попробуйте ещё раз."); return; }
+      showResult(res.d);
+    }).catch(function (err) {
+      showError(err && err.name === "AbortError" ? "Сервер отвечает слишком долго. Попробуйте ещё раз." : "Нет связи с сервером. Проверьте интернет и повторите.");
+    }).finally(function () {
+      clearTimeout(timer); btn.disabled = false; btn.textContent = "Спросить";
+    });
+  });
+</script>
+</body>
+</html>
