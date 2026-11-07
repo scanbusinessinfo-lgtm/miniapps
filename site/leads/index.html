@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лиды СНГ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== НАСТРОЙКИ: впиши свои значения ===== */
+</style>
+<script>
+  const CONFIG = {
+    SUPABASE_URL: 'https://roqmejclibyyjlnxshzu.supabase.co',
+    // anon-ключ публичный по назначению: без токена кабинета он ничего не видит
+    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvcW1lamNsaWJ5eWpsbnhzaHp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMzQ5OTcsImV4cCI6MjEwMTcxMDk5N30.Y4FhKvSa8b515buVumv3UTzX6mLti1aEmbrL38Jnvuc',
+  };
+</script>
+<style>
+:root {
+  --bg: #f6f4ef; --panel: #ffffff; --ink: #1d1b18; --muted: #6f6a61; --line: #e6e1d7;
+  --accent: #b4532a; --accent-soft: #f6e5dc; --ok: #2f7d4f; --ok-soft: #e2f1e7;
+  --warn: #9a6a00; --warn-soft: #fbf0d4; --blue: #2b5c8a; --blue-soft: #e3edf7; --shadow: 0 1px 2px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15140f; --panel: #1f1d18; --ink: #f1ede4; --muted: #a39d91; --line: #34312a;
+    --accent: #e0835a; --accent-soft: #3a261c; --ok: #6cc28f; --ok-soft: #1c3326; --warn: #e5b64a; --warn-soft: #3a3018;
+    --blue: #7fb0e0; --blue-soft: #1d2a38; --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 Manrope, system-ui, sans-serif; }
+a { color: inherit; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px 60px; }
+header { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+header .wrap { padding-bottom: 0; }
+.top { display: flex; align-items: center; gap: 12px; padding: 14px 0 10px; }
+.logo { font-weight: 800; font-size: 18px; letter-spacing: -.02em; }
+.logo span { color: var(--accent); }
+.demo { font-size: 12px; background: var(--warn-soft); color: var(--warn); padding: 3px 9px; border-radius: 99px; font-weight: 600; }
+nav { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 10px; }
+nav[hidden] { display: none; }
+.subnav { padding: 8px 0 10px; border-top: 1px dashed var(--line); }
+.subnav a { font-size: 13.5px; padding: 5px 11px; }
+.subnav .lbl { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; align-self: center; margin-right: 4px; }
+nav::-webkit-scrollbar { display: none; }
+nav a { flex: none; text-decoration: none; padding: 7px 13px; border-radius: 10px; font-weight: 600; font-size: 14px; color: var(--muted); border: 1px solid transparent; display: flex; gap: 7px; align-items: center; }
+nav a:hover { color: var(--ink); }
+nav a.on { background: var(--panel); color: var(--ink); border-color: var(--line); box-shadow: var(--shadow); }
+nav .sep { width: 1px; background: var(--line); margin: 4px 4px; flex: none; }
+.badge { font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 99px; background: var(--line); color: var(--ink); }
+.badge.hot { background: var(--accent); color: #fff; }
+h1 { font-size: 28px; letter-spacing: -.03em; margin: 26px 0 4px; }
+.sub { color: var(--muted); margin-bottom: 18px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.stat b { display: block; font-size: 24px; letter-spacing: -.02em; }
+.stat small { color: var(--muted); }
+.bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+.seg { display: inline-flex; background: var(--panel); border: 1px solid var(--line); border-radius: 11px; padding: 3px; }
+.seg button { border: 0; background: none; font: inherit; font-weight: 600; font-size: 14px; padding: 6px 12px; border-radius: 8px; color: var(--muted); cursor: pointer; }
+.seg button.on { background: var(--ink); color: var(--bg); }
+input, select { font: inherit; font-size: 14px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; }
+input[type=search] { flex: 1; min-width: 180px; }
+.btn { font: inherit; font-size: 14px; font-weight: 600; border: 1px solid var(--line); background: var(--panel); color: var(--ink); padding: 7px 12px; border-radius: 10px; cursor: pointer; }
+.list { display: grid; gap: 10px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; display: grid; grid-template-columns: 1fr 230px; gap: 14px; box-shadow: var(--shadow); }
+.card h3 { margin: 0 0 4px; font-size: 16px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.card h3 a { text-decoration: none; }
+.card h3 a:hover { text-decoration: underline; }
+.tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+.t-cis { background: var(--ok-soft); color: var(--ok); }
+.t-maybe { background: var(--warn-soft); color: var(--warn); }
+.t-fresh { background: var(--accent-soft); color: var(--accent); }
+.t-ru { background: var(--blue-soft); color: var(--blue); }
+.t-closed { background: var(--line); color: var(--muted); }
+.t-nosite { background: var(--blue-soft); color: var(--blue); }
+.t-unseen { background: var(--accent); color: #fff; }
+.card.unseen { border-color: var(--accent); }
+.day { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 2px 2px; }
+.day:first-letter { text-transform: uppercase; }
+.wrap-seg { flex-wrap: wrap; }
+.btn.write { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.write.done { background: var(--ok-soft); color: var(--ok); border-color: transparent; font-size: 13px; }
+.btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.nophone { font-size: 12px; color: var(--muted); }
+.outreach { margin-top: 12px; padding: 12px; border-radius: 12px; background: var(--bg); border: 1px solid var(--line); }
+.outreach textarea, .tplbox textarea { width: 100%; font: inherit; font-size: 14px; line-height: 1.45; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; resize: vertical; }
+.outreach .send { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.outreach .send-wa { background: #1f9d55; color: #fff; border-color: #1f9d55; }
+.outreach .hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.outreach .obar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-bottom: 8px; }
+.outreach .blocks { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; font-weight: 600; }
+.outreach .blocks label { display: inline-flex; gap: 5px; align-items: center; cursor: pointer; }
+.tplgroup { font-size: 15px; margin: 22px 0 8px; }
+.tplbox { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.tplbox label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+code { font-size: 12.5px; background: var(--line); padding: 1px 5px; border-radius: 5px; }
+.meta { color: var(--muted); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.why { font-size: 13px; margin-top: 6px; color: var(--muted); }
+.why b { color: var(--ink); font-weight: 600; }
+.contacts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.contacts a { font-size: 13px; font-weight: 600; text-decoration: none; padding: 4px 9px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); }
+.contacts a:hover { border-color: var(--ink); }
+.side { display: flex; flex-direction: column; gap: 6px; }
+.side select, .side input { width: 100%; }
+.side .date { font-size: 12px; color: var(--muted); text-align: right; }
+.empty { text-align: center; color: var(--muted); padding: 50px 10px; background: var(--panel); border: 1px dashed var(--line); border-radius: 16px; }
+.login { max-width: 420px; margin: 80px auto; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+.login input { width: 100%; margin: 10px 0; }
+.saved { color: var(--ok); font-size: 12px; text-align: right; min-height: 16px; }
+@media (max-width: 720px) {
+  .card { grid-template-columns: 1fr; }
+  h1 { font-size: 23px; }
+}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="top"><div class="logo">Лиды <span>СНГ</span></div><span id="demo" class="demo" hidden>демо-данные</span></div>
+  <nav id="nav"></nav>
+  <nav id="subnav" class="subnav" hidden></nav>
+</div></header>
+<main class="wrap" id="app"></main>
+
+<script>
+const AUDIENCE = {
+  realty: { name: 'Агентства недвижимости', icon: '🏠', kind: 'company', always: true },
+  rental: { name: 'Аренда байков и авто', icon: '🛵', kind: 'company', always: true },
+  travel: { name: 'Турагентства', icon: '🧭', kind: 'company', always: true },
+  medical: { name: 'Медицина', icon: '🩺', kind: 'audience', always: true },
+  beauty: { name: 'Красота и SPA', icon: '💆', kind: 'audience' },
+};
+const STATUSES = [['new', 'Новый'], ['contacted', 'Написал'], ['talks', 'Переговоры'], ['client', 'Клиент'], ['rejected', 'Отказ']];
+const FRESH_MAX = 5;
+const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY || new URLSearchParams(location.search).has('demo');
+
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+                set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+let token = new URLSearchParams(location.search).get('t') || store.get('gm_token');
+if (token) store.set('gm_token', token);
+
+let summary = null;
+const cache = {};
+const ui = { view: 'new', q: '', status: '', auCity: '', auSort: 'ru', feedCity: '', feedDays: '7' };
+// «новое для вас»: всё, что найдено после прошлого визита на страницу «Новые находки»
+const prevVisit = Number(store.get('gm_feed_visit') || 0);
+let feedVisitSaved = false;
+
+// ---------- API ----------
+async function rpc(fn, args) {
+  if (DEMO) return demoRpc(fn, args);
+  const res = await fetch(`${CONFIG.SUPABASE_URL.replace(/\/+$/, '')}/rest/v1/rpc/${fn}`, {
+    method: 'POST',
+    headers: { apikey: CONFIG.SUPABASE_ANON_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_token: token, ...args }),
+  });
+  if (res.status === 401 || res.status === 403) { store.set('gm_token', ''); token = null; throw new Error('forbidden'); }
+  if (!res.ok) throw new Error(await res.text());
+  const t = await res.text();
+  return t ? JSON.parse(t) : null;
+}
+
+// ---------- helpers ----------
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const cityBy = (slug) => summary?.cities.find((c) => c.slug === slug);
+const fmtDate = (d) => d ? new Date(d).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }) : '';
+const ago = (d) => { if (!d) return 'ещё не было'; const h = (Date.now() - Date.parse(d)) / 36e5; return h < 1 ? 'только что' : h < 24 ? `${Math.round(h)} ч назад` : `${Math.round(h / 24)} дн назад`; };
+const mapsLink = (r) => r.maps_url || `https://www.google.com/maps/place/?q=place_id:${r.place_id}`;
+
+// ---------- Шаблоны первого сообщения: сообщение собирается из блоков ----------
+const CITY_IN = { 'nha-trang': 'в Нячанге', pattaya: 'в Паттайе', phuket: 'на Пхукете', 'da-nang': 'в Дананге', 'phu-quoc': 'на Фукуоке', hcmc: 'в Хошимине', hanoi: 'в Ханое' };
+const CITY_EN = { 'nha-trang': 'Nha Trang', pattaya: 'Pattaya', phuket: 'Phuket', 'da-nang': 'Da Nang', 'phu-quoc': 'Phu Quoc', hcmc: 'Ho Chi Minh City', hanoi: 'Hanoi' };
+const LOCAL_LANG = { VN: 'вьетнамском', TH: 'тайском' };
+const DEFAULT_TEMPLATES = {
+  intro: 'Здравствуйте! Меня зовут Андрей, компания «Ваш Рост» — помогаем русскоязычному бизнесу в Азии получать клиентов с Google и Яндекс Карт.',
+  food_hook_fresh: 'Увидел на Google Картах ваше новое заведение «{name}» {city_in} — поздравляю с открытием! Сейчас у вас {reviews_text}, а у пятёрки лидеров {city_in} — от {top_reviews} отзывов. Туристы выбирают по карте, и первые месяцы решают, окажетесь вы наверху выдачи или под конкурентами.',
+  food_hook_small: 'Нашёл «{name}» на Google Картах — {rating_phrase}. Но отзывов всего {reviews}, а у пятёрки лидеров {city_in} — от {top_reviews}, поэтому по запросам туристов карта чаще показывает их, а не вас.',
+  food_hook_existing: 'Нашёл «{name}» на Google Картах — {rating}★ и {reviews_text}, вы одно из самых заметных мест {city_in}. Но каждый месяц открываются новые заведения, и без постоянной работы с карточкой они постепенно сдвигают вас вниз в выдаче.',
+  realty_hook: 'Посмотрел «{name}» на Google Картах — {rating_phrase}. Русскоязычные клиенты, которые ищут жильё {city_in}, начинают с карт: «аренда квартир», «недвижимость {city}». Звонят тем, кто выше в выдаче и у кого свежие отзывы и фото объектов, — остальные эти обращения просто не видят.',
+  rental_hook: 'Посмотрел «{name}» на Google Картах — {rating_phrase}. Турист {city_in} открывает карту, ищет «аренда байков» и пишет первым трём компаниям в выдаче. Если вас там нет, клиент уходит к соседу, даже если у вас дешевле и байки лучше.',
+  travel_hook: 'Посмотрел «{name}» на Google Картах — {rating_phrase}. Русскоязычные туристы {city_in} ищут экскурсии прямо на карте: «экскурсии на русском», «турагентство». Бронируют у тех, кто в первых строках выдачи и у кого свежие отзывы, — до остальных они просто не доходят.',
+  med_hook: 'Посмотрел карточку «{name}» на Google Картах: {ru_reviews} из {sampled} последних отзывов — на русском. Значит, русскоязычные пациенты к вам уже идут. Но большинство из них ищут врача в Яндекс Картах и по-русски в Google, а там клиник {city_in} почти не видно — и эти пациенты уходят к тем, кого нашли первыми.',
+  block_bot: '🛵 Доставка. Большинство туристов не пользуются Grab: нужна местная карта или номер, всё на {local_lang} — и заказ просто не происходит. Мы делаем Telegram-бота с меню на русском, заказом и доставкой и привязываем его к вашей карточке в Google Картах: гость нажимает кнопку и заказывает в привычном Telegram. Так работают боты наших клиентов:\nhttps://t.me/JUMANJI_food_bot\nhttps://t.me/Oasis_Pattaya_bot',
+  block_site: '🌐 Сайт. У вашей карточки на Google Картах нет сайта — для Google это минус к доверию. Карточка с собственным сайтом получает позиции выше, чем конкуренты без него. Делаем сайты под ключ и привязываем к Google Картам, примеры:\nhttps://oasis-pattaya.com\nhttps://iconic-cafe.uz',
+  block_maps: '📍 Карты. Берём Google и Яндекс Карты на обслуживание: оптимизируем карточку под запросы {audience} с учётом сезона, публикуем новости и акции, пишем SEO-ответы на отзывы, оспариваем фейковый негатив. Google каждый день видит, что бизнес живой, и чаще показывает вас, а не конкурентов.',
+  block_ads: '📈 Реклама. Если нужен быстрый поток {audience} — настраиваем и ведём рекламу в поиске и на картах Google и Яндекса.',
+  cta: 'Сделаю бесплатный аудит карточки «{name}»: пришлю, что сейчас мешает подняться выше конкурентов и что исправить в первую очередь. Прислать?',
+  signature: '—\nАндрей, «Ваш Рост»\nTelegram: @izmaylov_th',
+  en_intro: 'Hello! My name is Andrei, «Vash Rost» agency — we help businesses in Asia get clients from Google Maps and Yandex Maps, especially Russian-speaking ones.',
+  en_med_hook: 'I looked at {name} on Google Maps: {ru_reviews} of the last {sampled} reviews are in Russian. Russian-speaking patients already come to you — but most of them search for a doctor on Yandex Maps and in Russian on Google, where clinics in {city_en} are barely visible. Those patients go to whoever they find first.',
+  en_block_site: '🌐 Website. Your Google Maps profile has no website — for Google that lowers trust. Profiles linked to their own website rank higher than competitors without one. We build websites and connect them to Google Maps, examples:\nhttps://oasis-pattaya.com\nhttps://iconic-cafe.uz',
+  en_block_maps: '📍 Maps. We take over Google Maps and Yandex Maps: profile optimisation for patients\' search queries, posts and offers, SEO replies to reviews, disputing fake negative reviews — in Russian and English.',
+  en_block_ads: '📈 Ads. For a fast flow of patients we set up and run search and maps ads on Google and Yandex.',
+  en_cta: 'I can do a free audit of the {name} profile and send you what is holding it back and what to fix first. Shall I send it?',
+  en_signature: '—\nAndrei, «Vash Rost»\nTelegram: @izmaylov_th',
+};
+const TEMPLATE_GROUPS = [
+  ['Начало и конец', { intro: 'Приветствие — кто мы', cta: 'Призыв в конце', signature: 'Подпись' }],
+  ['Заведения — первая фраза (выбирается автоматически)', {
+    food_hook_fresh: '🔥 Только открылись (≤5 отзывов)', food_hook_small: 'Работают, но отзывов втрое меньше, чем у пятёрки лидеров города',
+    food_hook_existing: 'Крупные, заметные места' }],
+  ['Клиники — первая фраза', { med_hook: 'Есть русские отзывы' }],
+  ['Недвижимость, аренда, турагентства — первая фраза', { realty_hook: '🏠 Агентства недвижимости', rental_hook: '🛵 Аренда байков и авто', travel_hook: '🧭 Турагентства' }],
+  ['Блоки «проблема → решение» (включаются галочками у каждого сообщения)', {
+    block_bot: '🛵 Telegram-бот с доставкой (только заведения)', block_site: '🌐 Сайт (по умолчанию — если у места нет сайта)',
+    block_maps: '📍 Обслуживание Google и Яндекс Карт', block_ads: '📈 Реклама в Google и Яндексе' }],
+  ['Клиники — английская версия', { en_intro: 'Приветствие', en_med_hook: 'Первая фраза', en_block_site: 'Сайт', en_block_maps: 'Карты', en_block_ads: 'Реклама', en_cta: 'Призыв', en_signature: 'Подпись' }],
+];
+let settings = {};
+const tpl = (k) => settings.templates?.[k] ?? DEFAULT_TEMPLATES[k];
+
+const plural = (n, one, few, many) => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? one : a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many; };
+
+/** Отзывы у 5-го по величине СНГ-заведения города: «у пятёрки лидеров — от N отзывов». */
+function topReviews(r) {
+  const seen = new Map();
+  for (const rows of Object.values(cache)) for (const x of rows)
+    if (x.vertical === 'food' && x.city === r.city && x.place_id !== r.place_id && x.segment === 'cis') seen.set(x.place_id, x.reviews || 0);
+  const sorted = [...seen.values()].sort((a, b) => b - a);
+  const fifth = sorted[Math.min(4, sorted.length - 1)] || 0;
+  return fifth >= 100 ? Math.floor(fifth / 100) * 100 : fifth;
+}
+
+function vars(r) {
+  const c = cityBy(r.city), n = r.reviews ?? 0;
+  return { name: r.name || '', city: c?.name || '', city_in: CITY_IN[r.city] || '', city_en: CITY_EN[r.city] || '',
+    cuisine: r.type_label || '', rating: r.rating ?? '—', reviews: n, top_reviews: topReviews(r).toLocaleString('ru-RU'),
+    rating_phrase: r.rating == null ? 'карточка уже есть'
+      : r.rating >= 4.5 ? `${r.rating}★, ${r.vertical === 'food' ? 'гостям' : 'клиентам'} у вас явно нравится`
+      : r.rating >= 4.0 ? `рейтинг ${r.rating}★`
+      : `рейтинг ${r.rating}★, и его можно поднять грамотной работой с отзывами`,
+    reviews_text: n ? `${n.toLocaleString('ru-RU')} ${plural(n, 'отзыв', 'отзыва', 'отзывов')}` : 'пока нет отзывов',
+    ru_reviews: r.ru_reviews ?? 0, sampled: r.reviews_sampled ?? 0, local_lang: LOCAL_LANG[c?.country] || 'местном языке',
+    audience: { food: 'туристов', medical: 'пациентов', realty: 'клиентов', rental: 'туристов', travel: 'туристов' }[r.vertical] || 'клиентов' };
+}
+const fillTemplate = (text, r) => { const v = vars(r); return text.replace(/\{(\w+)\}/g, (m, k) => (k in v ? String(v[k]) : m)); };
+
+const BLOCKS = [['bot', '🛵 Бот'], ['site', '🌐 Сайт'], ['maps', '📍 Карты'], ['ads', '📈 Реклама']];
+function defaultBlocks(r) {
+  const food = r.vertical === 'food';
+  return { bot: food, site: !r.website, maps: true, ads: !food };
+}
+
+function hookKey(r) {
+  if (r.vertical === 'realty') return 'realty_hook';
+  if (r.vertical === 'rental') return 'rental_hook';
+  if (r.vertical === 'travel') return 'travel_hook';
+  if (r.vertical !== 'food') return 'med_hook';
+  if (!r.is_baseline && (r.reviews ?? 0) <= FRESH_MAX) return 'food_hook_fresh';
+  const top = topReviews(r);
+  if ((r.reviews ?? 0) <= FRESH_MAX) return 'food_hook_fresh';
+  return top && (r.reviews ?? 0) * 3 < top ? 'food_hook_small' : 'food_hook_existing';
+}
+
+function buildMessage(r, lang = 'ru', blocks = defaultBlocks(r)) {
+  const en = lang === 'en' && r.vertical === 'medical';
+  const k = (key) => (en ? `en_${key}` : key);
+  const parts = [tpl(k('intro')), tpl(en ? 'en_med_hook' : hookKey(r))];
+  for (const [b] of BLOCKS) if (blocks[b] && !(b === 'bot' && (r.vertical !== 'food' || en))) parts.push(tpl(k(`block_${b}`)));
+  parts.push(tpl(k('cta')), tpl(k('signature')));
+  return fillTemplate(parts.filter(Boolean).join('\n\n'), r);
+}
+
+const CHANNEL_LABEL = { whatsapp: 'WhatsApp', zalo: 'Zalo', copy: 'скопировано', call: 'звонок' };
+
+function contacts(r, country) {
+  const out = [];
+  const digits = (r.phone_intl || '').replace(/\D/g, '');
+  if (r.phone_intl) out.push(`<a href="tel:+${digits}">📞 ${esc(r.phone_intl)}</a>`);
+  if (digits) out.push(`<a href="https://wa.me/${digits}" target="_blank">WhatsApp</a>`);
+  if (digits && country === 'VN') out.push(`<a href="https://zalo.me/${digits}" target="_blank">Zalo</a>`);
+  if (r.website) out.push(`<a href="${esc(r.website)}" target="_blank">🌐 Сайт</a>`);
+  out.push(`<a href="${esc(mapsLink(r))}" target="_blank">🗺 Карта</a>`);
+  return out.join('');
+}
+
+function cardHtml(r, opts = {}) {
+  const c = cityBy(r.city);
+  const fresh = r.vertical === 'food' && !r.is_baseline && (r.reviews ?? 0) <= FRESH_MAX;
+  const tags = [];
+  if (r.segment === 'cis') tags.push('<span class="tag t-cis">СНГ</span>');
+  if (r.segment === 'maybe') tags.push('<span class="tag t-maybe">возможно</span>');
+  if (r.segment === 'cis' && r.vertical !== 'food') tags.splice(tags.indexOf('<span class="tag t-cis">СНГ</span>'), 1, '<span class="tag t-ru">🇷🇺 русскоязычная</span>');
+  if (r.segment === 'ru_audience') tags.push(`<span class="tag t-ru">🇷🇺 ${r.ru_reviews}/${r.reviews_sampled} отзывов</span>`);
+  if (fresh) tags.push('<span class="tag t-fresh">🔥 только открылись</span>');
+  if (!r.website) tags.push('<span class="tag t-nosite">без сайта</span>');
+  if (r.business_status === 'CLOSED_PERMANENTLY') tags.push('<span class="tag t-closed">закрыто</span>');
+  if (opts.unseen) tags.unshift('<span class="tag t-unseen">● новое для вас</span>');
+  return `<div class="card${opts.unseen ? ' unseen' : ''}" data-id="${esc(r.place_id)}">
+    <div>
+      <h3><a href="${esc(mapsLink(r))}" target="_blank">${esc(r.name || 'Без названия')}</a>${tags.join('')}</h3>
+      <div class="meta">
+        ${r.type_label ? `<span>${esc(r.type_label)}</span>` : ''}
+        <span>⭐ ${r.rating ?? '—'} · ${r.reviews ?? 0} отзывов</span>
+        ${opts.showCity && c ? `<span>📍 ${esc(c.name)}</span>` : ''}
+        ${r.address ? `<span>${esc(r.address)}</span>` : ''}
+      </div>
+      ${r.segment_reason ? `<div class="why"><b>Почему:</b> ${esc(r.segment_reason)}</div>` : ''}
+      <div class="contacts">${contacts(r, c?.country)}</div>
+      <div class="outreach" hidden></div>
+    </div>
+    <div class="side">
+      ${r.phone_intl ? `<button class="btn write${r.outreach_at ? ' done' : ''}" data-act="write">${r.outreach_at
+        ? `✓ Написал ${fmtDate(r.outreach_at)}${r.outreach_channel ? ' · ' + esc(CHANNEL_LABEL[r.outreach_channel] || r.outreach_channel) : ''}`
+        : '✉️ Написать'}</button>` : '<div class="nophone">нет телефона — только через сайт/карту</div>'}
+      <select data-f="status">${STATUSES.map(([v, l]) => `<option value="${v}"${r.lead_status === v ? ' selected' : ''}>${l}</option>`).join('')}</select>
+      <input data-f="notes" placeholder="Заметка…" value="${esc(r.notes || '')}">
+      <div class="saved"></div>
+      <div class="date">${r.is_baseline ? 'было на карте до старта' : 'найдено ' + fmtDate(r.first_seen)}</div>
+    </div>
+  </div>`;
+}
+
+function applyFilters(rows) {
+  const q = ui.q.trim().toLowerCase();
+  return rows.filter((r) => (!ui.status || r.lead_status === ui.status)
+    && (!q || [r.name, r.address, r.type_label, r.segment_reason, r.notes].join(' ').toLowerCase().includes(q)));
+}
+
+function toolbar(extra = '') {
+  return `<div class="bar">${extra}
+    <input type="search" id="q" placeholder="Поиск по названию, адресу, заметкам" value="${esc(ui.q)}">
+    <select id="st"><option value="">Все статусы</option>${STATUSES.map(([v, l]) => `<option value="${v}"${ui.status === v ? ' selected' : ''}>${l}</option>`).join('')}</select>
+    <button class="btn" id="csv">⬇ CSV</button></div>`;
+}
+
+// ---------- страницы ----------
+async function load(key, fn) { return cache[key] ??= await fn(); }
+
+async function cityPage(slug) {
+  const c = cityBy(slug);
+  if (!c) return renderEmpty('Город не найден');
+  const rows = await load(`food:${slug}`, () => rpc('gm_dashboard', { p_vertical: 'food', p_city: slug }));
+  const views = {
+    new: rows.filter((r) => !r.is_baseline),
+    all: rows.filter((r) => r.segment === 'cis'),
+    maybe: rows.filter((r) => r.segment === 'maybe'),
+  };
+  if (ui.view === 'new' && !views.new.length && !ui.viewChosen) ui.view = 'all';   // новых пока нет — показываем всех
+  const shown = applyFilters(views[ui.view]);
+  const segBtn = (v, l) => `<button data-view="${v}" class="${ui.view === v ? 'on' : ''}">${l} · ${views[v].length}</button>`;
+  app.innerHTML = `
+    <h1>${esc(c.name)}</h1>
+    <div class="sub">Русская, украинская, узбекская, кавказская и восточная кухня · обновлено ${ago(c.last_run)}${c.baseline_left > 0 ? ` · идёт набор базы, уведомления начнутся через ${c.baseline_left} прогон(а)` : ''}</div>
+    <div class="stats">
+      <div class="stat"><b>${views.new.filter((r) => Date.now() - Date.parse(r.first_seen) < 7 * 864e5).length}</b><small>новых за 7 дней</small></div>
+      <div class="stat"><b>${views.new.length}</b><small>новых с начала мониторинга</small></div>
+      <div class="stat"><b>${views.all.length}</b><small>всего СНГ-заведений</small></div>
+      <div class="stat"><b>${rows.filter((r) => r.lead_status === 'client').length}</b><small>стали клиентами</small></div>
+    </div>
+    ${toolbar(`<div class="seg">${segBtn('new', 'Новые')}${segBtn('all', 'Все СНГ')}${segBtn('maybe', 'Возможно')}</div>`)}
+    <div class="list">${shown.length ? shown.map((r) => cardHtml(r)).join('') : emptyText()}</div>`;
+  bind(shown, `${c.slug}-${ui.view}`);
+}
+
+async function audiencePage(key) {
+  const a = AUDIENCE[key];
+  const company = a.kind === 'company';
+  const all = await load(`aud:${key}`, () => rpc('gm_dashboard', { p_vertical: key, p_city: null }));
+  ui.auSeg ||= 'cis';
+  const rows = company ? all.filter((r) => r.segment === ui.auSeg) : all.filter((r) => r.segment === 'ru_audience');
+  let shown = applyFilters(rows.filter((r) => !ui.auCity || r.city === ui.auCity));
+  if (company && ui.auSort === 'ru') ui.auSort = 'reviews';
+  const sorters = { ru: (x, y) => (y.ru_reviews - x.ru_reviews) || ((y.reviews ?? 0) - (x.reviews ?? 0)),
+                    reviews: (x, y) => (y.reviews ?? 0) - (x.reviews ?? 0), rating: (x, y) => (y.rating ?? 0) - (x.rating ?? 0) };
+  shown = shown.sort(sorters[ui.auSort]);
+  const chip = (slug, name) => { const n = rows.filter((r) => !slug || r.city === slug).length;
+    return `<button data-aucity="${slug}" class="${ui.auCity === slug ? 'on' : ''}">${esc(name)} · ${n}</button>`; };
+  const auCities = summary.cities.filter((c) => rows.some((r) => r.city === c.slug));
+  const where = auCities.length === 1 ? ` — ${esc(auCities[0].name)}` : '';
+  app.innerHTML = `
+    ${company ? `<h1>${a.icon} ${esc(a.name)} — русскоязычные компании</h1>
+    <div class="sub">Компании, которые работают с русскоязычными клиентами: русское название или описание, сайт на русском, или русские отзывы. «Возможно» — нашлись по русским запросам, но явных признаков нет.</div>
+    <div class="bar"><div class="seg"><button data-auseg="cis" class="${ui.auSeg === 'cis' ? 'on' : ''}">Русскоязычные · ${all.filter((r) => r.segment === 'cis').length}</button><button data-auseg="maybe" class="${ui.auSeg === 'maybe' ? 'on' : ''}">Возможно · ${all.filter((r) => r.segment === 'maybe').length}</button></div></div>`
+    : `<h1>${a.icon} ${esc(a.name)} с русскоязычными клиентами${where}</h1>
+    <div class="sub">Места, где среди отзывов Google заметная доля на русском и других языках СНГ — их клиенты русскоязычные туристы, им можно предложить продвижение. Проверяются 8 самых релевантных отзывов, поэтому «3/8» — это оценка по выборке.</div>`}
+    ${auCities.length > 1 ? `<div class="bar"><div class="seg">${chip('', 'Все города')}${auCities.map((c) => chip(c.slug, c.name)).join('')}</div></div>` : ''}
+    ${toolbar(`<select id="ausort">${company ? '' : `<option value="ru"${ui.auSort === 'ru' ? ' selected' : ''}>Больше русских отзывов</option>`}<option value="reviews"${ui.auSort === 'reviews' ? ' selected' : ''}>Больше отзывов всего</option><option value="rating"${ui.auSort === 'rating' ? ' selected' : ''}>Выше рейтинг</option></select>`)}
+    <div class="list">${shown.length ? shown.map((r) => cardHtml(r, { showCity: true })).join('') : emptyText(`Пока пусто — запусти <code>node scanner.mjs --audience ${key}</code>`)}</div>`;
+  app.querySelectorAll('[data-auseg]').forEach((b) => b.onclick = () => { ui.auSeg = b.dataset.auseg; route(); });
+  bind(shown, `${key}-${ui.auCity || 'all'}`);
+}
+
+// ---------- Новые находки: все города одной лентой ----------
+function dayLabel(d) {
+  const day = new Date(d); day.setHours(0, 0, 0, 0);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const diff = Math.round((today - day) / 864e5);
+  if (diff === 0) return 'Сегодня';
+  if (diff === 1) return 'Вчера';
+  return day.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+async function feedPage() {
+  const all = (await load('food:all', () => rpc('gm_dashboard', { p_vertical: 'food', p_city: null })))
+    .filter((r) => !r.is_baseline);
+  const days = Number(ui.feedDays);
+  const inRange = all.filter((r) => !days || Date.now() - Date.parse(r.first_seen) < days * 864e5);
+  const shown = applyFilters(inRange.filter((r) => !ui.feedCity || r.city === ui.feedCity))
+    .sort((a, b) => Date.parse(b.first_seen) - Date.parse(a.first_seen));
+  const unseenCount = inRange.filter((r) => Date.parse(r.first_seen) > prevVisit).length;
+  const cities = summary.cities.filter((c) => c.active);
+  const chip = (slug, name) => `<button data-feedcity="${slug}" class="${ui.feedCity === slug ? 'on' : ''}">${esc(name)} · ${inRange.filter((r) => !slug || r.city === slug).length}</button>`;
+  const rangeBtn = (v, l) => `<button data-days="${v}" class="${ui.feedDays === v ? 'on' : ''}">${l}</button>`;
+
+  let html = '', lastDay = '';
+  for (const r of shown) {
+    const d = dayLabel(r.first_seen);
+    if (d !== lastDay) { html += `<div class="day">${esc(d)}</div>`; lastDay = d; }
+    html += cardHtml(r, { showCity: true, unseen: prevVisit && Date.parse(r.first_seen) > prevVisit });
+  }
+  const baselineLeft = cities.filter((c) => c.baseline_left > 0);
+  app.innerHTML = `
+    <h1>🆕 Новые находки</h1>
+    <div class="sub">Заведения СНГ-формата, которые появились в выдаче после набора базы, по всем городам${prevVisit ? ` · с прошлого визита: <b>${unseenCount}</b>` : ''}${baselineLeft.length ? ` · ещё набирают базу: ${baselineLeft.map((c) => esc(c.name)).join(', ')}` : ''}</div>
+    <div class="bar"><div class="seg">${rangeBtn('1', 'Сутки')}${rangeBtn('7', '7 дней')}${rangeBtn('30', '30 дней')}${rangeBtn('0', 'Всё время')}</div></div>
+    <div class="bar"><div class="seg wrap-seg">${chip('', 'Все города')}${cities.map((c) => chip(c.slug, c.name)).join('')}</div></div>
+    ${toolbar()}
+    <div class="list">${shown.length ? html : emptyText(baselineLeft.length === cities.length
+      ? 'Идёт набор базы — первые новые заведения появятся после нескольких прогонов. Все уже существующие СНГ-заведения смотри на страницах городов, вкладка «Все СНГ».'
+      : 'За выбранный период новых заведений нет')}</div>`;
+  app.querySelectorAll('[data-feedcity]').forEach((b) => b.onclick = () => { ui.feedCity = b.dataset.feedcity; route(); });
+  app.querySelectorAll('[data-days]').forEach((b) => b.onclick = () => { ui.feedDays = b.dataset.days; route(); });
+  bind(shown, `new-${ui.feedCity || 'all'}-${ui.feedDays}d`);
+  if (!feedVisitSaved) { store.set('gm_feed_visit', String(Date.now())); feedVisitSaved = true; }
+}
+
+const emptyText = (t = 'Здесь пока ничего нет') => `<div class="empty">${t}</div>`;
+const renderEmpty = (t) => { app.innerHTML = emptyText(t); };
+
+function bind(shown, csvName) {
+  const rerender = () => route();
+  app.querySelectorAll('[data-view]').forEach((b) => b.onclick = () => { ui.view = b.dataset.view; ui.viewChosen = true; rerender(); });
+  app.querySelectorAll('[data-aucity]').forEach((b) => b.onclick = () => { ui.auCity = b.dataset.aucity; rerender(); });
+  const q = app.querySelector('#q');
+  q.oninput = () => { ui.q = q.value; clearTimeout(q._t); q._t = setTimeout(() => { rerender(); const n = app.querySelector('#q'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
+  app.querySelector('#st').onchange = (e) => { ui.status = e.target.value; rerender(); };
+  const so = app.querySelector('#ausort'); if (so) so.onchange = (e) => { ui.auSort = e.target.value; rerender(); };
+  app.querySelector('#csv').onclick = () => downloadCsv(shown, csvName);
+  app.querySelectorAll('.card').forEach((el) => {
+    const save = async () => {
+      const id = el.dataset.id;
+      const status = el.querySelector('[data-f=status]').value, notes = el.querySelector('[data-f=notes]').value;
+      const msg = el.querySelector('.saved');
+      try {
+        await rpc('gm_set_lead', { p_place_id: id, p_status: status, p_notes: notes });
+        Object.values(cache).forEach((rows) => rows.forEach((r) => { if (r.place_id === id) { r.lead_status = status; r.notes = notes; } }));
+        msg.textContent = 'сохранено ✓'; setTimeout(() => (msg.textContent = ''), 1500);
+      } catch (e) { msg.textContent = 'ошибка сохранения'; }
+    };
+    el.querySelector('[data-f=status]').onchange = save;
+    el.querySelector('[data-f=notes]').onchange = save;
+    const wb = el.querySelector('[data-act=write]');
+    if (wb) wb.onclick = () => toggleOutreach(el);
+  });
+}
+
+function findRow(id) {
+  for (const rows of Object.values(cache)) { const r = rows.find((x) => x.place_id === id); if (r) return r; }
+  return null;
+}
+
+function toggleOutreach(el, lang, blocks) {
+  const panel = el.querySelector('.outreach');
+  const r = findRow(el.dataset.id);
+  if (!r) return;
+  if (!panel.hidden && !lang && !blocks) { panel.hidden = true; return; }
+  const c = cityBy(r.city);
+  const digits = (r.phone_intl || '').replace(/\D/g, '');
+  const l = lang || panel.dataset.lang || 'ru';
+  const bl = blocks || defaultBlocks(r);
+  panel.dataset.lang = l;
+  const avail = BLOCKS.filter(([b]) => !(b === 'bot' && r.vertical !== 'food'));
+  panel.innerHTML = `
+    <div class="obar">
+      ${r.vertical === 'medical' ? `<div class="seg langs"><button data-lang="ru" class="${l === 'ru' ? 'on' : ''}">RU</button><button data-lang="en" class="${l === 'en' ? 'on' : ''}">EN</button></div>` : ''}
+      <div class="blocks">${avail.map(([b, label]) => `<label><input type="checkbox" data-b="${b}"${bl[b] ? ' checked' : ''}> ${label}</label>`).join('')}</div>
+    </div>
+    <textarea rows="14">${esc(buildMessage(r, l, bl))}</textarea>
+    <div class="send">
+      <button class="btn send-wa" data-ch="whatsapp">Отправить в WhatsApp</button>
+      ${c?.country === 'VN' ? '<button class="btn" data-ch="zalo">Скопировать и открыть Zalo</button>' : ''}
+      <button class="btn" data-ch="copy">Скопировать</button>
+    </div>
+    <div class="hint">Галочки добавляют и убирают блоки. Текст можно поправить перед отправкой. Шаблоны блоков — на странице «⚙️ Шаблоны».</div>`;
+  panel.querySelectorAll('[data-b]').forEach((x) => x.onchange = () => {
+    const nb = { ...bl }; panel.querySelectorAll('[data-b]').forEach((y) => { nb[y.dataset.b] = y.checked; });
+    toggleOutreach(el, l, nb);
+  });
+  panel.hidden = false;
+  panel.querySelectorAll('[data-lang]').forEach((b) => b.onclick = () => toggleOutreach(el, b.dataset.lang, bl));
+  panel.querySelectorAll('[data-ch]').forEach((b) => b.onclick = async () => {
+    const text = panel.querySelector('textarea').value;
+    const ch = b.dataset.ch;
+    if (ch === 'whatsapp') window.open(`https://wa.me/${digits}?text=${encodeURIComponent(text)}`, '_blank');
+    else {
+      try { await navigator.clipboard.writeText(text); } catch { panel.querySelector('textarea').select(); document.execCommand('copy'); }
+      if (ch === 'zalo') window.open(`https://zalo.me/${digits}`, '_blank');
+      b.textContent = 'Скопировано ✓';
+    }
+    try {
+      await rpc('gm_mark_outreach', { p_place_id: r.place_id, p_channel: ch });
+      Object.values(cache).forEach((rows) => rows.forEach((x) => { if (x.place_id === r.place_id) {
+        x.outreach_at ??= new Date().toISOString(); x.outreach_channel = ch; if (x.lead_status === 'new') x.lead_status = 'contacted'; } }));
+      const wb = el.querySelector('[data-act=write]');
+      wb.classList.add('done'); wb.textContent = `✓ Написал ${fmtDate(r.outreach_at)} · ${CHANNEL_LABEL[ch]}`;
+      el.querySelector('[data-f=status]').value = r.lead_status;
+    } catch (e) { el.querySelector('.saved').textContent = 'не удалось отметить отправку'; }
+  });
+}
+
+// ---------- Шаблоны ----------
+function settingsPage() {
+  app.innerHTML = `
+    <h1>⚙️ Шаблоны сообщений</h1>
+    <div class="sub">Сообщение собирается так: <b>приветствие → первая фраза (проблема) → блоки «проблема → решение» → призыв → подпись</b>. Первая фраза выбирается автоматически по данным заведения, блоки включаются галочками у каждого сообщения.<br>
+    Подставляются: <code>{name}</code> название, <code>{city_in}</code> «в Нячанге», <code>{city_en}</code>, <code>{rating}</code>, <code>{rating_phrase}</code> фраза по рейтингу, <code>{reviews}</code>, <code>{reviews_text}</code> «3 отзыва», <code>{top_reviews}</code> отзывов у 5-го места в городе, <code>{ru_reviews}</code>/<code>{sampled}</code> русских отзывов из проверенных, <code>{local_lang}</code> «вьетнамском/тайском», <code>{audience}</code> «туристов/пациентов».</div>
+    ${TEMPLATE_GROUPS.map(([title, keys]) => `<h3 class="tplgroup">${esc(title)}</h3><div class="list">${Object.entries(keys).map(([k, label]) => `
+      <div class="tplbox"><label>${esc(label)}</label>
+        <textarea data-k="${k}" rows="${Math.min(9, Math.max(2, Math.ceil(tpl(k).length / 95) + (tpl(k).match(/\n/g) || []).length))}">${esc(tpl(k))}</textarea></div>`).join('')}</div>`).join('')}
+    <div class="bar" style="margin-top:14px"><button class="btn primary" id="saveTpl">Сохранить</button><button class="btn" id="resetTpl">Вернуть стандартные</button><span class="saved" id="tplMsg"></span></div>`;
+  app.querySelector('#saveTpl').onclick = async () => {
+    const t = {}; app.querySelectorAll('textarea[data-k]').forEach((x) => { t[x.dataset.k] = x.value; });
+    try { await rpc('gm_set_setting', { p_key: 'templates', p_value: t }); settings.templates = t; app.querySelector('#tplMsg').textContent = 'сохранено ✓'; }
+    catch (e) { app.querySelector('#tplMsg').textContent = 'ошибка сохранения'; }
+  };
+  app.querySelector('#resetTpl').onclick = () => { app.querySelectorAll('textarea[data-k]').forEach((x) => { x.value = DEFAULT_TEMPLATES[x.dataset.k]; }); };
+}
+
+function downloadCsv(rows, name) {
+  const cols = ['name', 'city', 'segment', 'type_label', 'rating', 'reviews', 'ru_reviews', 'phone_intl', 'website', 'address', 'maps_url', 'segment_reason', 'lead_status', 'notes', 'first_seen'];
+  const cell = (v) => `"${String(Array.isArray(v) ? v.join(', ') : v ?? '').replace(/"/g, '""')}"`;
+  const csv = '﻿' + [cols.join(';'), ...rows.map((r) => cols.map((c) => cell(r[c])).join(';'))].join('\n');
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })), download: `leads-${name}.csv` });
+  a.click();
+}
+
+// ---------- навигация ----------
+function renderNav(active) {
+  const cities = summary.cities.filter((c) => c.active);
+  const aud = Object.entries(AUDIENCE).filter(([k, a]) => a.always || summary.audience?.[k]);
+  const new7 = cities.reduce((s, c) => s + (c.new7 || 0), 0);
+  const foodTotal = cities.reduce((s, c) => s + (c.cis || 0), 0);
+  const foodActive = active === 'new' || cities.some((c) => c.slug === active);
+  // 1-й ряд — сферы бизнеса
+  const foodHref = new7 ? '#new' : `#${cities[0]?.slug || 'new'}`;
+  nav.innerHTML = `<a href="${foodHref}" class="${foodActive ? 'on' : ''}">🍽 Рестораны и кафе<span class="badge${new7 ? ' hot' : ''}">${new7 ? '+' + new7 : foodTotal}</span></a>`
+    + aud.map(([k, a]) => `<a href="#${k}" class="${active === k ? 'on' : ''}">${a.icon} ${a.name}<span class="badge">${summary.audience?.[k] || 0}</span></a>`).join('')
+    + `<span class="sep"></span><a href="#settings" class="${active === 'settings' ? 'on' : ''}">⚙️ Шаблоны</a>`;
+  // 2-й ряд — города (для ресторанов)
+  subnav.hidden = !foodActive;
+  if (foodActive) subnav.innerHTML = `<span class="lbl">Города:</span>`
+    + `<a href="#new" class="${active === 'new' ? 'on' : ''}">🆕 Новые находки${new7 ? `<span class="badge hot">${new7}</span>` : ''}</a>`
+    + cities.map((c) => `<a href="#${c.slug}" class="${active === c.slug ? 'on' : ''}">${esc(c.name)}${c.new7 ? `<span class="badge hot">+${c.new7}</span>` : `<span class="badge">${c.cis}</span>`}</a>`).join('');
+}
+
+async function route() {
+  const page = location.hash.slice(1) || 'new';
+  renderNav(page);
+  try {
+    if (page === 'new') await feedPage();
+    else if (page === 'settings') settingsPage();
+    else if (AUDIENCE[page]) await audiencePage(page);
+    else await cityPage(page);
+  } catch (e) { handleError(e); }
+}
+
+function loginScreen(msg = '') {
+  nav.innerHTML = ''; subnav.hidden = true;
+  app.innerHTML = `<div class="login"><h2 style="margin-top:0">Вход</h2>
+    <div class="sub">Вставь токен из таблицы <code>gm_dashboard_tokens</code>. ${msg}</div>
+    <input id="tok" placeholder="токен"><button class="btn" id="go">Войти</button></div>`;
+  app.querySelector('#go').onclick = () => { token = app.querySelector('#tok').value.trim(); store.set('gm_token', token); start(); };
+}
+
+function handleError(e) {
+  if (String(e.message).includes('forbidden')) return loginScreen('Токен не подошёл.');
+  app.innerHTML = emptyText('Ошибка загрузки: ' + esc(e.message).slice(0, 300));
+}
+
+async function start() {
+  document.getElementById('demo').hidden = !DEMO;
+  if (!DEMO && !token) return loginScreen();
+  try {
+    [summary, settings] = await Promise.all([rpc('gm_dashboard_summary', {}), rpc('gm_get_settings', {})]);
+    settings ||= {};
+  } catch (e) { return handleError(e); }
+  for (const k in cache) delete cache[k];
+  route();
+}
+window.addEventListener('hashchange', () => { ui.view = 'new'; ui.viewChosen = false; ui.q = ''; ui.status = ''; ui.auCity = ''; ui.auSeg = 'cis'; route(); });
+
+// ---------- демо-данные (когда CONFIG не заполнен или ?demo) ----------
+function demoRpc(fn, args) {
+  const cities = [['nha-trang', 'Нячанг', 'VN'], ['pattaya', 'Паттайя', 'TH'], ['phuket', 'Пхукет', 'TH'], ['da-nang', 'Дананг', 'VN'], ['phu-quoc', 'Фукуок', 'VN'], ['hcmc', 'Хошимин', 'VN']];
+  window._demo ??= (() => {
+    const food = [], med = [];
+    const names = [['Чайхана Самарканд', 'Узбекский ресторан', 'кириллица в названии'], ['Khinkali House', 'Ресторан', 'в названии: «Khinkali»'],
+      ['Navat', 'Ресторан', 'в меню/отзывах: плов, манты, самса'], ['Пельменная №1', 'Кафе', 'кириллица в названии'], ['Ararat Grill', 'Гриль-бар', 'в названии: «Ararat»'],
+      ['Istanbul Kebab', 'Турецкий ресторан', 'тип: turkish_restaurant'], ['Bếp Nhà', 'Вьетнамский ресторан', 'отзывов на русском: 3 из 8'], ['Cloud Lounge', 'Кальянная', 'тип: hookah_bar'],
+      ['Борщ & Сало', 'Украинский ресторан', 'тип: ukrainian_restaurant'], ['Shawarma Time', 'Шаурма', 'тип: shawarma_restaurant'], ['Mama Café', 'Русский ресторан', 'тип: russian_restaurant']];
+    const clinics = ['Smile Dental', 'International Clinic', 'Dr. Lee Dentistry', 'Vinmec Hospital', 'Family Medical Practice', 'Bangkok Hospital', 'Royal Dental'];
+    let n = 0;
+    for (const [slug, , country] of cities) {
+      names.forEach(([name, type, why], i) => {
+        if ((i + slug.length) % 3 === 0) return;
+        const isNew = i % 2 === 0;
+        food.push({ place_id: `f${n++}`, city: slug, vertical: 'food', segment: why.startsWith('тип: hookah') ? 'maybe' : 'cis', segment_reason: why,
+          name, type_label: type, rating: (4 + (i % 10) / 10).toFixed(1), reviews: isNew ? i % 6 : 40 + i * 13,
+          phone_intl: country === 'VN' ? `+84 90 ${100 + i} ${20 + n} 55` : `+66 81 ${200 + i} ${30 + n}`, website: i % 3 ? null : 'https://example.com',
+          maps_url: null, address: `${10 + i} Main St, ${slug}`, is_baseline: !isNew, first_seen: new Date(Date.now() - (i % 9) * 864e5).toISOString(),
+          lead_status: i === 4 ? 'client' : i === 2 ? 'contacted' : 'new', notes: i === 2 ? 'написал в Zalo' : '', business_status: 'OPERATIONAL' });
+      });
+      if (slug === 'nha-trang') clinics.forEach((name, i) => {
+        med.push({ place_id: `m${n++}`, city: slug, vertical: 'medical', segment: 'ru_audience', segment_reason: `отзывов на русском: ${2 + (i % 4)} из 8`,
+          name, type_label: i % 2 ? 'Стоматологическая клиника' : 'Медицинский центр', rating: (4.3 + (i % 7) / 10).toFixed(1), reviews: 80 + i * 57,
+          ru_reviews: 2 + (i % 4), reviews_sampled: 8, phone_intl: country === 'VN' ? `+84 258 ${300 + i} ${100 + n}` : `+66 38 ${400 + i} ${200 + n}`,
+          website: 'https://example.com', address: `${i + 3} Clinic Rd`, is_baseline: true, first_seen: new Date().toISOString(), lead_status: 'new', notes: '' });
+      });
+    }
+    return { food, med };
+  })();
+  const D = window._demo;
+  if (fn === 'gm_dashboard_summary') return { cities: cities.map(([slug, name, country]) => ({ slug, name, country, active: true, baseline_left: 0,
+    cis: D.food.filter((r) => r.city === slug && r.segment === 'cis').length,
+    new7: D.food.filter((r) => r.city === slug && !r.is_baseline).length, last_run: new Date(Date.now() - 5 * 36e5).toISOString() })),
+    audience: { medical: D.med.length } };
+  if (fn === 'gm_dashboard') return (args.p_vertical === 'food' ? D.food : D.med).filter((r) => !args.p_city || r.city === args.p_city);
+  return null;
+}
+
+start();
+</script>
+</body>
+</html>
