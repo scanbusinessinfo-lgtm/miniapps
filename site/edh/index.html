@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Every Day Holiday</title>
+<meta name="description" content="Every Day Holiday, a gentlemen's club on Walking Street, Pattaya. Parties, private events, banquets, birthdays, weddings, club hire and hotel rooms.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Unbounded:wght@500;700;800;900&family=Exo+2:wght@500;600;700&family=Kaushan+Script&family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Every Day Holiday · Gentlemen's Club, Walking Street Pattaya">
+<meta property="og:description" content="Parties, private events, banquets, weddings, club hire and hotel rooms on Walking Street.">
+<meta property="og:url" content="https://YOUR-DOMAIN/">
+<meta property="og:image" content="https://YOUR-DOMAIN/og.jpg">
+<link rel="canonical" href="https://YOUR-DOMAIN/">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": ["NightClub", "BarOrPub"], "name": "Every Day Holiday", "description": "Gentlemen's club on Walking Street, Pattaya: parties, private events, banquets, birthdays, business meetings, weddings, club hire and hotel rooms.", "address": {"@type": "PostalAddress", "streetAddress": "Walking Street", "addressLocality": "Pattaya", "addressRegion": "Chon Buri", "postalCode": "20150", "addressCountry": "TH"}, "geo": {"@type": "GeoCoordinates", "latitude": 12.926092, "longitude": 100.873444}, "hasMap": "https://maps.app.goo.gl/JoXtHp7SqruJgZxGA", "telephone": "+66000000000", "availableLanguage": ["en", "ru", "kk", "ko"], "url": "https://YOUR-DOMAIN/", "sameAs": ["https://instagram.com/everydayholiday", "https://facebook.com/everydayholiday"]}</script>
+<style>
+/* Layout: a violet dance floor at night. Condensed poster type, one brush-script signature,
+   a disco ball whose beams sweep the whole page as you scroll; the live feed is a masonry wall. */
+:root {
+  --bg: #170936;            /* deep violet night */
+  --bg-2: #210f4a;          /* raised band */
+  --bg-3: #2c1660;          /* tiles */
+  --ink: #f8f4ff;
+  --ink-dim: #c7b9ea;
+  --pink: #ff3f8e;          /* signature neon */
+  --orange: #ff9a55;        /* script gradient end */
+  --cyan: #63e6ff;          /* second beam colour */
+  --line: rgba(199,185,234,.2);
+  --font-display: "Unbounded", "Arial Black", "Segoe UI", sans-serif;
+  --font-ui: "Exo 2", "Segoe UI", system-ui, sans-serif;
+  --chrome: linear-gradient(180deg, #ffffff 0%, #e9eeff 34%, #9aa3c4 50%, #5d6690 53%, #dfe5fb 66%, #ffffff 100%);
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-script: "Kaushan Script", "Brush Script MT", cursive;
+  --wrap: 1180px;
+  --gut-l: max(16px, env(safe-area-inset-left, 0px));
+  --gut-r: max(16px, env(safe-area-inset-right, 0px));
+  color-scheme: dark;
+}
+:lang(ko) { --font-display: "Black Han Sans", "Noto Sans KR", sans-serif; --font-ui: "Noto Sans KR", "Exo 2", sans-serif; --font-body: "Noto Sans KR", "Inter", system-ui, sans-serif; }
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--bg); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding-left: var(--gut-l); padding-right: var(--gut-r); }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 800; line-height: 1.02; margin: 0; text-transform: uppercase; text-wrap: balance; }
+h2 { font-size: clamp(30px, 4.6vw, 58px); letter-spacing: .01em; background: var(--chrome); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 2px 14px rgba(120,150,255,.25)); }
+h3 { font-size: 18px; font-weight: 700; letter-spacing: .04em; }
+p { margin: 0; }
+.kicker { font-family: var(--font-ui); font-size: 14px; font-weight: 700; letter-spacing: .42em; text-transform: uppercase; color: var(--pink); }
+.script { font-family: var(--font-script); text-transform: none; font-weight: 400; background: linear-gradient(95deg, var(--pink), var(--orange)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 24px; font: 700 14px/1 var(--font-ui); letter-spacing: .2em; text-transform: uppercase; text-decoration: none; color: var(--ink); border: 1px solid rgba(248,244,255,.5); background: transparent; cursor: pointer; transition: background .25s, border-color .25s, box-shadow .25s, transform .25s; }
+.btn:hover { border-color: var(--pink); box-shadow: 0 0 24px rgba(255,63,142,.35); transform: translateY(-1px); }
+.btn.hot { background: linear-gradient(95deg, var(--pink), #c63cff); border-color: transparent; }
+.btn.hot:hover { box-shadow: 0 0 32px rgba(255,63,142,.55); }
+
+/* beams canvas */
+#beams { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 30; pointer-events: none; mix-blend-mode: screen; }
+
+/* header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: rgba(23,9,54,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 24px; min-height: 72px; }
+.logo { display: grid; line-height: 1; text-decoration: none; flex: none; }
+.logo .chrome { font-family: "Unbounded", sans-serif; font-weight: 900; font-size: 19px; letter-spacing: .02em; background: var(--chrome); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.logo small { font-family: "Exo 2", sans-serif; font-weight: 600; font-size: 10px; letter-spacing: .52em; color: var(--ink-dim); margin-top: 3px; }
+.nav { display: flex; gap: 26px; margin-left: auto; font-family: var(--font-ui); font-weight: 600; font-size: 14px; letter-spacing: .2em; text-transform: uppercase; }
+.nav a { text-decoration: none; color: var(--ink-dim); transition: color .2s; }
+.nav a:hover { color: var(--ink); }
+.langs { display: flex; border: 1px solid var(--line); flex: none; }
+.langs button { font: 700 12px/1 "Exo 2", sans-serif; letter-spacing: .12em; color: var(--ink-dim); background: transparent; border: 0; min-width: 40px; min-height: 36px; cursor: pointer; }
+.langs button + button { border-left: 1px solid var(--line); }
+.langs button[aria-pressed="true"] { background: var(--pink); color: #fff; }
+@media (max-width: 980px) { .nav { display: none; } .langs { margin-left: auto; } .top .btn { display: none; } }
+@media (max-width: 420px) { .logo .chrome { font-size: 15px; } .langs button { min-width: 34px; } }
+
+/* hero */
+.hero { position: relative; overflow: hidden; isolation: isolate; border-bottom: 1px solid var(--line); }
+.hero-bg { position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(40% 50% at 18% 85%, rgba(255,63,142,.38), transparent 70%),
+    radial-gradient(45% 55% at 82% 10%, rgba(99,230,255,.22), transparent 70%),
+    radial-gradient(60% 70% at 50% 50%, #3a1a7e, transparent 80%),
+    linear-gradient(180deg, #1d0b45, #170936);
+}
+.hero-bg::after { content: ""; position: absolute; inset: auto 0 0; height: 45%; background:
+    radial-gradient(4px 4px at 8% 70%, rgba(255,255,255,.5), transparent),
+    radial-gradient(3px 3px at 26% 80%, rgba(255,255,255,.35), transparent),
+    radial-gradient(3px 3px at 61% 72%, rgba(255,255,255,.4), transparent),
+    radial-gradient(4px 4px at 88% 84%, rgba(255,255,255,.35), transparent);
+}
+.hero .wrap { padding-block: 112px 96px; display: grid; gap: 40px; }
+.hero-main { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 48px; align-items: center; }
+.hero-text { display: grid; gap: 40px; min-width: 0; }
+.hero-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-family: var(--font-ui); font-weight: 600; font-size: 14px; letter-spacing: .42em; text-transform: uppercase; color: var(--ink-dim); }
+.hero-title { position: relative; padding-bottom: 72px; }
+.hero h1 { font-size: min(76px, calc((min(100vw, 1180px) - 48px) * .6 / 10)); font-weight: 900; letter-spacing: -.01em; line-height: 1; white-space: nowrap; }
+.hero h1 > span { background: var(--chrome); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 4px 28px rgba(110,150,255,.35)); }
+.hero h1 .row2 { display: block; padding-left: 12%; }
+.hero .sig { position: absolute; right: 0; bottom: 0; font-size: clamp(40px, 5.6vw, 76px); transform: rotate(-7deg); white-space: nowrap; filter: drop-shadow(0 6px 24px rgba(255,63,142,.4)); }
+.hero-foot { display: grid; gap: 32px; }
+.hero-foot .facts { justify-self: start; }
+.hero-foot .lede { font-size: 18px; color: var(--ink-dim); max-width: 34em; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.facts { display: grid; grid-template-columns: auto auto; gap: 10px 22px; border-left: 2px solid var(--pink); padding: 6px 0 6px 20px; font-size: 15px; }
+.facts dt { font-family: var(--font-ui); font-weight: 700; font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-dim); padding-top: 3px; }
+.facts dd { margin: 0; font-variant-numeric: tabular-nums; }
+@media (max-width: 960px) {
+  .hero-main { grid-template-columns: 1fr; gap: 56px; }
+  .hero h1 { font-size: min(90px, calc((100vw - 48px) / 10)); }
+  .hero .sig { font-size: clamp(40px, 9vw, 80px); }
+}
+@media (max-width: 860px) {
+  .hero .wrap { padding-block: 72px 64px; }
+  .hero-title { padding-bottom: 0; }
+  .hero .sig { position: relative; right: auto; bottom: auto; display: block; margin-top: 8px; text-align: right; }
+  .hero h1 .row2 { padding-left: 0; }
+  .hero-foot { grid-template-columns: 1fr; }
+}
+
+/* NFT card: 3D frame around the party video */
+.nft-stage { perspective: 1100px; display: grid; place-items: center; padding-block: 24px; }
+.nft { --rx: 6deg; --ry: -10deg; --s: 1; --mx: 0deg; --my: 0deg;
+  position: relative; width: min(360px, 74vw); aspect-ratio: 360 / 560; transform-style: preserve-3d;
+  transform: rotateX(calc(var(--rx) + var(--my))) rotateY(calc(var(--ry) + var(--mx))) scale(var(--s));
+  transition: transform .25s ease-out; will-change: transform; }
+.nft-frame { position: absolute; inset: 0; transform-style: preserve-3d;
+  clip-path: polygon(9% 0, 100% 0, 100% 64%, 96% 68%, 96% 88%, 100% 92%, 100% 100%, 22% 100%, 17% 96%, 0 96%, 0 12%, 4% 8%, 4% 3%);
+  background: linear-gradient(155deg, #b7ecff 0%, #5fb6ff 18%, #2f6bff 42%, #1d2f9c 62%, #3f8cff 80%, #c9f3ff 100%);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.35) inset; }
+.nft-frame::after { content: ""; position: absolute; inset: 0; mix-blend-mode: overlay; pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.75) 45%, rgba(255,90,200,.45) 52%, transparent 66%);
+  background-size: 260% 100%; background-position: var(--sheen, 50%) 0; }
+.nft-edge { position: absolute; inset: 0; transform: translateZ(-14px); clip-path: inherit; background: #0d1650; filter: blur(.5px);
+  clip-path: polygon(9% 0, 100% 0, 100% 64%, 96% 68%, 96% 88%, 100% 92%, 100% 100%, 22% 100%, 17% 96%, 0 96%, 0 12%, 4% 8%, 4% 3%); }
+.nft-glow { position: absolute; inset: 6%; transform: translateZ(-60px); background: radial-gradient(closest-side, rgba(80,160,255,.75), rgba(255,63,142,.35) 60%, transparent); filter: blur(30px); }
+.nft-screen { position: absolute; left: 13%; right: 9%; top: 5%; bottom: 23%; overflow: hidden; background: #0b0420; transform: translateZ(18px);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 8% 100%, 0 96%);
+  box-shadow: 0 0 0 2px rgba(10,20,80,.9); }
+.nft-screen video, .nft-screen img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nft-screen::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(23,9,54,0) 55%, rgba(23,9,54,.85)), repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 3px); }
+.nft-title { position: absolute; left: 13%; right: 9%; bottom: 25%; text-align: center; transform: translateZ(46px);
+  font-family: "Unbounded", sans-serif; font-weight: 900; font-size: clamp(26px, 3vw, 34px); font-style: italic; letter-spacing: .01em; line-height: 1;
+  background: linear-gradient(180deg, #f6ff6a 0%, #b9ff3a 45%, #2fffa0 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 1px #0a2a3a) drop-shadow(0 3px 0 #0b2470) drop-shadow(0 0 18px rgba(150,255,90,.55)); }
+.nft-side { position: absolute; left: 2.2%; top: 14%; transform: translateZ(10px); writing-mode: vertical-rl; rotate: 180deg;
+  font: 700 12px/1 "Exo 2", sans-serif; letter-spacing: .3em; color: #0b1a5c; background: #e9f8ff; padding: 10px 5px; }
+.nft-side-num { position: absolute; left: 2.6%; top: 44%; transform: translateZ(10px); font: 900 18px/1 "Unbounded", sans-serif; color: #e9f8ff; }
+.nft-serial { position: absolute; right: 2.4%; top: 30%; writing-mode: vertical-rl; transform: translateZ(10px);
+  font: 600 10px/1 "Exo 2", sans-serif; letter-spacing: .3em; color: rgba(11,26,92,.8); font-variant-numeric: tabular-nums; }
+.nft-plate { position: absolute; left: 22%; right: 6%; bottom: 4.5%; height: 13%; transform: translateZ(28px);
+  display: flex; align-items: center; gap: 12px; padding: 0 12px; background: rgba(10,18,78,.92); border: 1px solid rgba(200,240,255,.6); }
+.nft-plate b { font: 900 clamp(26px, 3.2vw, 36px)/1 "Unbounded", sans-serif; background: var(--chrome); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nft-plate i { flex: 1; align-self: stretch; margin-block: 12px; background: repeating-linear-gradient(-55deg, rgba(200,240,255,.75) 0 2px, transparent 2px 7px); }
+.nft-plate small { position: absolute; right: 12px; bottom: 4px; font: 600 8px/1 "Exo 2", sans-serif; letter-spacing: .28em; color: rgba(200,240,255,.7); }
+.nft-live { position: absolute; top: 7.5%; right: 12%; transform: translateZ(40px); display: flex; align-items: center; gap: 6px;
+  font: 700 10px/1 "Exo 2", sans-serif; letter-spacing: .24em; color: #fff; background: rgba(255,63,142,.9); padding: 6px 8px; }
+.nft-live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: blink 1.2s infinite; }
+@keyframes blink { 50% { opacity: .2; } }
+@keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+.nft-float { animation: float 6s ease-in-out infinite; transform-style: preserve-3d; }
+@media (prefers-reduced-motion: reduce) { .nft { --rx: 0deg; --ry: 0deg; } }
+
+/* entrance */
+@keyframes rise { from { transform: translateY(26px); opacity: .2; } to { transform: none; opacity: 1; } }
+@keyframes sign { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.hero h1 > span { display: block; animation: rise .9s cubic-bezier(.2,.7,.2,1) both; }
+.hero h1 > span:nth-child(2) { animation-delay: .12s; }
+.hero .sig { animation: sign 1.4s .5s cubic-bezier(.6,0,.2,1) both; }
+
+/* marquee */
+.marquee { overflow: hidden; border-bottom: 1px solid var(--line); background: var(--bg-2); }
+.marquee-track { display: flex; width: max-content; animation: slide 38s linear infinite; }
+.marquee span { font-family: var(--font-ui); font-weight: 600; font-size: 20px; letter-spacing: .4em; text-transform: uppercase; padding: 18px 26px; white-space: nowrap; color: var(--ink-dim); }
+.marquee span::after { content: "✦"; color: var(--pink); margin-left: 52px; font-size: 14px; vertical-align: middle; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* sections */
+section { position: relative; }
+.band { padding-block: 104px; }
+.head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); gap: 32px; align-items: end; margin-bottom: 56px; }
+.head p { color: var(--ink-dim); max-width: 32em; }
+@media (max-width: 860px) { .band { padding-block: 72px; } .head { grid-template-columns: 1fr; margin-bottom: 40px; } }
+
+/* services */
+.svc-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.svc { background: var(--bg); padding: 32px 28px 34px; display: grid; gap: 14px; align-content: start; position: relative; overflow: hidden; transition: background .3s; }
+.svc::before { content: ""; position: absolute; inset: auto -30% -60% -30%; height: 120%; background: radial-gradient(50% 50% at 50% 50%, rgba(255,63,142,.28), transparent 70%); opacity: 0; transition: opacity .4s; }
+.svc:hover { background: var(--bg-2); }
+.svc:hover::before { opacity: 1; }
+.svc svg { width: 34px; height: 34px; stroke: var(--pink); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; position: relative; }
+.svc h3, .svc p { position: relative; }
+.svc p { color: var(--ink-dim); font-size: 15px; }
+.svc.pride svg { stroke: url(#pride); }
+@media (max-width: 900px) { .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .svc-grid { grid-template-columns: 1fr; } }
+
+/* feed */
+.feed { background: var(--bg-2); border-block: 1px solid var(--line); }
+.filters { display: flex; border: 1px solid var(--line); justify-self: end; }
+.filters button { font: 700 13px/1 var(--font-ui); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-dim); background: transparent; border: 0; padding: 0 18px; min-height: 44px; cursor: pointer; }
+.filters button + button { border-left: 1px solid var(--line); }
+.filters button[aria-pressed="true"] { background: var(--pink); color: #fff; }
+@media (max-width: 860px) { .filters { justify-self: start; } }
+.masonry { columns: 3 280px; column-gap: 16px; }
+.post { break-inside: avoid; display: block; width: 100%; margin: 0 0 16px; padding: 0; border: 0; background: var(--bg); color: inherit; font: inherit; text-align: left; cursor: pointer; position: relative; overflow: hidden; }
+.post .media { position: relative; overflow: hidden; background: var(--bg-3); }
+.post img, .post video { display: block; width: 100%; height: auto; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.post:hover img, .post:hover video { transform: scale(1.04); }
+.post .sample { display: grid; place-items: center; font-family: var(--font-script); font-size: 26px; color: rgba(248,244,255,.7); }
+.post .cap { position: absolute; inset: auto 0 0; padding: 48px 16px 14px; background: linear-gradient(180deg, transparent, rgba(23,9,54,.92)); display: grid; gap: 4px; transform: translateY(8px); opacity: .92; transition: transform .3s, opacity .3s; }
+.post:hover .cap { transform: none; opacity: 1; }
+.post .date { font-family: "Exo 2", sans-serif; font-weight: 600; font-size: 12px; letter-spacing: .14em; color: var(--pink); font-variant-numeric: tabular-nums; }
+.post .txt { font-size: 14px; color: var(--ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.badge { position: absolute; top: 12px; left: 12px; z-index: 1; font: 700 11px/1 "Exo 2", sans-serif; letter-spacing: .16em; text-transform: uppercase; background: var(--pink); color: #fff; padding: 6px 9px; }
+.play { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.play::after { content: ""; width: 64px; height: 64px; border-radius: 50%; border: 1px solid rgba(255,255,255,.8); background: rgba(23,9,54,.5) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 6.5v11l9-5.5z' fill='%23ffffff'/%3E%3C/svg%3E") center / 28px no-repeat; box-shadow: 0 0 30px rgba(255,63,142,.5); }
+.feed-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-top: 24px; }
+.feed-note { font-size: 13px; color: var(--ink-dim); }
+.empty { color: var(--ink-dim); padding: 32px 0; }
+
+/* rooms */
+.rooms .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
+.rooms-art { aspect-ratio: 4 / 5; max-width: 100%; position: relative; overflow: hidden; border: 1px solid var(--line);
+  background: radial-gradient(70% 60% at 70% 20%, rgba(255,63,142,.45), transparent 70%), radial-gradient(60% 60% at 20% 90%, rgba(99,230,255,.25), transparent 70%), linear-gradient(160deg, #2c1660, #170936); }
+.rooms-art span { position: absolute; left: 24px; bottom: 20px; font-family: var(--font-script); font-size: 34px; color: rgba(248,244,255,.85); }
+.rooms-copy { display: grid; gap: 22px; }
+.rooms-copy p { color: var(--ink-dim); }
+.amen { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; }
+.amen li { padding-left: 20px; position: relative; font-size: 15px; }
+.amen li::before { content: "✦"; position: absolute; left: 0; color: var(--pink); font-size: 11px; top: .25em; }
+@media (max-width: 860px) { .rooms .wrap { grid-template-columns: 1fr; gap: 40px; } .rooms-art { aspect-ratio: 16 / 10; } }
+
+/* visit */
+.visit { background: linear-gradient(180deg, var(--bg), #12072b); border-top: 1px solid var(--line); }
+.visit .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; }
+.visit-copy { display: grid; gap: 22px; align-content: start; }
+.visit-copy p { color: var(--ink-dim); }
+.coords { font-family: "Exo 2", sans-serif; font-weight: 600; letter-spacing: .14em; font-size: 13px; color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+.contacts { border-top: 1px solid var(--line); }
+.contact { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); min-width: 0; }
+.contact .lbl { font-family: var(--font-ui); font-weight: 700; font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-dim); flex: none; }
+.contact a { text-align: right; text-decoration: none; overflow-wrap: anywhere; transition: color .2s; }
+.contact a:hover { color: var(--pink); }
+.notice { margin-top: 24px; font-size: 14px; color: var(--ink-dim); border-left: 2px solid var(--pink); padding-left: 14px; }
+@media (max-width: 860px) { .visit .wrap { grid-template-columns: 1fr; gap: 44px; } }
+
+footer { background: #12072b; border-top: 1px solid var(--line); }
+footer .wrap { padding-block: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; color: var(--ink-dim); }
+footer .script { font-size: 22px; }
+
+/* scroll reveal: starts visible, only shifts slightly */
+.reveal { transition: transform .9s cubic-bezier(.2,.7,.2,1), opacity .9s; }
+.js .reveal.below { transform: translateY(28px); opacity: .25; }
+
+/* lightbox */
+dialog { padding: 0; border: 1px solid var(--line); background: var(--bg); color: var(--ink); max-width: min(980px, calc(100vw - 32px)); width: 100%; max-height: calc(100dvh - 32px); }
+dialog::backdrop { background: rgba(10,4,26,.88); }
+.lb { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); max-height: calc(100dvh - 34px); }
+.lb-media { background: #000; display: grid; place-items: center; min-height: 0; }
+.lb-media img, .lb-media video { width: 100%; max-height: calc(100dvh - 34px); object-fit: contain; display: block; }
+.lb-text { padding: 28px; display: grid; gap: 14px; align-content: start; overflow: auto; }
+.lb-text p { white-space: pre-line; color: var(--ink-dim); overflow-wrap: anywhere; }
+.lb-close { position: absolute; top: 10px; right: 10px; z-index: 2; width: 44px; height: 44px; border: 1px solid var(--line); background: rgba(23,9,54,.85); color: var(--ink); font-size: 22px; cursor: pointer; }
+@media (max-width: 760px) { .lb { grid-template-columns: 1fr; overflow: auto; } .lb-media img, .lb-media video { max-height: 60dvh; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js .reveal.below { transform: none; opacity: 1; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><linearGradient id="pride" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ff4d4d"/><stop offset=".25" stop-color="#ffb347"/><stop offset=".5" stop-color="#f5e663"/><stop offset=".75" stop-color="#5ee39a"/><stop offset="1" stop-color="#7b7bff"/>
+  </linearGradient></defs>
+</svg>
+
+<canvas id="beams" aria-hidden="true"></canvas>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Every Day Holiday">
+      <span class="chrome">EVERY DAY HOLIDAY</span>
+      <small>GENTLEMEN'S CLUB</small>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#events" data-i18n="nav_events">Events</a>
+      <a href="#latest" data-i18n="nav_latest">Latest</a>
+      <a href="#rooms" data-i18n="nav_rooms">Rooms</a>
+      <a href="#visit" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" id="lang-en" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" id="lang-ru" data-lang="ru" aria-pressed="false">RU</button>
+      <button type="button" id="lang-kk" data-lang="kk" aria-pressed="false">KZ</button>
+      <button type="button" id="lang-ko" data-lang="ko" aria-pressed="false">KO</button>
+    </div>
+    <a class="btn hot" href="#visit" data-i18n="cta_book">Book now</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="wrap">
+      <div class="hero-meta">
+        <span data-i18n="hero_kicker">Walking Street · Pattaya</span>
+        <span data-i18n="hero_open">Open every night</span>
+      </div>
+      <div class="hero-main">
+        <div class="hero-text">
+        <div class="hero-title">
+          <h1><span data-i18n="hero_t1">Gentlemen's</span><span class="row2" data-i18n="hero_t2">Club</span></h1>
+          <span class="sig script" aria-hidden="true">Every Day Holiday</span>
+        </div>
+        <div class="hero-foot">
+          <div>
+            <p class="lede" data-i18n="hero_lede">A gentlemen's club on Walking Street with a bar, DJ nights, private events and hotel rooms upstairs.</p>
+            <div class="ctas">
+              <a class="btn hot" href="#events" data-i18n="hero_cta1">Plan your event</a>
+              <a class="btn" href="#latest" data-i18n="hero_cta2">See the latest</a>
+            </div>
+          </div>
+          <dl class="facts">
+            <dt data-i18n="f_hours">Hours</dt><dd data-k="hours">20:00 – 03:00</dd>
+            <dt data-i18n="f_entry">Entry</dt><dd data-i18n="f_entry_v">20+, ID required</dd>
+            <dt data-i18n="f_dress">Dress</dt><dd>Smart casual</dd>
+          </dl>
+        </div>
+        </div>
+        <div class="nft-stage">
+          <div class="nft-float">
+            <div class="nft" id="nft">
+              <div class="nft-glow"></div>
+              <div class="nft-edge"></div>
+              <div class="nft-frame"></div>
+              <div class="nft-screen">
+                <video id="party-video" src="media/party.mp4" poster="media/party-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Party night at Every Day Holiday"></video>
+              </div>
+              <span class="nft-live">LIVE</span>
+              <span class="nft-side">EDH_PARTY</span>
+              <span class="nft-side-num">01</span>
+              <span class="nft-serial">05.11.2026 · WALKING ST</span>
+              <span class="nft-title">PARTY NIGHT</span>
+              <div class="nft-plate"><b>01</b><i></i><small>EVERY DAY HOLIDAY</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+  <section class="band" id="events">
+    <div class="wrap">
+      <div class="head reveal">
+        <div style="display:grid;gap:16px">
+          <p class="kicker" data-i18n="svc_kicker">What we host</p>
+          <h2 data-i18n="svc_title">Your night, your way</h2>
+        </div>
+        <p data-i18n="about_text">We built Every Day Holiday for nights worth remembering: a birthday with your crew, a deal closed over drinks, a wedding party that runs late. Bring the occasion, we handle the rest.</p>
+      </div>
+      <div class="svc-grid reveal" id="svc-grid"></div>
+    </div>
+  </section>
+
+  <section class="band feed" id="latest" aria-labelledby="feed-title">
+    <div class="wrap">
+      <div class="head reveal">
+        <div style="display:grid;gap:16px">
+          <p class="kicker" data-i18n="latest_kicker">From our Instagram &amp; Facebook</p>
+          <h2 id="feed-title" data-i18n="latest_title">Latest from the club</h2>
+        </div>
+        <div class="filters" role="group" aria-label="Filter">
+          <button type="button" id="f-all" data-filter="all" aria-pressed="true" data-i18n="f_all">All</button>
+          <button type="button" id="f-photo" data-filter="photo" aria-pressed="false" data-i18n="f_photo">Photos</button>
+          <button type="button" id="f-video" data-filter="video" aria-pressed="false" data-i18n="f_video">Videos</button>
+        </div>
+      </div>
+      <div class="masonry" id="grid" aria-live="polite"></div>
+      <div class="feed-foot">
+        <p class="feed-note" id="feed-note"></p>
+        <button type="button" class="btn" id="more" hidden data-i18n="more">Show more</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band rooms" id="rooms">
+    <div class="wrap">
+      <div class="rooms-art reveal" role="img" aria-label="Hotel room"><span>Stay with us</span></div>
+      <div class="rooms-copy reveal">
+        <p class="kicker" data-i18n="rooms_kicker">Hotel</p>
+        <h2 data-i18n="rooms_title">Stay the night on Walking Street</h2>
+        <p data-i18n="rooms_text">Clean, quiet air-conditioned rooms in the same building. Send us a message and we confirm your booking within minutes.</p>
+        <ul class="amen">
+          <li data-i18n="a1">Air-conditioning</li>
+          <li data-i18n="a2">Private bathroom</li>
+          <li data-i18n="a3">Free Wi-Fi</li>
+          <li data-i18n="a4">Smart TV</li>
+          <li data-i18n="a5">Daily housekeeping</li>
+          <li data-i18n="a6">Late check-out on request</li>
+        </ul>
+        <div><a class="btn hot" href="#visit" data-i18n="rooms_cta">Book a room</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band visit" id="visit">
+    <div class="wrap">
+      <div class="visit-copy reveal">
+        <p class="kicker" data-i18n="visit_kicker">Find us</p>
+        <h2 data-i18n="visit_title">See you on Walking Street</h2>
+        <p data-i18n="visit_text">Message us to book a table, a room or the whole club. Or just walk in.</p>
+        <p class="coords">12.9261° N · 100.8734° E</p>
+        <div><a class="btn" id="map-link" href="https://maps.app.goo.gl/JoXtHp7SqruJgZxGA" target="_blank" rel="noopener" data-i18n="map_btn">Open in Google Maps</a></div>
+      </div>
+      <div class="reveal">
+        <div class="contacts">
+          <div class="contact"><span class="lbl" data-i18n="l_phone">Phone</span><a data-k="phone" href="tel:+66000000000">+66 00 000 0000</a></div>
+          <div class="contact"><span class="lbl">WhatsApp</span><a data-k="whatsapp" href="https://wa.me/66000000000" target="_blank" rel="noopener">+66 00 000 0000</a></div>
+          <div class="contact"><span class="lbl">LINE</span><a data-k="line" href="https://line.me/ti/p/~everydayholiday" target="_blank" rel="noopener">@everydayholiday</a></div>
+          <div class="contact"><span class="lbl">Telegram</span><a data-k="telegram" href="https://t.me/everydayholiday" target="_blank" rel="noopener">@everydayholiday</a></div>
+          <div class="contact"><span class="lbl">Instagram</span><a data-k="instagram" href="https://instagram.com/everydayholiday" target="_blank" rel="noopener">@everydayholiday</a></div>
+          <div class="contact"><span class="lbl">Facebook</span><a data-k="facebook" href="https://facebook.com/everydayholiday" target="_blank" rel="noopener">/everydayholiday</a></div>
+        </div>
+        <p class="notice" data-i18n="notice">Entry for guests aged 20 and over. Please bring your passport. Please drink responsibly.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="script">Every Day Holiday</span>
+    <span>© <span id="year">2026</span> · Walking Street, Pattaya · <span data-i18n="footer">Open every night · 20+</span></span>
+  </div>
+</footer>
+
+<dialog id="lightbox" aria-label="Post">
+  <button type="button" class="lb-close" id="lb-close" aria-label="Close">×</button>
+  <div class="lb">
+    <div class="lb-media" id="lb-media"></div>
+    <div class="lb-text"><p class="date" id="lb-date" style="font-family:'Exo 2',sans-serif;font-weight:600;color:var(--pink);letter-spacing:.14em"></p><p id="lb-caption"></p></div>
+  </div>
+</dialog>
+
+<script>
+/* ===== SITE SETTINGS: edit these values ===== */
+const SITE = {
+  hours: "20:00 – 03:00",
+  mapsUrl: "https://maps.app.goo.gl/JoXtHp7SqruJgZxGA",
+  phone: "+66 00 000 0000",
+  whatsapp: "66000000000",            // digits only
+  line: "everydayholiday",
+  telegram: "everydayholiday",
+  instagram: "everydayholiday",
+  facebook: "everydayholiday",
+  supabaseUrl: "https://YOUR_PROJECT.supabase.co",   // same project as the n8n autoposting
+  supabaseAnonKey: "PASTE_ANON_KEY",                 // anon key only
+  pageSize: 9
+};
+/* ============================================ */
+
+const ICONS = {
+  party: '<path d="M4 20l5-14 9 9-14 5z"/><path d="M13 3v2M19 9h2M17 5l1.5-1.5M14 8c1.5-1 3-1 4 0"/>',
+  events: '<rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M12 13.5l1 2 2.2.3-1.6 1.5.4 2.2-2-1-2 1 .4-2.2-1.6-1.5 2.2-.3z"/>',
+  banquet: '<path d="M3 17h18M5 17a7 7 0 0114 0M12 8V6M10 6h4M2 20h20"/>',
+  birthday: '<path d="M4 21V12h16v9M2 21h20M4 15c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 4 0M12 12V8"/><path d="M12 5.5c.8-.8.8-2 0-2.5-.8.5-.8 1.7 0 2.5z"/>',
+  business: '<rect x="3" y="7" width="18" height="13" rx="1"/><path d="M9 7V4h6v3M3 13h18M11 13v2h2v-2"/>',
+  wedding: '<circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M10 5l2-2 2 2-2 2z"/>',
+  pride: '<path d="M12 21s-7-4.5-9-9.5C1.6 7.8 4 4 7.5 4c2 0 3.4 1.2 4.5 2.6C13.1 5.2 14.5 4 16.5 4 20 4 22.4 7.8 21 11.5 19 16.5 12 21 12 21z"/>',
+  hire: '<path d="M15 7a4 4 0 11-3.2 6.4L4 21H2v-3l1-1h2v-2h2l1.6-1.6A4 4 0 0115 7z"/><circle cx="16" cy="8" r="1"/>',
+  rooms: '<path d="M3 18V7M3 14h18v4M21 14v-2a3 3 0 00-3-3h-7v5M7 11.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>'
+};
+const SVC_KEYS = ['party','events','banquet','birthday','business','wedding','pride','hire','rooms'];
+
+const I18N = {
+en: {
+  nav_events:"Events", nav_latest:"Latest", nav_rooms:"Rooms", nav_contact:"Contact", cta_book:"Book now",
+  hero_kicker:"Walking Street · Pattaya", hero_open:"Open every night", hero_t1:"Gentlemen's", hero_t2:"Club",
+  hero_lede:"A gentlemen's club on Walking Street with a bar, DJ nights, private events and hotel rooms upstairs.",
+  hero_cta1:"Plan your event", hero_cta2:"See the latest", f_hours:"Hours", f_entry:"Entry", f_entry_v:"20+, ID required", f_dress:"Dress",
+  svc_kicker:"What we host", svc_title:"Your night, your way",
+  about_text:"We built Every Day Holiday for nights worth remembering: a birthday with your crew, a deal closed over drinks, a wedding party that runs late. Bring the occasion, we handle the rest.",
+  svc:[["Parties","Themed nights and DJ sets every week."],["Events","Launches, promo nights and corporate events, fully organised."],["Banquets","Seated dinners and set menus for groups of any size."],["Birthdays","Reserved tables, cake, decor and your own playlist."],["Business meetings","A private space for meetings, deals and team nights."],["Weddings","Wedding parties and after-parties with bar and music."],["LGBTQ+ parties","Open, friendly nights for the LGBTQ+ community and friends."],["Club hire","Rent the whole club for your guests only."],["Hotel rooms","Rooms in the same building for you and your guests."]],
+  latest_kicker:"From our Instagram & Facebook", latest_title:"Latest from the club", f_all:"All", f_photo:"Photos", f_video:"Videos", more:"Show more",
+  note_live:"The feed updates automatically.", note_sample:"Example posts. Connect Supabase in the site settings to show the live feed.", note_err:"The live feed is unavailable right now. Example posts shown.", note_more_err:"Could not load more posts. Try again in a moment.",
+  empty:"No posts yet. New posts appear here as soon as they go out on our social pages.", sample:"Sample post", video:"Video",
+  rooms_kicker:"Hotel", rooms_title:"Stay the night on Walking Street", rooms_text:"Clean, quiet air-conditioned rooms in the same building. Send us a message and we confirm your booking within minutes.",
+  a1:"Air-conditioning", a2:"Private bathroom", a3:"Free Wi-Fi", a4:"Smart TV", a5:"Daily housekeeping", a6:"Late check-out on request", rooms_cta:"Book a room",
+  visit_kicker:"Find us", visit_title:"See you on Walking Street", visit_text:"Message us to book a table, a room or the whole club. Or just walk in.", map_btn:"Open in Google Maps",
+  l_phone:"Phone", notice:"Entry for guests aged 20 and over. Please bring your passport. Please drink responsibly.", footer:"Open every night · 20+"
+},
+ru: {
+  nav_events:"События", nav_latest:"Лента", nav_rooms:"Номера", nav_contact:"Контакты", cta_book:"Забронировать",
+  hero_kicker:"Уокинг-стрит · Паттайя", hero_open:"Открыто каждый вечер", hero_t1:"Джентльмен", hero_t2:"клуб",
+  hero_lede:"Джентльменский клуб на Уокинг-стрит: бар, DJ-вечеринки, частные мероприятия и гостиничные номера наверху.",
+  hero_cta1:"Организовать мероприятие", hero_cta2:"Смотреть ленту", f_hours:"Часы", f_entry:"Вход", f_entry_v:"20+, с паспортом", f_dress:"Дресс-код",
+  svc_kicker:"Что мы проводим", svc_title:"Ваш вечер, ваши правила",
+  about_text:"Every Day Holiday создан для вечеров, которые хочется запомнить: день рождения с друзьями, сделка за бокалом, свадебная вечеринка до утра. С вас повод, остальное берём на себя.",
+  svc:[["Вечеринки","Тематические вечера и DJ-сеты каждую неделю."],["Мероприятия","Презентации, промо-вечера и корпоративы под ключ."],["Банкеты","Банкеты и сет-меню для компаний любого размера."],["Дни рождения","Столы, торт, оформление и ваш плейлист."],["Деловые встречи","Отдельное пространство для переговоров и встреч команды."],["Свадьбы","Свадебные вечеринки и афтепати с баром и музыкой."],["ЛГБТ-вечеринки","Открытые и дружелюбные вечера для ЛГБТ-сообщества и друзей."],["Аренда клуба","Весь клуб только для ваших гостей."],["Гостиничные номера","Номера в том же здании для вас и ваших гостей."]],
+  latest_kicker:"Из нашего Instagram и Facebook", latest_title:"Свежее из клуба", f_all:"Все", f_photo:"Фото", f_video:"Видео", more:"Показать ещё",
+  note_live:"Лента обновляется автоматически. Подписи к постам на английском.", note_sample:"Показаны примеры постов. Подключите Supabase в настройках сайта, чтобы включить живую ленту.", note_err:"Лента сейчас недоступна, показаны примеры.", note_more_err:"Не удалось загрузить посты. Попробуйте чуть позже.",
+  empty:"Пока нет постов. Новые появятся здесь сразу после публикации в соцсетях.", sample:"Пример поста", video:"Видео",
+  rooms_kicker:"Гостиница", rooms_title:"Останьтесь на ночь на Уокинг-стрит", rooms_text:"Чистые тихие номера с кондиционером в том же здании. Напишите нам, и мы подтвердим бронь за несколько минут.",
+  a1:"Кондиционер", a2:"Своя ванная", a3:"Бесплатный Wi-Fi", a4:"Smart TV", a5:"Ежедневная уборка", a6:"Поздний выезд по запросу", rooms_cta:"Забронировать номер",
+  visit_kicker:"Как нас найти", visit_title:"Ждём вас на Уокинг-стрит", visit_text:"Напишите, чтобы забронировать стол, номер или весь клуб. Или просто приходите.", map_btn:"Открыть в Google Maps",
+  l_phone:"Телефон", notice:"Вход для гостей от 20 лет. Возьмите паспорт. Пейте ответственно.", footer:"Каждый вечер · 20+"
+},
+kk: {
+  nav_events:"Іс-шаралар", nav_latest:"Жаңалықтар", nav_rooms:"Нөмірлер", nav_contact:"Байланыс", cta_book:"Брондау",
+  hero_kicker:"Уокинг-стрит · Паттайя", hero_open:"Күн сайын кешке ашық", hero_t1:"Джентльмен", hero_t2:"клубы",
+  hero_lede:"Уокинг-стриттегі джентльмен клубы: бар, DJ кештері, жеке іс-шаралар және жоғарғы қабаттағы қонақ үй нөмірлері.",
+  hero_cta1:"Іс-шара ұйымдастыру", hero_cta2:"Жаңалықтарды көру", f_hours:"Уақыты", f_entry:"Кіру", f_entry_v:"20+, құжатпен", f_dress:"Дресс-код",
+  svc_kicker:"Біз өткізетін шаралар", svc_title:"Сіздің кешіңіз, сіздің ережеңіз",
+  about_text:"Every Day Holiday есте қаларлық кештер үшін ашылды: достармен туған күн, бір бокал үстінде жасалған келісім, таңға дейін созылатын той кеші. Себебі сізден, қалғанын біз ұйымдастырамыз.",
+  svc:[["Кештер","Апта сайын тақырыптық кештер мен DJ сеттер."],["Іс-шаралар","Таныстырылымдар, промо-кештер және корпоративтер толық ұйымдастырумен."],["Банкеттер","Кез келген көлемдегі топтарға банкет пен сет-мәзір."],["Туған күндер","Брондалған үстел, торт, безендіру және өз плейлистіңіз."],["Іскерлік кездесулер","Келіссөздер мен команда кездесулеріне арналған жеке орын."],["Тойлар","Бары мен музыкасы бар той кештері мен афтепати."],["ЛГБТ кештері","ЛГБТ қауымдастығы мен достарына арналған ашық, достық кештер."],["Клубты жалға алу","Бүкіл клуб тек сіздің қонақтарыңыз үшін."],["Қонақ үй нөмірлері","Сізге және қонақтарыңызға сол ғимараттағы нөмірлер."]],
+  latest_kicker:"Instagram мен Facebook парақшаларымыздан", latest_title:"Клубтағы жаңалықтар", f_all:"Барлығы", f_photo:"Фото", f_video:"Бейне", more:"Тағы көрсету",
+  note_live:"Лента автоматты түрде жаңарады. Жазбалар ағылшын тілінде.", note_sample:"Мысал жазбалар көрсетілген. Тікелей лента үшін сайт баптауларында Supabase қосыңыз.", note_err:"Лента қазір қолжетімсіз, мысалдар көрсетілген.", note_more_err:"Жазбаларды жүктеу мүмкін болмады. Сәлден кейін қайталаңыз.",
+  empty:"Әзірге жазбалар жоқ. Жаңалары әлеуметтік желілерде жарияланған бойда осында шығады.", sample:"Мысал жазба", video:"Бейне",
+  rooms_kicker:"Қонақ үй", rooms_title:"Уокинг-стритте бір түн қалыңыз", rooms_text:"Сол ғимараттағы таза, тыныш, кондиционері бар нөмірлер. Бізге жазыңыз, брондауды бірнеше минутта растаймыз.",
+  a1:"Кондиционер", a2:"Жеке жуынатын бөлме", a3:"Тегін Wi-Fi", a4:"Smart TV", a5:"Күнделікті тазалау", a6:"Сұраныс бойынша кеш шығу", rooms_cta:"Нөмір брондау",
+  visit_kicker:"Бізді қалай табуға болады", visit_title:"Уокинг-стритте күтеміз", visit_text:"Үстел, нөмір немесе бүкіл клубты брондау үшін жазыңыз. Немесе жай ғана келіңіз.", map_btn:"Google Maps-та ашу",
+  l_phone:"Телефон", notice:"Кіру 20 жастан асқан қонақтарға. Төлқұжатыңызды ала келіңіз. Ішімдікті жауапкершілікпен ішіңіз.", footer:"Күн сайын кешке · 20+"
+},
+ko: {
+  nav_events:"이벤트", nav_latest:"새 소식", nav_rooms:"객실", nav_contact:"연락처", cta_book:"예약하기",
+  hero_kicker:"워킹 스트리트 · 파타야", hero_open:"매일 밤 영업", hero_t1:"젠틀맨", hero_t2:"클럽",
+  hero_lede:"워킹 스트리트의 젠틀맨 클럽. 바, DJ 나이트, 프라이빗 이벤트, 그리고 위층의 호텔 객실까지.",
+  hero_cta1:"이벤트 문의", hero_cta2:"새 소식 보기", f_hours:"영업시간", f_entry:"입장", f_entry_v:"20세 이상, 신분증 필수", f_dress:"드레스 코드",
+  svc_kicker:"진행 가능한 행사", svc_title:"당신의 밤, 당신의 방식",
+  about_text:"Every Day Holiday는 오래 기억될 밤을 위해 만들었습니다. 친구들과의 생일, 한잔하며 성사된 거래, 늦게까지 이어지는 웨딩 파티까지. 이유만 가져오세요. 나머지는 저희가 준비합니다.",
+  svc:[["파티","매주 테마 나이트와 DJ 세트."],["이벤트","론칭, 프로모션 나이트, 기업 행사를 원스톱으로."],["연회","인원에 맞춘 연회와 세트 메뉴."],["생일 파티","예약 테이블, 케이크, 장식, 나만의 플레이리스트."],["비즈니스 미팅","미팅과 팀 모임을 위한 프라이빗 공간."],["웨딩","바와 음악이 있는 웨딩 파티와 애프터 파티."],["LGBTQ+ 파티","LGBTQ+ 커뮤니티와 친구들을 위한 열린 파티."],["클럽 대관","클럽 전체를 손님만을 위해."],["호텔 객실","같은 건물 안의 객실에서 편하게 머무세요."]],
+  latest_kicker:"인스타그램 & 페이스북에서", latest_title:"클럽 새 소식", f_all:"전체", f_photo:"사진", f_video:"영상", more:"더 보기",
+  note_live:"피드는 자동으로 업데이트됩니다. 게시물은 영어로 작성됩니다.", note_sample:"예시 게시물입니다. 사이트 설정에서 Supabase를 연결하면 실시간 피드가 표시됩니다.", note_err:"지금은 피드를 불러올 수 없어 예시를 표시합니다.", note_more_err:"게시물을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.",
+  empty:"아직 게시물이 없습니다. SNS에 올라가는 즉시 여기에 표시됩니다.", sample:"예시 게시물", video:"영상",
+  rooms_kicker:"호텔", rooms_title:"워킹 스트리트에서 하룻밤", rooms_text:"같은 건물에 있는 깨끗하고 조용한 에어컨 객실. 메시지를 보내 주시면 몇 분 안에 예약을 확정해 드립니다.",
+  a1:"에어컨", a2:"전용 욕실", a3:"무료 Wi-Fi", a4:"스마트 TV", a5:"매일 청소", a6:"레이트 체크아웃 가능", rooms_cta:"객실 예약",
+  visit_kicker:"오시는 길", visit_title:"워킹 스트리트에서 만나요", visit_text:"테이블, 객실 또는 클럽 대관 예약은 메시지로 문의하세요. 그냥 들르셔도 좋습니다.", map_btn:"Google 지도에서 열기",
+  l_phone:"전화", notice:"만 20세 이상만 입장 가능합니다. 여권을 지참해 주세요. 책임감 있게 음주하세요.", footer:"매일 밤 영업 · 20+"
+}
+};
+
+(function () {
+  const $ = (s) => document.querySelector(s);
+  document.documentElement.classList.add('js');
+  const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const clean = (t) => String(t || '').replace(/\n\s*\n(#\S+\s*)+$/, '').trim();
+  let lang = 'en';
+  const t = (k) => (I18N[lang] && I18N[lang][k]) || I18N.en[k];
+  const fmtDate = (iso) => { try { return new Date(iso).toLocaleDateString({ en: 'en-GB', ru: 'ru-RU', kk: 'kk-KZ', ko: 'ko-KR' }[lang], { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Bangkok' }); } catch (e) { return ''; } };
+
+  /* settings into page */
+  const setLink = (k, text, href) => document.querySelectorAll('[data-k="' + k + '"]').forEach(el => { el.textContent = text; if (href) el.href = href; });
+  setLink('hours', SITE.hours);
+  setLink('phone', SITE.phone, 'tel:' + SITE.phone.replace(/[^+\d]/g, ''));
+  setLink('whatsapp', '+' + SITE.whatsapp, 'https://wa.me/' + SITE.whatsapp);
+  setLink('line', '@' + SITE.line, 'https://line.me/ti/p/~' + SITE.line);
+  setLink('telegram', '@' + SITE.telegram, 'https://t.me/' + SITE.telegram);
+  setLink('instagram', '@' + SITE.instagram, 'https://instagram.com/' + SITE.instagram);
+  setLink('facebook', '/' + SITE.facebook, 'https://facebook.com/' + SITE.facebook);
+  $('#map-link').href = SITE.mapsUrl;
+  $('#year').textContent = new Date().getFullYear();
+
+  /* services + marquee */
+  function renderServices() {
+    const svc = t('svc');
+    $('#svc-grid').innerHTML = SVC_KEYS.map((k, i) =>
+      '<article class="svc' + (k === 'pride' ? ' pride' : '') + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[k] + '</svg><h3>' + esc(svc[i][0]) + '</h3><p>' + esc(svc[i][1]) + '</p></article>').join('');
+    const names = svc.map(s => '<span>' + esc(s[0]) + '</span>').join('');
+    $('#marquee').innerHTML = names + names;
+  }
+
+  /* language */
+  function setLang(l) {
+    lang = I18N[l] ? l : 'en';
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => { const v = t(el.dataset.i18n); if (typeof v === 'string') el.textContent = v; });
+    document.querySelectorAll('.langs button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    renderServices();
+    renderFeed();
+    if (noteKey) $('#feed-note').textContent = t(noteKey);
+    try { localStorage.setItem('edh_lang', lang); } catch (e) {}
+  }
+  document.querySelectorAll('.langs button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+  /* feed */
+  const SAMPLES = [
+    ['photo', 'Friday nights at the bar. Fresh cocktail list, same good company. Walk in from 8 pm.', '#7a1f6b', '4/5'],
+    ['video', 'Our resident DJ warming up the room before the late set. Sound on.', '#3b1d7a', '9/14'],
+    ['photo', 'Birthday tables are ready. Message us to reserve yours with cake and decor.', '#a3305a', '1/1'],
+    ['photo', 'Match night on the big screens. Booths for groups, cold beer at the bar.', '#2d2a8a', '1/1'],
+    ['video', 'A look upstairs: our hotel rooms, quiet and cool after a long night.', '#5a1d7a', '9/14'],
+    ['photo', 'Saturday party line-up is out. Doors at 8, first set at 10.', '#b0446a', '4/5']
+  ].map((s, i) => ({ post_id: 'sample-' + i, media_type: s[0], caption: s[1], tone: s[2], ratio: s[3], sample: true, published_at: new Date(Date.now() - i * 864e5).toISOString() }));
+  const grid = $('#grid'), more = $('#more');
+  let filter = 'all', offset = 0, posts = [], live = false, noteKey = '';
+  function note(k) { noteKey = k; $('#feed-note').textContent = k ? t(k) : ''; }
+
+  function card(p) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'post';
+    const media = p.sample
+      ? '<div class="sample" style="aspect-ratio:' + p.ratio + ';background:radial-gradient(90% 80% at 30% 20%,' + p.tone + ',#170936)">' + (p.media_type === 'video' ? '' : esc(t('sample'))) + '</div>'
+      : (p.media_type === 'video'
+          ? '<video src="' + esc(p.media_url) + '#t=0.5" muted playsinline preload="metadata"></video>'
+          : '<img src="' + esc(p.media_url) + '" alt="' + esc(clean(p.caption).slice(0, 120)) + '" loading="lazy">');
+    b.innerHTML = (p.media_type === 'video' ? '<span class="badge">' + esc(t('video')) + '</span>' : '') +
+      '<div class="media">' + media + (p.media_type === 'video' ? '<span class="play"></span>' : '') + '</div>' +
+      '<div class="cap"><span class="date">' + fmtDate(p.published_at) + '</span><span class="txt">' + esc(clean(p.caption)) + '</span></div>';
+    b.addEventListener('click', () => openPost(p));
+    return b;
+  }
+  function renderFeed() {
+    const list = posts.filter(p => filter === 'all' || p.media_type === filter);
+    grid.innerHTML = '';
+    if (!list.length && posts.length) { grid.innerHTML = '<p class="empty">' + esc(t('empty')) + '</p>'; return; }
+    list.forEach(p => grid.appendChild(card(p)));
+  }
+  async function load() {
+    const ok = /^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(SITE.supabaseUrl) && SITE.supabaseAnonKey && !/PASTE/.test(SITE.supabaseAnonKey);
+    if (!ok) { posts = SAMPLES; renderFeed(); more.hidden = true; return note('note_sample'); }
+    try {
+      const url = SITE.supabaseUrl + '/rest/v1/club_posts?select=post_id,media_type,media_url,caption,published_at&hidden=eq.false&order=published_at.desc&limit=' + SITE.pageSize + '&offset=' + offset;
+      const r = await fetch(url, { headers: { apikey: SITE.supabaseAnonKey, Authorization: 'Bearer ' + SITE.supabaseAnonKey } });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const rows = await r.json();
+      live = true; posts = posts.concat(rows); offset += rows.length;
+      if (!posts.length) { grid.innerHTML = '<p class="empty">' + esc(t('empty')) + '</p>'; note(''); }
+      else { renderFeed(); note('note_live'); }
+      more.hidden = rows.length < SITE.pageSize;
+    } catch (e) {
+      if (!live) { posts = SAMPLES; renderFeed(); more.hidden = true; note('note_err'); }
+      else note('note_more_err');
+    }
+  }
+  document.querySelectorAll('.filters button').forEach(btn => btn.addEventListener('click', () => {
+    filter = btn.dataset.filter;
+    document.querySelectorAll('.filters button').forEach(x => x.setAttribute('aria-pressed', String(x === btn)));
+    renderFeed();
+  }));
+  more.addEventListener('click', load);
+
+  /* lightbox */
+  const dlg = $('#lightbox');
+  function openPost(p) {
+    $('#lb-media').innerHTML = p.sample
+      ? '<div style="aspect-ratio:' + p.ratio + ';width:100%;background:radial-gradient(90% 80% at 30% 20%,' + p.tone + ',#170936)"></div>'
+      : (p.media_type === 'video' ? '<video src="' + esc(p.media_url) + '" controls playsinline autoplay></video>' : '<img src="' + esc(p.media_url) + '" alt="">');
+    $('#lb-date').textContent = fmtDate(p.published_at);
+    $('#lb-caption').textContent = clean(p.caption);
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+  }
+  $('#lb-close').addEventListener('click', () => dlg.close ? dlg.close() : dlg.removeAttribute('open'));
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('close', () => { $('#lb-media').innerHTML = ''; });
+
+  /* scroll reveal (elements below the fold shift in; everything stays readable) */
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    reveals.forEach(el => { if (el.getBoundingClientRect().top > innerHeight) el.classList.add('below'); });
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.remove('below'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(el => io.observe(el));
+  }
+
+  /* initial language */
+  let start = 'en';
+  try { start = localStorage.getItem('edh_lang') || ''; } catch (e) {}
+  if (!start) { const n = (navigator.language || 'en').slice(0, 2).toLowerCase(); start = n === 'kk' ? 'kk' : (I18N[n] ? n : 'en'); }
+  setLang(start);
+  load();
+})();
+
+/* ===== Disco ball + light beams that sweep with scroll ===== */
+(function () {
+  const cv = document.getElementById('beams');
+  const ctx = cv.getContext && cv.getContext('2d');
+  if (!ctx) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const COLS = ['255,63,142', '99,230,255', '178,110,255', '255,154,85', '255,255,255'];
+  const rays = Array.from({ length: 16 }, (_, i) => ({ a: i / 16 * Math.PI * 2 + Math.random() * .3, w: .025 + Math.random() * .045, c: COLS[i % 5], len: .8 + Math.random() * .7, sp: (i % 2 ? 1 : -1) * (.6 + Math.random() * .9) }));
+  const spots = Array.from({ length: 70 }, () => ({ a: Math.random() * Math.PI * 2, r: .15 + Math.random() * .95, s: 1 + Math.random() * 2.4, c: COLS[Math.floor(Math.random() * 5)], ph: Math.random() * 6.28 }));
+  let W = 0, H = 0, dpr = 1, target = scrollY, cur = scrollY, last = 0;
+  function size() { dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  size(); addEventListener('resize', size);
+  addEventListener('scroll', () => { target = scrollY; }, { passive: true });
+
+  function ball(x, y, r, rot) {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = 'rgba(199,185,234,.35)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, y - r); ctx.stroke();
+    const g = ctx.createRadialGradient(x - r * .35, y - r * .4, r * .1, x, y, r);
+    g.addColorStop(0, '#f4ecff'); g.addColorStop(.45, '#8d78c9'); g.addColorStop(1, '#2a1858');
+    ctx.save(); ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill(); ctx.clip();
+    const n = 9, step = (r * 2) / n;
+    for (let i = 0; i < n; i++) for (let j = 0; j < n * 2; j++) {
+      const lat = -r + (i + .5) * step;
+      const k = Math.sqrt(Math.max(0, r * r - lat * lat));
+      const lon = (j / (n * 2)) * Math.PI * 2 + rot;
+      const cx = x + Math.sin(lon) * k; if (Math.cos(lon) < 0) continue;
+      const tw = .3 + .7 * Math.abs(Math.sin(lon * 3 + i));
+      ctx.fillStyle = 'rgba(255,255,255,' + (.08 + tw * .35 * Math.cos(lon)) + ')';
+      ctx.fillRect(cx - step * .4 * Math.cos(lon), y + lat - step * .42, step * .8 * Math.cos(lon), step * .84);
+    }
+    ctx.restore();
+    ctx.globalCompositeOperation = 'lighter';
+    const h = ctx.createRadialGradient(x, y, r * .8, x, y, r * 2.6);
+    h.addColorStop(0, 'rgba(255,63,142,.18)'); h.addColorStop(1, 'rgba(255,63,142,0)');
+    ctx.fillStyle = h; ctx.beginPath(); ctx.arc(x, y, r * 2.6, 0, Math.PI * 2); ctx.fill();
+  }
+
+  function frame(now) {
+    cur += (target - cur) * .08;
+    const vel = Math.abs(target - cur);
+    const t = now || 0;
+    const ox = W / 2, r = Math.max(24, Math.min(46, W * .04));
+    const oy = Math.max(-r * 2, 150 - cur * .55);
+    const rot = t * .00008 + cur * .0022;
+    const power = Math.min(1, .45 + vel / 260 + Math.min(.25, cur / 3000));
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    const L = Math.hypot(W, H) * 1.2;
+    for (const ray of rays) {
+      const a = ray.a + rot * ray.sp, len = L * ray.len;
+      const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, len);
+      g.addColorStop(0, 'rgba(' + ray.c + ',' + (.2 * power) + ')');
+      g.addColorStop(.55, 'rgba(' + ray.c + ',' + (.06 * power) + ')');
+      g.addColorStop(1, 'rgba(' + ray.c + ',0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.moveTo(ox, oy);
+      ctx.lineTo(ox + Math.cos(a - ray.w) * len, oy + Math.sin(a - ray.w) * len);
+      ctx.lineTo(ox + Math.cos(a + ray.w) * len, oy + Math.sin(a + ray.w) * len);
+      ctx.closePath(); ctx.fill();
+    }
+    for (const s of spots) {
+      const a = s.a + rot * 1.4, d = s.r * Math.max(W, H) * .75;
+      const x = ox + Math.cos(a) * d, y = oy + Math.abs(Math.sin(a)) * d * 1.1;
+      if (x < -10 || x > W + 10 || y < -10 || y > H + 10) continue;
+      const al = (.25 + .35 * (.5 + .5 * Math.sin(t * .003 + s.ph))) * power;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, s.s * 4);
+      g.addColorStop(0, 'rgba(' + s.c + ',' + al + ')'); g.addColorStop(1, 'rgba(' + s.c + ',0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, s.s * 4, 0, Math.PI * 2); ctx.fill();
+    }
+    if (oy > -r) ball(ox, oy, r, rot * 3);
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  if (reduce) { frame(0); addEventListener('scroll', () => { cur = target = scrollY; frame(0); }, { passive: true }); }
+  else requestAnimationFrame(frame);
+})();
+/* ===== NFT card: grows and tilts with scroll, follows the pointer ===== */
+(function () {
+  const card = document.getElementById('nft'); if (!card) return;
+  const v = document.getElementById('party-video');
+  if (v) { v.muted = true; const p = v.play && v.play(); if (p && p.catch) p.catch(() => {}); }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let mx = 0, my = 0, ticking = false;
+  function update() {
+    ticking = false;
+    const r = card.parentElement.getBoundingClientRect();
+    const center = r.top + r.height / 2;
+    // progress: 0 when the card centre is low in the viewport, 1 when it has scrolled up to the top
+    const p = Math.max(0, Math.min(1, (innerHeight * .75 - center) / (innerHeight * .75)));
+    card.style.setProperty('--s', (1 + p * .14).toFixed(3));
+    card.style.setProperty('--rx', (6 - p * 14).toFixed(2) + 'deg');
+    card.style.setProperty('--ry', (-10 + p * 16).toFixed(2) + 'deg');
+    card.style.setProperty('--mx', mx.toFixed(2) + 'deg');
+    card.style.setProperty('--my', my.toFixed(2) + 'deg');
+    card.style.setProperty('--sheen', (50 + p * 60 + mx * 3).toFixed(1) + '%');
+  }
+  const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', req, { passive: true });
+  addEventListener('resize', req);
+  card.addEventListener('pointermove', (e) => {
+    const r = card.getBoundingClientRect();
+    mx = ((e.clientX - r.left) / r.width - .5) * 18;
+    my = -((e.clientY - r.top) / r.height - .5) * 14;
+    req();
+  });
+  card.addEventListener('pointerleave', () => { mx = 0; my = 0; req(); });
+  update();
+})();
+</script>
+</body>
+</html>

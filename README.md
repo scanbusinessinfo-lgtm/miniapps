@@ -5,6 +5,7 @@
 - `site/leto/` — LETO Real Estate (@LETO_RealEstate_Agent_bot)
 - `site/demo/` — демо для агентств (@realestate_nwe_agent_bot)
 - `site/leads/` — кабинет лидов из Google Maps (парсер — функция Supabase `gmaps-scanner`, проект la-ban-vietnam-compass; открывать с `?t=ТОКЕН`)
+- `site/edh/` — сайт клуба Every Day Holiday (Паттайя), черновик
 - `site/bikes/` — прокат байков «Ветер» (@DEMO_RENTALBOT), админка в `site/bikes/admin/`. API — RPC `bike_*` и функции `bike-bot`, `bike-upload` в Supabase (проект la-ban-vietnam-compass)
 
 Восстановлено 3–4 ноября 2026 после сбоя хостинга Beget (раньше отдавались из n8n).
