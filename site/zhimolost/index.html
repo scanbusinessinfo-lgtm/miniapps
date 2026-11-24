@@ -207,6 +207,48 @@ html[data-mode=kids] .buddy img{width:112px}
 .sch2-img:hover{transform:translateY(-4px)}
 .sch2-zoom{text-align:center;margin:16px auto 0;font-size:15px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* bear game */
+.bg-wrap{border-radius:var(--r);overflow:hidden;border:4px solid #fff;box-shadow:0 18px 40px #1f164825;background:#bfe6a0}
+.bhud{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#fff;color:#1f1648;font-weight:900;font-size:22px;gap:12px}
+.hearts{display:flex;gap:6px}.hearts svg{width:30px;height:30px;transition:transform .3s,opacity .3s}.hearts svg.lost{opacity:.2;transform:scale(.8)}
+.jarbox{display:flex;align-items:center;gap:8px}.jar{width:34px;height:42px}#jarfill{transition:y .4s}
+.bfield{position:relative;height:clamp(420px,62vh,560px);background:radial-gradient(ellipse at 50% 120%,#9ad46f 0 35%,transparent 36%),linear-gradient(#cdeeff 0 18%,#a8dc7c 18% 100%);user-select:none;touch-action:manipulation;overflow:hidden}
+html[data-theme=dark] .bfield{filter:brightness(.85)}
+.bfield::before{content:"";position:absolute;left:0;right:0;top:4%;height:16%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'%3E%3Cpath d='M0 60L70 12l30 20 40-30 70 58zM180 60L290 6l110 54z' fill='%237f72c9'/%3E%3Cpath d='M70 12l-14 10 12-2 8 6 6-8 18 6zM290 6l-18 12 14-2 6 8 10-8 14 4z' fill='%23fff'/%3E%3C/svg%3E") bottom/100% 100% no-repeat;opacity:.8}
+.bush{position:absolute;transform:translate(-50%,-50%);width:clamp(84px,19%,140px);aspect-ratio:6/5;border:0;padding:0;background:none;cursor:pointer;z-index:2}
+.bush svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 8px 6px #1f164833)}
+.bush .be{transition:opacity .3s,transform .3s;transform-origin:center;transform-box:fill-box}
+.bush .be.off{opacity:0;transform:scale(.3)}
+.bush.shake svg{animation:bshake .45s ease-in-out infinite}
+@keyframes bshake{25%{transform:rotate(-3deg) translateX(-2px)}75%{transform:rotate(3deg) translateX(2px)}}
+.bush.target::after{content:"";position:absolute;inset:-8%;border-radius:50%;border:3px dashed #8a5a2c;animation:tpulse 1s ease-in-out infinite;pointer-events:none}
+@keyframes tpulse{50%{transform:scale(1.08);opacity:.4}}
+.bear{position:absolute;width:clamp(70px,14%,110px);transform:translate(-50%,-50%);z-index:1;transition-property:left,top;transition-timing-function:linear;pointer-events:none}
+.bear svg{width:100%;display:block}
+.bear.walk{z-index:4}.bear.walk svg{animation:bwalk .4s ease-in-out infinite}
+.bear.flip svg{transform:scaleX(-1)}
+.bear.walk.flip svg{animation-name:bwalkf}
+@keyframes bwalk{50%{transform:translateY(-6%) rotate(3deg)}}
+@keyframes bwalkf{0%,100%{transform:scaleX(-1)}50%{transform:scaleX(-1) translateY(-6%) rotate(3deg)}}
+.bear.roar svg{animation:broar .5s ease-in-out 2}
+@keyframes broar{50%{transform:scale(1.25)}}
+.bear.eat .arm{animation:barm .5s ease-in-out infinite;transform-origin:50% 80%;transform-box:fill-box}
+@keyframes barm{50%{transform:rotate(-25deg)}}
+.pl{position:absolute;width:clamp(54px,10%,78px);transform:translate(-50%,-50%);z-index:3;transition-property:left,top;transition-timing-function:ease-in-out;pointer-events:none;filter:drop-shadow(0 8px 6px #1f164844)}
+.pl.walk{animation:plw .3s ease-in-out infinite}
+@keyframes plw{50%{margin-top:-6px}}
+.pl.hit{animation:plhit .6s}
+@keyframes plhit{20%,60%{transform:translate(-50%,-50%) rotate(-12deg)}40%,80%{transform:translate(-50%,-50%) rotate(12deg)}}
+.plus{position:absolute;z-index:6;font-weight:900;font-size:22px;color:#3d47b8;pointer-events:none;animation:plus .8s forwards;text-shadow:0 2px 0 #fff}
+@keyframes plus{to{transform:translateY(-40px);opacity:0}}
+.paws{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.paws ellipse{fill:#6b4423;opacity:0;animation:pawin .3s forwards}
+@keyframes pawin{to{opacity:.55}}
+.bstart{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;gap:14px;z-index:10;background:#ffffffb3;color:#1f1648;padding:20px}
+html[data-theme=dark] .bstart{background:#0f1f3acc;color:#fff}
+.bstart img{width:110px;animation:bob 3s ease-in-out infinite}
+.bstart.hide{display:none}
+.home{position:absolute;left:50%;bottom:2%;transform:translateX(-50%);width:clamp(80px,16%,120px);height:22px;border-radius:50%;background:#7fbf5a;box-shadow:inset 0 -4px 0 #5f9e3e;z-index:0}
 /* reveal */
 .rv{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
 .rv.on{opacity:1;transform:none}
@@ -226,7 +268,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
    <a href="#what">Коктейль</a><a href="#benefit">Польза</a><a href="#safety">Безопасность</a><a href="#schools">Садам и школам</a><a href="#faq">Родителям</a><a href="#mats">Плакаты</a><a href="#contact">Контакты</a>
   </nav>
   <nav class="k" aria-label="Разделы">
-   <a href="#what">Из чего пенка</a><a href="#play">Игра</a><a href="#riddles">Загадки</a><a href="#rules">Мои правила</a>
+   <a href="#what">Из чего пенка</a><a href="#play">Пузырьки</a><a href="#bear">Медведь</a><a href="#riddles">Загадки</a><a href="#rules">Мои правила</a>
   </nav>
   <div class="sw" role="group" aria-label="Версия сайта">
    <button type="button" data-set="adult" aria-pressed="true">Взрослым</button>
@@ -463,6 +505,29 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
  </div>
 </section>
 
+<!-- KIDS BEAR GAME -->
+<section class="band k" id="bear" data-say="bear">
+ <div class="wrap">
+  <div class="rv"><h2>Игра: собери жимолость и не попадись медведю!</h2>
+   <p class="lead muted">Нажимай на кустик — ягодка побежит туда и начнёт собирать жимолость в банку. Но мишка тоже любит ягоды! Смотри, за каким кустом он сидит и куда идёт. Если рядом с кустом появились следы лап, значит, мишка скоро придёт туда. Убегай к другому кусту!</p></div>
+  <div class="bg-wrap rv">
+   <div class="bhud">
+    <span class="hearts" id="bhearts" aria-label="Жизни"></span>
+    <span class="jarbox"><svg class="jar" viewBox="0 0 40 50" aria-hidden="true"><defs><clipPath id="jarc"><path d="M8 14h24v30a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4z"/></clipPath></defs><rect x="6" y="4" width="28" height="8" rx="3" fill="#a5743f"/><g clip-path="url(#jarc)"><rect x="0" y="0" width="40" height="50" fill="#ffffffaa"/><rect id="jarfill" x="0" y="48" width="40" height="40" fill="#3d47b8"/></g><path d="M8 14h24v30a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4z" fill="none" stroke="#1f1648" stroke-width="2"/></svg><b id="bjar">0 / 20</b></span>
+   </div>
+   <div class="bfield" id="bfield" aria-label="Поляна с кустами жимолости">
+    <svg class="paws" id="bpaws" aria-hidden="true"></svg>
+    <div class="bstart" id="bstart">
+     <img src="img/logo.webp" alt="">
+     <h3 id="bmsg" style="font-size:28px">Собери полную банку!</h3>
+     <p id="bbest" style="margin:0;max-width:34ch">Нужно 20 ягодок. У тебя 3 сердечка. Следи за мишкой!</p>
+     <button class="btn p" id="bbtn" type="button">Начать игру</button>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
 <!-- KIDS RIDDLES -->
 <section class="band k" id="riddles" data-say="riddles">
  <div class="wrap">
@@ -582,7 +647,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
 const root=document.documentElement;
 const SAY={
  adult:{hero:'Здравствуйте! Я — символ «Жимолости» и друг ваших детей.',what:'Всего три ингредиента — состав видно целиком.',benefit:'Жимолость поспевает на Камчатке самой первой.',safety:'Каждый ребёнок — только с согласия родителей и медика.',schools:'Воспитателям ничего не нужно готовить — всё делаем мы.',launch:'Начнём с пилотной недели — это просто.',faq:'Остались вопросы? Напишите нам!',scheme:'Вся «Жимолость» — на одной схеме!',mats:'Эти плакаты можно распечатать для стенда.',school:'На перемене — ягодная пенка всем классом!',contact:'Оставьте заявку — я уже жду встречи с ребятами!',tap:['Нажмите «Детям» — там я играю!','Я сделан из ягодного настроения.','Пенка — это не лекарство, а радость.']},
- kids:{hero:'Привет! Нажми на меня — я прыгаю!',what:'Ягодки + корешок + пузырьки = облачко!',kbenefit:'Листай мои картинки!',play:'Лопай пузырьки — я считаю очки!',riddles:'Отгадаешь все загадки?',rules:'Мой ручки — и будет праздник!',contact:'Покажи сайт маме!',tap:['Хи-хи, щекотно!','Ура-а-а!','Давай играть!','Я самая весёлая ягодка!','Ещё разок!']}
+ kids:{hero:'Привет! Нажми на меня — я прыгаю!',what:'Ягодки + корешок + пузырьки = облачко!',kbenefit:'Листай мои картинки!',play:'Лопай пузырьки — я считаю очки!',bear:'Осторожно, тут ходит мишка!',riddles:'Отгадаешь все загадки?',rules:'Мой ручки — и будет праздник!',contact:'Покажи сайт маме!',tap:['Хи-хи, щекотно!','Ура-а-а!','Давай играть!','Я самая весёлая ягодка!','Ещё разок!']}
 };
 const say=document.getElementById('say'),bimg=document.getElementById('bimg');
 let mode='adult',cur='',hideT;
@@ -641,6 +706,103 @@ function end(){clearInterval(spawnT);clearInterval(tickT);game.querySelectorAll(
  gbest.textContent='Твой рекорд: '+best;document.getElementById('gbtn').textContent='Играть ещё';gstart.classList.remove('hide');speak('Классно поиграли!')}
 document.getElementById('gbtn').addEventListener('click',()=>{score=0;left=30;scoreEl.textContent=0;timeEl.textContent=30;gstart.classList.add('hide');speak('Лопай пузырьки!');
  spawnT=setInterval(spawn,520);tickT=setInterval(()=>{left--;timeEl.textContent=left;if(left<=0)end()},1000)});
+
+/* bear game */
+{
+const field=document.getElementById('bfield'),bstart=document.getElementById('bstart'),bmsg=document.getElementById('bmsg'),bbest=document.getElementById('bbest'),bbtn=document.getElementById('bbtn'),hearts=document.getElementById('bhearts'),bjar=document.getElementById('bjar'),jarfill=document.getElementById('jarfill'),paws=document.getElementById('bpaws');
+const GOAL=20,POS=[[17,36],[50,30],[83,36],[17,72],[50,66],[83,72]],HOME=[50,92],MAXB=5;
+const bushSVG='<svg viewBox="0 0 120 100"><g><ellipse cx="60" cy="92" rx="46" ry="7" fill="#00000022"/><path d="M60 92V70" stroke="#6b4423" stroke-width="6"/><circle cx="34" cy="62" r="26" fill="#2f8f3c"/><circle cx="86" cy="62" r="26" fill="#2f8f3c"/><circle cx="60" cy="40" r="32" fill="#3fae49"/><circle cx="40" cy="44" r="20" fill="#47b852"/><circle cx="82" cy="46" r="20" fill="#3aa544"/><circle cx="50" cy="28" r="10" fill="#6fd27a" opacity=".6"/></g>'+[[38,46],[58,34],[80,48],[48,64],[72,66]].map(([x,y])=>`<g class="be"><ellipse cx="${x}" cy="${y}" rx="6" ry="10" fill="#3d47b8"/><ellipse cx="${x-2}" cy="${y-4}" rx="2" ry="3" fill="#a9b3ff"/></g>`).join('')+'</svg>';
+const bearSVG='<svg viewBox="0 0 100 100"><circle cx="24" cy="20" r="12" fill="#8a5a2c"/><circle cx="76" cy="20" r="12" fill="#8a5a2c"/><circle cx="24" cy="20" r="6" fill="#d9a066"/><circle cx="76" cy="20" r="6" fill="#d9a066"/><ellipse cx="50" cy="78" rx="34" ry="24" fill="#7a4d24"/><circle cx="50" cy="42" r="32" fill="#8a5a2c"/><ellipse cx="50" cy="54" rx="15" ry="11" fill="#e3b27c"/><ellipse cx="50" cy="48" rx="6" ry="4.5" fill="#2a1a10"/><path d="M44 58q6 5 12 0" stroke="#2a1a10" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="38" cy="36" r="4" fill="#2a1a10"/><circle cx="62" cy="36" r="4" fill="#2a1a10"/><circle cx="39" cy="34.5" r="1.4" fill="#fff"/><circle cx="63" cy="34.5" r="1.4" fill="#fff"/><circle cx="30" cy="48" r="4" fill="#ff8f8f" opacity=".5"/><circle cx="70" cy="48" r="4" fill="#ff8f8f" opacity=".5"/><ellipse class="arm" cx="80" cy="72" rx="9" ry="14" fill="#6b4423"/><ellipse cx="20" cy="74" rx="9" ry="13" fill="#6b4423"/></svg>';
+const heart='<svg viewBox="0 0 32 32"><path d="M16 28C6 21 2 15 4 10c2-5 9-6 12-1 3-5 10-4 12 1 2 5-2 11-12 18z" fill="#ff6f8e" stroke="#fff" stroke-width="2"/></svg>';
+let bushes=[],berries=[],bear,pl,run=0,jar=0,lives=3,plAt=null,plMoving=false,bearAt=0,bearState='eat',timers=[],pickT,regrowT,started=0,best=0;
+try{best=+localStorage.getItem('zh-bear-best')||0}catch(e){}
+if(best)bbest.textContent='Твой рекорд: банка за '+best+' сек. Нужно 20 ягодок, у тебя 3 сердечка.';
+function T(fn,ms){const r=run,id=setTimeout(()=>{if(r===run)fn()},ms);timers.push(id);return id}
+function setPos(el,[x,y]){el.style.left=x+'%';el.style.top=y+'%'}
+function dist(a,b){const r=field.getBoundingClientRect();return Math.hypot((a[0]-b[0])*r.width/100,(a[1]-b[1])*r.height/100)}
+function build(){
+ field.querySelectorAll('.bush,.bear,.pl,.home,.plus').forEach(e=>e.remove());paws.innerHTML='';
+ const h=document.createElement('div');h.className='home';field.appendChild(h);
+ bushes=POS.map((p,i)=>{const b=document.createElement('button');b.type='button';b.className='bush';b.setAttribute('aria-label','Куст жимолости '+(i+1));b.innerHTML=bushSVG;setPos(b,p);b.addEventListener('click',()=>goTo(i));field.appendChild(b);return b});
+ berries=POS.map(()=>MAXB);bushes.forEach((b,i)=>drawBush(i));
+ bear=document.createElement('div');bear.className='bear eat';bear.innerHTML=bearSVG;field.appendChild(bear);
+ pl=document.createElement('img');pl.className='pl';pl.src='img/logo.webp';pl.alt='Ты — ягодка';field.appendChild(pl);
+}
+function drawBush(i){bushes[i].querySelectorAll('.be').forEach((e,k)=>e.classList.toggle('off',k>=berries[i]))}
+function drawHud(){hearts.innerHTML=[0,1,2].map(i=>heart.replace('<svg',`<svg class="${i<lives?'':'lost'}"`)).join('');bjar.textContent=jar+' / '+GOAL;jarfill.setAttribute('y',48-34*Math.min(jar,GOAL)/GOAL)}
+function bearSpot(i){return[POS[i][0],POS[i][1]-6]}
+function plSpot(i){return[POS[i][0]+(POS[i][0]>60?-9:9),POS[i][1]+12]}
+function placeBear(i){bear.style.transitionDuration='0s';setPos(bear,bearSpot(i));bearAt=i;bearState='eat';bear.className='bear eat';bushes[i].classList.add('shake')}
+function speedK(){return 1-Math.min(jar,GOAL)/GOAL*0.45}
+function bearCycle(){
+ const eat=(2600+Math.random()*2200)*speedK();
+ T(()=>{if(berries[bearAt]>0){berries[bearAt]--;drawBush(bearAt)}},eat*0.5);
+ T(()=>{
+  let n;do{n=Math.floor(Math.random()*POS.length)}while(n===bearAt);
+  if(plAt!==null&&Math.random()<0.35&&plAt!==bearAt)n=plAt;
+  showPaws(bearAt,n);bushes[n].classList.add('target');
+  T(()=>walkBear(n),1500*speedK()+300);
+ },eat);
+}
+function showPaws(a,b){const r=field.getBoundingClientRect();const A=bearSpot(a),B=bearSpot(b);let s='';const N=7;
+ paws.setAttribute('viewBox',`0 0 ${r.width} ${r.height}`);
+ for(let k=1;k<=N;k++){const t=k/(N+1),x=(A[0]+(B[0]-A[0])*t)*r.width/100,y=(A[1]+8+(B[1]-A[1])*t)*r.height/100,o=(k%2?-7:7);s+=`<ellipse cx="${x+o}" cy="${y}" rx="6" ry="8" style="animation-delay:${k*0.12}s"/>`}
+ paws.innerHTML=s}
+function walkBear(n){
+ bushes[bearAt].classList.remove('shake');const from=bearSpot(bearAt),to=bearSpot(n);
+ bearState='walk';bear.className='bear walk'+(to[0]<from[0]?' flip':'');
+ const d=dist(from,to)/(110/speedK())*1000;
+ requestAnimationFrame(()=>{bear.style.transitionDuration=d+'ms';setPos(bear,to)});
+ T(()=>{paws.innerHTML='';bushes[n].classList.remove('target');placeBear(n);
+  if(plAt===n&&!plMoving){caught();return}
+  bearCycle()},d+60);
+}
+function goTo(i){
+ if(!started||plMoving)return;
+ if(plAt===i)return;
+ plAt=null;plMoving=true;clearInterval(pickT);
+ const to=plSpot(i),from=[parseFloat(pl.style.left),parseFloat(pl.style.top)];
+ const d=Math.max(350,dist(from,to)/260*1000);pl.style.transitionDuration=d+'ms';pl.classList.add('walk');setPos(pl,to);
+ T(()=>{pl.classList.remove('walk');plMoving=false;plAt=i;
+  if(bearState==='eat'&&bearAt===i){caught();return}
+  pickT=setInterval(()=>pick(i),650)},d);
+}
+function pick(i){
+ if(plAt!==i||!started)return;
+ if(berries[i]<=0){if(Math.random()<.3)speak('Тут пусто! Беги к другому кусту.');return}
+ berries[i]--;drawBush(i);jar++;drawHud();
+ const p=document.createElement('span');p.className='plus';p.textContent='+1';setPos(p,[POS[i][0],POS[i][1]-6]);field.appendChild(p);setTimeout(()=>p.remove(),800);
+ if(jar===10)speak('Полбанки! Следи за мишкой!');
+ if(jar>=GOAL)win();
+}
+function caught(){
+ clearInterval(pickT);lives--;drawHud();bear.classList.add('roar');pl.classList.add('hit');
+ speak(lives>0?'Ой! Мишка заметил тебя! Беги на полянку!':'Мишка забрал банку!');
+ started=0;
+ T(()=>{pl.classList.remove('hit');bear.classList.remove('roar');
+  if(lives<=0){end(false);return}
+  pl.style.transitionDuration='700ms';setPos(pl,HOME);plAt=null;plMoving=true;
+  T(()=>{plMoving=false;started=1;bearCycle()},750)},1100);
+}
+function clearAll(){run++;timers.forEach(clearTimeout);timers=[];clearInterval(pickT);clearInterval(regrowT)}
+function win(){
+ const sec=Math.round((Date.now()-t0)/1000);clearAll();started=0;
+ if(!best||sec<best){best=sec;try{localStorage.setItem('zh-bear-best',best)}catch(e){}}
+ bmsg.textContent='Ура! Полная банка жимолости!';bbest.textContent=`Ты справился за ${sec} сек. Рекорд: ${best} сек.`;bbtn.textContent='Играть ещё';bstart.classList.remove('hide');speak('Ты молодец! Мишка даже не заметил!');
+}
+function end(){clearAll();bmsg.textContent='Мишка оказался хитрее!';bbest.textContent=`Ты собрал ${jar} из ${GOAL} ягодок. Попробуй ещё — следи за следами лап!`;bbtn.textContent='Попробовать ещё';bstart.classList.remove('hide')}
+let t0=0;
+function start(){
+ clearAll();build();jar=0;lives=3;plAt=null;plMoving=false;drawHud();
+ pl.style.transitionDuration='0s';setPos(pl,HOME);
+ placeBear(Math.floor(Math.random()*POS.length));
+ bstart.classList.add('hide');started=1;t0=Date.now();speak('Нажми на кустик! Только не туда, где мишка.');
+ const r=run;regrowT=setInterval(()=>{if(r!==run)return;const i=Math.floor(Math.random()*POS.length);if(berries[i]<MAXB&&!(bearState==='eat'&&bearAt===i)){berries[i]++;drawBush(i)}},2200);
+ T(bearCycle,600);
+}
+build();drawHud();setPos(pl,HOME);placeBear(1);bushes[1].classList.remove('shake');
+bbtn.addEventListener('click',start);
+}
 
 /* lightbox */
 const lb=document.getElementById('lb'),lbi=document.getElementById('lbi');
