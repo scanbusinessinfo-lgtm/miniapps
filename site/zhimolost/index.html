@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ru" data-mode="adult">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Жимолость — кислородные коктейли</title>
+<meta name="description" content="«Жимолость» — кислородные коктейли из камчатской жимолости для детских садов и школ Петропавловска-Камчатского. Услуга под ключ: оборудование, оператор, документы.">
+<link rel="icon" href="img/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* VOICE: тёплый и спокойный для взрослых, игривый и громкий для детей — один бренд, два голоса
+   IDEA: камчатское утро — ягодный куст у подножия вулканов, из стаканчика поднимаются пузырьки
+   PICTURE: сцена с вулканами, веткой жимолости и маскотом; маскот летает по всему сайту
+   COLOUR+TYPE: глубокий ягодный индиго, синий маскота, зелень листа, розовый «румянец»; Nunito 900/400
+   LAYOUT: широкие цветные полосы, переключатель «Взрослым / Детям» меняет текст, цвета и размер */
+:root{color-scheme:light dark;
+--bg:light-dark(#f8f5ff,#140f2c);--ink:light-dark(#1f1648,#f0ecff);--muted:light-dark(#574f80,#bcb4e0);
+--card:light-dark(#ffffff,#211a46);--soft:light-dark(#ece5ff,#2a2258);--line:light-dark(#ddd4fb,#3a3170);
+--berry:#3b2c94;--berry2:#2a1f6e;--blue:#4f63e6;--leaf:#3a9e45;--cheek:#ff6f8e;--sun:#ffc83d;
+--r:22px;--fs:17px}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+html[data-mode=kids]{--bg:light-dark(#eaf5ff,#0f1f3a);--soft:light-dark(#fff0c4,#2b2b52);--card:light-dark(#fff,#1b2d52);--line:light-dark(#cfe3fb,#2f4673);--r:32px;--fs:19px}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs)/1.6 Nunito,system-ui,sans-serif;overflow-x:clip;transition:background .6s}
+h1,h2,h3{line-height:1.08;text-wrap:balance;margin:0 0 .5em;font-weight:900}
+h1{font-size:clamp(34px,5vw,56px)}h2{font-size:clamp(28px,3.6vw,44px)}h3{font-size:21px;font-weight:800}
+p{margin:0 0 1em;max-width:66ch}
+a{color:inherit}
+img{display:block;max-width:100%}
+.wrap{max-width:1240px;margin:0 auto}
+.band{padding:clamp(48px,7vw,104px) max(5vw,16px);position:relative}
+.deep{background:var(--berry);color:#fff}.deep .muted{color:#d9d2ff}
+.softb{background:var(--soft)}
+.muted{color:var(--muted)}
+.lead{font-size:clamp(18px,1.6vw,21px)}
+html[data-mode=kids] .a,html:not([data-mode=kids]) .k{display:none!important}
+/* header */
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:18px;padding:10px max(5vw,16px);max-width:1340px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:900;font-size:22px;color:var(--berry)}
+html[data-theme=dark] .brand,html:not([data-theme]) .brand{color:light-dark(var(--berry),#c9c0ff)}
+.brand img{width:40px;height:50px;object-fit:contain}
+nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav a{text-decoration:none;font-weight:700;font-size:15px;padding:8px 12px;border-radius:99px}
+nav a:hover{background:var(--soft)}
+.sw{display:flex;background:var(--soft);border-radius:99px;padding:4px;flex:none}
+.sw button{font:800 15px Nunito,sans-serif;border:0;background:none;color:var(--ink);padding:10px 16px;border-radius:99px;cursor:pointer;min-height:44px;transition:.3s}
+.sw button[aria-pressed=true]{background:var(--berry);color:#fff;box-shadow:0 4px 14px #3b2c9455}
+html[data-mode=kids] .sw button[aria-pressed=true]{background:var(--cheek)}
+@media(max-width:980px){nav{display:none}.sw{margin-left:auto}}
+@media(max-width:420px){.brand span{display:none}}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;font:800 17px Nunito,sans-serif;padding:15px 26px;border-radius:99px;border:0;cursor:pointer;text-decoration:none;min-height:48px;transition:transform .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-3px)}
+.btn.p{background:var(--berry);color:#fff;box-shadow:0 10px 24px #3b2c9440}
+.btn.g{background:var(--leaf);color:#fff}
+.btn.o{background:transparent;color:inherit;box-shadow:inset 0 0 0 2px currentColor}
+html[data-mode=kids] .btn.p{background:var(--cheek);box-shadow:0 10px 24px #ff6f8e55}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(24px,4vw,56px);align-items:center;padding-top:clamp(28px,4vw,56px)}
+.hero .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.tag{display:inline-block;font-weight:800;font-size:15px;color:var(--leaf);background:color-mix(in srgb,var(--leaf) 14%,transparent);padding:6px 14px;border-radius:99px;margin-bottom:16px}
+.scene{position:relative;aspect-ratio:6/5.2}
+.scene svg{position:absolute;inset:0;width:100%;height:100%}
+.scene .hm{position:absolute;left:34%;bottom:9%;width:33%;animation:bob 4s ease-in-out infinite;filter:drop-shadow(0 18px 14px #1f164833);cursor:pointer}
+@keyframes bob{50%{transform:translateY(-14px) rotate(-2deg)}}
+.bub{position:absolute;bottom:20%;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff 0 18%,#c9d4ff88 40%,#7d8cf044 70%);border:1.5px solid #ffffffaa;animation:rise linear infinite;opacity:0}
+@keyframes rise{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:.95}100%{transform:translateY(-330%) translateX(var(--dx,20px)) scale(1);opacity:0}}
+.sunc{transition:opacity .8s,transform .8s;opacity:0;transform:translateY(30px)}
+html[data-mode=kids] .sunc{opacity:1;transform:none}
+.cloud{animation:drift 26s linear infinite}
+@keyframes drift{from{transform:translateX(-80px)}to{transform:translateX(640px)}}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:clamp(28px,4vw,48px)}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.fact b{display:block;font-size:clamp(22px,2.6vw,30px);font-weight:900;color:var(--blue);line-height:1.1}
+.fact span{font-size:15px;color:var(--muted)}
+@media(max-width:860px){.hero{grid-template-columns:1fr}.scene{max-width:560px;margin:0 auto;width:100%}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* recipe */
+.recipe{display:grid;grid-template-columns:repeat(7,auto);align-items:start;justify-content:center;gap:clamp(8px,2vw,24px);margin:36px 0 10px}
+.ing{text-align:center;width:clamp(120px,15vw,180px)}
+.ing .ic{width:clamp(96px,11vw,130px);aspect-ratio:1;margin:0 auto 12px;border-radius:50%;background:var(--card);display:grid;place-items:center;box-shadow:0 14px 30px #2a1f6e1f}
+.ing .ic svg{width:62%;height:62%}
+.ing b{display:block;font-size:18px}.ing small{color:var(--muted);font-size:15px;display:block;line-height:1.35}
+.op{font-size:40px;font-weight:900;color:var(--cheek);padding-top:clamp(28px,3.5vw,44px)}
+@media(max-width:860px){.recipe{grid-template-columns:1fr;justify-items:center}.op{line-height:.6;padding:0}}
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:18px;margin-top:32px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px;transition:transform .35s,box-shadow .35s}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px #2a1f6e22}
+.card .ci{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;margin-bottom:16px;background:var(--soft)}
+.card .ci svg{width:30px;height:30px}
+.card p{font-size:16px;color:var(--muted);margin:0}
+.deep .card{background:#ffffff12;border-color:#ffffff26;color:#fff}.deep .card p{color:#ddd6ff}.deep .card .ci{background:#ffffff1c}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+@media(max-width:860px){.split{grid-template-columns:1fr}}
+.promise{display:grid;grid-template-columns:1fr 1fr;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.promise h3{margin:0;padding:16px 20px;font-size:19px;color:#fff;background:var(--berry2)}
+.promise h3+h3{background:var(--cheek)}
+.promise ul{list-style:none;margin:0;padding:8px 20px 18px}
+.promise li{padding:12px 0 12px 32px;border-bottom:1px solid var(--line);position:relative;font-size:16px}
+.promise li:last-child{border:0}
+.promise li::before{content:"";position:absolute;left:0;top:15px;width:20px;height:20px;border-radius:50%;background:var(--leaf) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10l3.5 3.5L15 7' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E")}
+.promise ul+ul li::before{background:var(--cheek) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6.5 6.5l7 7M13.5 6.5l-7 7' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E")}
+.pg{display:grid;grid-template-columns:1fr 1fr}
+@media(max-width:520px){.pg{grid-template-columns:1fr}.promise{grid-template-columns:1fr}}
+.note{border-left:4px solid var(--leaf);background:var(--card);padding:18px 22px;border-radius:0 var(--r) var(--r) 0;font-size:16px}
+/* path */
+.path{position:relative;margin-top:40px}
+.path svg{width:100%;height:90px;display:block}
+.path .ln{fill:none;stroke:#ffffff;stroke-width:10;stroke-linecap:round;stroke-dasharray:1400;stroke-dashoffset:1400;transition:stroke-dashoffset 2.4s ease}
+.path.on .ln{stroke-dashoffset:0}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:-20px}
+.step{background:#ffffff14;border:1px solid #ffffff2a;border-radius:var(--r);padding:26px}
+.step .n{width:52px;height:52px;border-radius:50%;background:var(--sun);color:var(--berry2);font-weight:900;font-size:24px;display:grid;place-items:center;margin-bottom:14px}
+.step p{color:#ddd6ff;font-size:16px;margin:0}
+@media(max-width:760px){.steps{grid-template-columns:1fr;margin-top:0}.path svg{display:none}}
+/* day schedule */
+.day{list-style:none;padding:0;margin:0}
+.day li{display:grid;grid-template-columns:6.5em 1fr;gap:16px;padding:16px 0;border-bottom:1px dashed var(--line)}
+.day b{font-size:20px;color:var(--blue);white-space:nowrap}
+.docs{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.docs span{background:var(--card);border:1px solid var(--line);padding:9px 16px;border-radius:99px;font-weight:700;font-size:15px}
+/* faq */
+details{background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:12px;overflow:hidden}
+summary{cursor:pointer;padding:18px 56px 18px 22px;font-weight:800;font-size:18px;list-style:none;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:22px;top:12px;font-size:28px;color:var(--blue);transition:transform .3s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 22px 18px;margin:0;color:var(--muted);font-size:16px}
+/* materials */
+.mats{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px}
+.mats button{padding:0;border:0;border-radius:var(--r);overflow:hidden;cursor:zoom-in;background:none;box-shadow:0 16px 36px #2a1f6e26;transition:transform .35s}
+.mats button:hover{transform:scale(1.015)}
+@media(max-width:700px){.mats{grid-template-columns:1fr}}
+dialog{border:0;padding:0;background:transparent;max-width:min(96vw,1400px)}
+dialog::backdrop{background:#140f2ccc}
+dialog img{border-radius:16px;max-height:88vh;width:auto}
+dialog form{position:absolute;top:10px;right:10px}
+dialog form button{width:44px;height:44px;border-radius:50%;border:0;font-size:22px;cursor:pointer;background:#fff;color:#1f1648}
+/* form */
+.fm{background:var(--card);border-radius:var(--r);padding:clamp(22px,3vw,36px);color:var(--ink);display:grid;gap:14px}
+.fm label{display:grid;gap:6px;font-weight:700;font-size:15px}
+.fm input,.fm select,.fm textarea{font:16px Nunito,sans-serif;padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);min-height:48px}
+.fm .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.fm .row{grid-template-columns:1fr}}
+.fm .ok{display:none;background:color-mix(in srgb,var(--leaf) 15%,transparent);padding:14px;border-radius:14px;font-weight:700}
+.fm.sent .ok{display:block}
+.contacts{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:12px}
+.contacts li{font-size:18px}.contacts b{display:block;font-size:14px;color:#cfc7ff;font-weight:700}
+/* kids */
+.game{position:relative;height:clamp(380px,55vh,520px);border-radius:var(--r);overflow:hidden;background:linear-gradient(#bfe0ff,#e9f6ff);border:4px solid #fff;box-shadow:0 18px 40px #1f164825;touch-action:manipulation;user-select:none}
+html[data-theme=dark] .game{background:linear-gradient(#22356a,#34508f)}
+.game .gb{position:absolute;border-radius:50%;cursor:pointer;background:radial-gradient(circle at 30% 30%,#fff 0 16%,#cfe1ff 45%,#8fb0ff99 80%);border:2px solid #fff;display:grid;place-items:center;animation:float linear forwards}
+.game .gb.berry{background:radial-gradient(circle at 35% 30%,#8ea0ff 0 12%,#4b55c9 50%,#2c2a8c);border-color:#c5ccff}
+.game .gb.pop{animation:pop .35s forwards!important}
+@keyframes float{from{transform:translateY(0)}to{transform:translateY(calc(-1 * var(--h)))}}
+@keyframes pop{to{transform:scale(1.8);opacity:0}}
+.ghud{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;gap:10px;z-index:3;font-weight:900;font-size:22px;color:#1f1648}
+.ghud span{background:#ffffffd9;padding:8px 16px;border-radius:99px}
+.gstart{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;gap:14px;z-index:4;background:#ffffff99;color:#1f1648;padding:20px}
+html[data-theme=dark] .gstart{background:#0f1f3acc;color:#fff}
+.gstart img{width:120px;animation:bob 3s ease-in-out infinite}
+.gstart.hide{display:none}
+.howto{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:30px}
+.howto .card{text-align:center}
+.howto .num{width:64px;height:64px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;font-size:30px;font-weight:900;background:var(--sun);color:var(--berry2)}
+@media(max-width:860px){.howto{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.howto{grid-template-columns:1fr}}
+.riddle{cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
+.riddle .ans{display:block;margin-top:12px;font-weight:900;font-size:22px;color:var(--cheek);opacity:0;transform:translateY(8px);transition:.4s}
+.riddle.open .ans{opacity:1;transform:none}
+/* floating mascot */
+.buddy{position:fixed;right:max(2vw,12px);bottom:max(2vw,12px);z-index:60;display:flex;align-items:flex-end;gap:8px;pointer-events:none}
+.buddy img{width:78px;pointer-events:auto;cursor:pointer;animation:bob 3.6s ease-in-out infinite;filter:drop-shadow(0 10px 10px #1f164844);transition:width .5s}
+html[data-mode=kids] .buddy img{width:112px}
+.buddy img.jump{animation:jump .7s}
+@keyframes jump{30%{transform:translateY(-40px) rotate(-10deg) scale(1.08)}60%{transform:translateY(0) scale(1.1,.9)}}
+.say{pointer-events:auto;max-width:240px;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:20px 20px 4px 20px;padding:12px 16px;font-weight:700;font-size:15px;line-height:1.35;box-shadow:0 10px 24px #1f164822;transition:opacity .4s,transform .4s;margin-bottom:56px}
+.say.off{opacity:0;transform:translateY(10px) scale(.95)}
+@media(max-width:520px){.say{max-width:170px;font-size:14px}.buddy img{width:64px}html[data-mode=kids] .buddy img{width:84px}}
+/* posters */
+.poster{border-radius:var(--r);overflow:hidden;box-shadow:0 18px 40px #1f164830;cursor:zoom-in;transition:transform .4s;background:var(--card)}
+.poster:hover{transform:translateY(-6px) rotate(-.6deg)}
+.poster img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
+.sideposter{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:clamp(20px,3vw,40px);align-items:center;margin-top:32px}
+.sideposter .grid{margin-top:0;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:860px){.sideposter{grid-template-columns:1fr}.sideposter .poster{max-width:380px;margin:0 auto}}
+@media(max-width:520px){.sideposter .grid{grid-template-columns:1fr}}
+.school{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:24px}
+.school figure{margin:0}.school figcaption{font-weight:800;font-size:15px;margin-top:10px;text-align:center}
+@media(max-width:860px){.school{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.car{display:flex;align-items:flex-start;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 4px 24px;scrollbar-width:thin}
+.car>*{flex:0 0 clamp(220px,26vw,300px);scroll-snap-align:start}
+.car>.wide{flex-basis:clamp(300px,48vw,560px)}.car>.wide img{aspect-ratio:16/9}
+.carbar{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+.carbtn{display:flex;gap:10px}
+.carbtn button{width:48px;height:48px;border-radius:50%;border:2px solid var(--line);background:var(--card);color:var(--ink);font-size:22px;cursor:pointer}
+.carbtn button:hover{border-color:var(--blue)}
+/* scheme */
+.sch2{background:#f2e6fd}
+.sch2-wrap{max-width:1500px;margin:0 auto}
+.sch2-img{border-radius:28px}.sch2-img img{aspect-ratio:1672/941;width:100%}
+.sch2-img:hover{transform:translateY(-4px)}
+.sch2-zoom{text-align:center;margin:16px auto 0;font-size:15px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv.on{opacity:1;transform:none}
+.d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}
+footer{background:var(--berry2);color:#d9d2ff;padding:36px max(5vw,16px);font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center}
+.small{font-size:14px;opacity:.8}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.path .ln{stroke-dashoffset:0}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="hd">
+  <a class="brand" href="#top"><img src="img/logo.webp" alt=""><span>Жимолость</span></a>
+  <nav class="a" aria-label="Разделы">
+   <a href="#what">Коктейль</a><a href="#benefit">Польза</a><a href="#safety">Безопасность</a><a href="#schools">Садам и школам</a><a href="#faq">Родителям</a><a href="#mats">Плакаты</a><a href="#contact">Контакты</a>
+  </nav>
+  <nav class="k" aria-label="Разделы">
+   <a href="#what">Из чего пенка</a><a href="#play">Игра</a><a href="#riddles">Загадки</a><a href="#rules">Мои правила</a>
+  </nav>
+  <div class="sw" role="group" aria-label="Версия сайта">
+   <button type="button" data-set="adult" aria-pressed="true">Взрослым</button>
+   <button type="button" data-set="kids" aria-pressed="false">Детям</button>
+  </div>
+ </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="band" data-say="hero" style="padding-bottom:clamp(32px,4vw,56px)">
+ <div class="wrap">
+  <div class="hero">
+   <div>
+    <div class="a rv">
+     <span class="tag">Петропавловск-Камчатский</span>
+     <h1>Кислородные коктейли из камчатской жимолости для детских садов и школ</h1>
+     <p class="lead muted">Готовая услуга под ключ: своё оборудование, ингредиенты с документами, обученный оператор и согласование с медработником. Для детей — вкусный ягодный ритуал, для учреждения — никакой лишней нагрузки.</p>
+     <div class="btns"><a class="btn p" href="#contact">Запустить пилотную неделю</a><a class="btn o" href="#launch">Как это работает</a></div>
+    </div>
+    <div class="k rv">
+     <span class="tag">Привет, друг!</span>
+     <h1>Я — ягодка Жимолость! Давай дружить?</h1>
+     <p class="lead muted">Я живу на Камчатке, рядом с большими вулканами. Каждое утро я взбиваю ягодный морс в лёгкую воздушную пенку — как облачко в стаканчике!</p>
+     <div class="btns"><a class="btn p" href="#play">Поиграть со мной</a><a class="btn o" href="#what">Как делают пенку</a></div>
+    </div>
+   </div>
+   <div class="scene rv d1" id="scene">
+    <svg viewBox="0 0 600 520" aria-hidden="true">
+     <defs><clipPath id="blob"><path d="M300 20c140 0 270 70 280 220s-90 270-280 270S10 420 20 260 160 20 300 20z"/></clipPath></defs>
+     <g clip-path="url(#blob)">
+      <rect width="600" height="520" fill="light-dark(#dcd2ff,#2a2258)" style="fill:var(--soft)"/>
+      <g class="sunc"><circle cx="470" cy="120" r="50" fill="#ffc83d"/><circle cx="470" cy="120" r="72" fill="#ffc83d" opacity=".25"/></g>
+      <g class="cloud" opacity=".9"><ellipse cx="60" cy="90" rx="46" ry="18" fill="#fff"/><ellipse cx="90" cy="78" rx="30" ry="20" fill="#fff"/></g>
+      <path d="M-10 360 L150 150 L190 190 L230 140 L400 360Z" fill="#5a4bb5"/>
+      <path d="M150 150 L118 192 L140 186 L160 200 L178 182 L190 190 L230 140 L208 168 L196 174 Z" fill="#fff"/>
+      <path d="M250 370 L430 120 L620 370Z" fill="#3b2c94"/>
+      <path d="M430 120 L392 172 L414 164 L432 180 L452 164 L470 174Z" fill="#fff"/>
+      <path d="M430 118c-6-22 10-36 2-58" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none" opacity=".6"/>
+      <path d="M-20 400 Q150 320 320 380 T640 360 V540 H-20Z" fill="#4caf50"/>
+      <path d="M-20 450 Q200 390 380 440 T640 430 V540 H-20Z" fill="#3a9e45"/>
+      <g transform="translate(470 330)">
+       <path d="M0 120 C10 60 30 20 70 -10" stroke="#5b3d1f" stroke-width="7" fill="none" stroke-linecap="round"/>
+       <g fill="#56c25e"><ellipse cx="44" cy="10" rx="26" ry="11" transform="rotate(-35 44 10)"/><ellipse cx="18" cy="50" rx="24" ry="10" transform="rotate(30 18 50)"/><ellipse cx="62" cy="-20" rx="22" ry="9" transform="rotate(-60 62 -20)"/></g>
+       <g fill="#3d47b8"><ellipse cx="30" cy="34" rx="9" ry="16"/><ellipse cx="48" cy="40" rx="8" ry="15"/><ellipse cx="10" cy="80" rx="9" ry="16"/></g>
+       <g fill="#a9b3ff" opacity=".7"><ellipse cx="27" cy="28" rx="3" ry="5"/><ellipse cx="45" cy="34" rx="3" ry="5"/><ellipse cx="7" cy="74" rx="3" ry="5"/></g>
+      </g>
+      <g transform="translate(70 360)">
+       <path d="M10 130 C0 80 20 40 -10 0" stroke="#5b3d1f" stroke-width="6" fill="none"/>
+       <g fill="#56c25e"><ellipse cx="0" cy="20" rx="22" ry="9" transform="rotate(40 0 20)"/><ellipse cx="22" cy="60" rx="20" ry="8" transform="rotate(-30 22 60)"/></g>
+       <g fill="#3d47b8"><ellipse cx="-4" cy="44" rx="8" ry="14"/><ellipse cx="12" cy="84" rx="8" ry="14"/></g>
+      </g>
+     </g>
+    </svg>
+    <img class="hm" src="img/logo.webp" alt="Маскот «Жимолости» — синяя ягодка с улыбкой">
+   </div>
+  </div>
+  <div class="facts a">
+   <div class="fact rv"><b>3 шага</b><span>от первой встречи до запуска</span></div>
+   <div class="fact rv d1"><b>1 неделя</b><span>пилотный запуск, чтобы попробовать</span></div>
+   <div class="fact rv d2"><b>0 белка</b><span>пенообразователь без яичного белка</span></div>
+   <div class="fact rv d3"><b>Под ключ</b><span>оборудование, оператор, документы — наши</span></div>
+  </div>
+ </div>
+</section>
+
+<!-- WHAT -->
+<section class="band softb" id="what" data-say="what">
+ <div class="wrap">
+  <div class="a rv"><h2>Что такое коктейль «Жимолость»</h2>
+   <p class="lead muted">Ягодный морс, взбитый с медицинским кислородом в нежную пену. Состав короткий и понятный — его можно прочитать целиком в технологической карте.</p></div>
+  <div class="k rv"><h2>Из чего делают пенку-облачко?</h2>
+   <p class="lead muted">Всего три штуки — и получается волшебство!</p></div>
+  <div class="recipe">
+   <div class="ing rv"><div class="ic"><svg viewBox="0 0 64 64"><path d="M20 10h24l-3 46H23z" fill="#c9c3ff"/><path d="M22 26h20l-2 30H24z" fill="#6a3fb8"/><path d="M40 4l-6 22" stroke="#ff6f8e" stroke-width="4" stroke-linecap="round"/></svg></div><b class="a">Морс или сок</b><b class="k">Ягодный морс</b><small class="a">основа — ягоды жимолости</small><small class="k">из синих ягодок</small></div>
+   <div class="op rv d1">+</div>
+   <div class="ing rv d1"><div class="ic"><svg viewBox="0 0 64 64"><path d="M32 8c-4 14 4 20 0 30s4 14 0 20" stroke="#a5743f" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M32 22c8-6 16-4 20 0M32 38c-8-6-16-4-20 0" stroke="#3a9e45" stroke-width="4" fill="none" stroke-linecap="round"/></svg></div><b class="a">Корень солодки</b><b class="k">Волшебный корешок</b><small class="a">натуральный пенообразователь, без яичного белка</small><small class="k">делает пенку пышной</small></div>
+   <div class="op rv d2">+</div>
+   <div class="ing rv d2"><div class="ic"><svg viewBox="0 0 64 64"><circle cx="24" cy="38" r="12" fill="none" stroke="#4f63e6" stroke-width="4"/><circle cx="42" cy="22" r="9" fill="none" stroke="#4f63e6" stroke-width="4"/><circle cx="44" cy="46" r="6" fill="none" stroke="#4f63e6" stroke-width="4"/></svg></div><b class="a">Кислород</b><b class="k">Пузырьки воздуха</b><small class="a">медицинский, через сертифицированный аппарат</small><small class="k">прячутся внутри пенки</small></div>
+   <div class="op rv d3">=</div>
+   <div class="ing rv d3"><div class="ic"><svg viewBox="0 0 64 64"><path d="M18 26h28l-4 32H22z" fill="#6a3fb8"/><path d="M14 28c0-10 8-16 18-16s18 6 18 16z" fill="#e3dcff"/><circle cx="22" cy="16" r="4" fill="#fff" stroke="#c9c3ff"/><circle cx="46" cy="10" r="3" fill="#fff" stroke="#c9c3ff"/></svg></div><b class="a">Нежная пена</b><b class="k">Облачко!</b><small class="a">едят ложечкой, 5–10 минут</small><small class="k">кушаем ложечкой, не спеша</small></div>
+  </div>
+  <div class="sideposter a">
+   <div class="poster rv" data-zoom><img src="img/p-sostav.webp" alt="Плакат «Понятный состав»: ягоды жимолости, натуральные ингредиенты, без искусственных красителей" loading="lazy"></div>
+   <div class="rv d1">
+    <h3 style="font-size:26px">Состав, который можно прочитать</h3>
+    <p class="muted">Основа — ягоды жимолости. Натуральные ингредиенты, без искусственных красителей. На каждую партию у нас есть технологическая карта и документы на сырьё. Их можно запросить до старта, на пилотной неделе или в любой момент работы.</p>
+    <a class="btn o" href="#faq">Вопросы о составе</a>
+   </div>
+  </div>
+  <div class="howto k">
+   <div class="card rv"><div class="num">1</div><h3>Берём морс</h3><p>Из синих ягодок жимолости — они растут у нас на Камчатке.</p></div>
+   <div class="card rv d1"><div class="num">2</div><h3>Добавляем корешок</h3><p>Капелька солодки — и пенка будет пышной и сладенькой.</p></div>
+   <div class="card rv d2"><div class="num">3</div><h3>Взбиваем</h3><p>Специальный аппарат смешивает морс с пузырьками кислорода.</p></div>
+   <div class="card rv d3"><div class="num">4</div><h3>Кушаем облачко</h3><p>Берём ложечку и едим вместе с друзьями. Вкуснотища!</p></div>
+  </div>
+ </div>
+</section>
+
+<!-- BENEFIT adult -->
+<section class="band a" id="benefit" data-say="benefit">
+ <div class="wrap">
+  <div class="rv"><h2>Польза — честно и без громких обещаний</h2>
+   <p class="lead muted">Мы не продаём «чудо от всех болезней». Коктейль — это вкусный ягодный перекус и приятный групповой ритуал в рамках здорового режима дня.</p></div>
+  <div class="grid">
+   <div class="card rv"><div class="ci"><svg viewBox="0 0 32 32"><ellipse cx="12" cy="18" rx="6" ry="9" fill="#3d47b8"/><ellipse cx="21" cy="20" rx="5" ry="8" fill="#4f63e6"/><path d="M14 9c2-5 7-6 10-5" stroke="#3a9e45" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div><h3>Ягода Камчатки</h3><p>Жимолость — одна из первых ягод камчатского лета. В ней есть витамин C, калий и антоцианы — природные пигменты, которые дают ягоде синий цвет.</p></div>
+   <div class="card rv d1"><div class="ci"><svg viewBox="0 0 32 32"><path d="M9 6h14l-2 22H11z" fill="none" stroke="#4f63e6" stroke-width="3"/><path d="M10 14h12" stroke="#4f63e6" stroke-width="3"/></svg></div><h3>Вкусный перекус</h3><p>Дополнительная порция жидкости и ягод в течение дня — в форме, которую дети едят с удовольствием.</p></div>
+   <div class="card rv d2"><div class="ci"><svg viewBox="0 0 32 32"><path d="M16 5c-2 7 2 10 0 15s2 7 0 8" stroke="#a5743f" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M8 24l16-16" stroke="#ff6f8e" stroke-width="3" stroke-linecap="round"/></svg></div><h3>Меньше сахара</h3><p>Корень солодки даёт мягкий сладковатый вкус, поэтому лишний сахар можно не добавлять.</p></div>
+   <div class="card rv d3"><div class="ci"><svg viewBox="0 0 32 32"><circle cx="10" cy="12" r="4" fill="#ff6f8e"/><circle cx="22" cy="12" r="4" fill="#4f63e6"/><path d="M4 26c1-6 11-6 12 0M16 26c1-6 11-6 12 0" stroke="#3a9e45" stroke-width="3" fill="none"/></svg></div><h3>Ритуал, а не процедура</h3><p>Фирменный персонаж превращает перекус в маленькое событие. Спокойный групповой момент и привычка выбирать полезное.</p></div>
+  </div>
+  <div class="split" style="margin-top:56px">
+   <div class="rv">
+    <h3 style="font-size:26px">Зачем в коктейле корень солодки</h3>
+    <p class="muted">Солодка работает как натуральный пенообразователь: помогает получить плотную устойчивую пену, в которой держится кислород. Она же даёт мягкий сладковатый вкус. И она заменяет яичный белок — значит, нет риска аллергии на белок.</p>
+    <p class="note">Мы используем солодку как пищевой ингредиент в технологической дозировке и не приписываем ей лечебных свойств. Допуск каждого ребёнка согласует медработник учреждения.</p>
+   </div>
+   <div class="promise rv d1">
+    <h3>Мы обещаем</h3><h3>Мы не обещаем</h3>
+    <ul><li>Контролируемый состав и гигиену</li><li>Спокойный групповой ритуал</li><li>Позитивную привычку выбора</li></ul>
+    <ul><li>Лечение болезней и замену прогулок</li><li>«Повышение иммунитета на 100%»</li><li>Профилактику без назначения врача</li></ul>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- BENEFIT kids -->
+<section class="band k" data-say="kbenefit">
+ <div class="wrap">
+  <div class="rv"><h2>Почему пенка — это здорово?</h2></div>
+  <div class="grid">
+   <div class="card rv"><div class="ci" style="background:#fff0c4"><svg viewBox="0 0 32 32"><ellipse cx="12" cy="18" rx="6" ry="9" fill="#3d47b8"/><ellipse cx="21" cy="20" rx="5" ry="8" fill="#4f63e6"/></svg></div><h3>Вкусно, как ягоды</h3><p>Сладенькая, ягодная, совсем чуть-чуть кисленькая.</p></div>
+   <div class="card rv d1"><div class="ci" style="background:#e3f7e4"><svg viewBox="0 0 32 32"><path d="M6 20c0-6 4-9 8-9 1-4 5-6 9-4 4 1 5 6 3 9 2 2 1 8-4 8H10c-3 0-4-2-4-4z" fill="#cfe1ff"/></svg></div><h3>Лёгкая, как облачко</h3><p>Пенка тает во рту, а пузырьки щекочут язык.</p></div>
+   <div class="card rv d2"><div class="ci" style="background:#ffe1e8"><svg viewBox="0 0 32 32"><circle cx="10" cy="12" r="4" fill="#ff6f8e"/><circle cx="22" cy="12" r="4" fill="#4f63e6"/><path d="M4 26c1-6 11-6 12 0M16 26c1-6 11-6 12 0" stroke="#3a9e45" stroke-width="3" fill="none"/></svg></div><h3>Вместе с друзьями</h3><p>Пенку едят всей группой — это наш маленький праздник.</p></div>
+   <div class="card rv d3"><div class="ci" style="background:#e6e1ff"><svg viewBox="0 0 32 32"><path d="M2 26L12 10l5 6 4-6 9 16z" fill="#3b2c94"/><path d="M12 10l-3 5 3-1 2 2z" fill="#fff"/></svg></div><h3>Подарок Камчатки</h3><p>Жимолость растёт у нас, рядом с вулканами. Она поспевает самой первой!</p></div>
+  </div>
+  <div class="carbar rv" style="margin-top:48px"><h3 style="font-size:28px;margin:0">Картинки от ягодки</h3><div class="carbtn"><button type="button" data-car="kc" data-dir="-1" aria-label="Назад">‹</button><button type="button" data-car="kc" data-dir="1" aria-label="Вперёд">›</button></div></div>
+  <div class="car" id="kc" tabindex="0" aria-label="Картинки">
+   <div class="poster" data-zoom><img src="img/p-penka.webp" alt="Вкусная воздушная пенка" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-veselo.webp" alt="Полезно и весело" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-privychka.webp" alt="Полезная привычка" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-sostav.webp" alt="Понятный состав" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-uchitsya.webp" alt="Учиться легче вместе" loading="lazy"></div>
+  </div>
+ </div>
+</section>
+
+<!-- SAFETY -->
+<section class="band deep a" id="safety" data-say="safety">
+ <div class="wrap">
+  <div class="rv"><h2>Почему это безопасно и ответственно</h2>
+   <p class="lead muted">Каждый ребёнок получает коктейль только после согласования с медработником и при письменном согласии родителей.</p></div>
+  <div class="sideposter">
+  <div class="poster rv" data-zoom><img src="img/p-chisto.webp" alt="Плакат «Чисто и безопасно»: каждая порция готовится аккуратно и бережно" loading="lazy"></div>
+  <div class="grid">
+   <div class="card rv"><div class="ci"><svg viewBox="0 0 32 32"><path d="M16 4l10 4v8c0 7-5 11-10 12C11 27 6 23 6 16V8z" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M16 11v9M11.5 15.5h9" stroke="#ff6f8e" stroke-width="3" stroke-linecap="round"/></svg></div><h3>Медицинский допуск</h3><p>Согласование с медиком учреждения, учёт аллергий и индивидуальных особенностей каждого ребёнка.</p></div>
+   <div class="card rv d1"><div class="ci"><svg viewBox="0 0 32 32"><rect x="7" y="4" width="18" height="24" rx="3" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M11 12h10M11 17h10M11 22h6" stroke="#ffc83d" stroke-width="2.5" stroke-linecap="round"/></svg></div><h3>Нормы СанПиН</h3><p>Приготовление соответствует требованиям Роспотребнадзора к услугам организованного питания.</p></div>
+   <div class="card rv d2"><div class="ci"><svg viewBox="0 0 32 32"><path d="M8 16l5 5 11-11" fill="none" stroke="#7ee08a" stroke-width="3.5" stroke-linecap="round"/></svg></div><h3>Согласие родителей</h3><p>Информируем семьи заранее и собираем письменные согласия. Отказаться можно в любой момент.</p></div>
+   <div class="card rv d3"><div class="ci"><svg viewBox="0 0 32 32"><path d="M5 18l6-6 5 4 5-5 6 6-7 7-4-3-4 3z" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg></div><h3>Честная коммуникация</h3><p>Говорим с родителями и администрацией спокойно и прямо: что это, из чего сделано и чего мы не обещаем.</p></div>
+  </div>
+  </div>
+ </div>
+</section>
+
+<!-- SCHOOLS -->
+<section class="band a" id="schools" data-say="schools">
+ <div class="wrap split">
+  <div class="rv">
+   <h2>Для детского сада и школы — всё под ключ</h2>
+   <p class="lead muted">Мы берём на себя оборудование, ингредиенты, приготовление, выдачу и уборку. Учреждение согласует график — остальное делаем мы.</p>
+   <div class="grid" style="grid-template-columns:1fr;gap:12px;margin-top:20px">
+    <div class="card"><h3>Готовая модель</h3><p>Собственное оборудование и обученный оператор с личной медицинской книжкой.</p></div>
+    <div class="card"><h3>Минимальная нагрузка на персонал</h3><p>Организованная выдача по графику, по группам. Воспитателям не нужно ничего готовить.</p></div>
+    <div class="card"><h3>Полный пакет документов</h3><p>Отчётность перед руководством — на каждом этапе.</p>
+     <div class="docs"><span>Технологические карты</span><span>Документы на ингредиенты</span><span>Форма согласия родителей</span><span>Журнал выдачи</span><span>Договор</span></div></div>
+   </div>
+  </div>
+  <div class="rv d1">
+   <h3 style="font-size:26px">Как проходит день выдачи</h3>
+   <ul class="day">
+    <li><b>Заранее</b><span>Список детей с допуском и согласием, отметки об аллергиях.</span></li>
+    <li><b>Приезд</b><span>Оператор устанавливает аппарат в согласованном месте, проверяет санитарное состояние.</span></li>
+    <li><b>Приготовление</b><span>Свежий коктейль готовится непосредственно перед выдачей.</span></li>
+    <li><b>Выдача</b><span>По группам, по графику режима дня. Ребёнок ест пенку ложечкой 5–10 минут.</span></li>
+    <li><b>После</b><span>Уборка места, запись в журнале, короткий отчёт руководству.</span></li>
+   </ul>
+   <p class="small muted" style="margin-top:12px">Время и частоту выдачи определяет учреждение вместе с медработником — мы подстраиваемся под режим дня.</p>
+  </div>
+ </div>
+</section>
+
+<!-- SCHOOL POSTERS -->
+<section class="band softb a" data-say="school">
+ <div class="wrap">
+  <div class="rv"><h2>Для школ: ритуал школьного дня</h2>
+   <p class="lead muted">В школе коктейль удобно вписать в перемену: группы по расписанию, 5–10 минут, без нагрузки на учителей. Плакаты помогают объяснить ученикам и родителям, что это за ритуал.</p></div>
+  <div class="school">
+   <figure class="rv"><div class="poster" data-zoom><img src="img/p-peremena.webp" alt="Плакат «Перемена с пользой»" loading="lazy"></div><figcaption>Перемена с пользой</figcaption></figure>
+   <figure class="rv d1"><div class="poster" data-zoom><img src="img/p-vnimanie.webp" alt="Плакат «Внимание на уроке»" loading="lazy"></div><figcaption>Настрой на урок</figcaption></figure>
+   <figure class="rv d2"><div class="poster" data-zoom><img src="img/p-dumai.webp" alt="Плакат «Думай и твори»" loading="lazy"></div><figcaption>Думай и твори</figcaption></figure>
+   <figure class="rv d3"><div class="poster" data-zoom><img src="img/p-uchitsya.webp" alt="Плакат «Учиться легче вместе»" loading="lazy"></div><figcaption>Вместе с классом</figcaption></figure>
+  </div>
+ </div>
+</section>
+
+<!-- LAUNCH -->
+<section class="band deep a" id="launch" data-say="launch">
+ <div class="wrap">
+  <div class="rv"><h2>Путь к запуску: пилотная неделя</h2>
+   <p class="lead muted">Попробуйте без долгих обязательств: неделя работы, после неё — отчёт и решение.</p></div>
+  <div class="path" id="path">
+   <svg viewBox="0 0 1200 90" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="M20 60 C200 0 300 90 450 45 S700 0 800 50 S1050 90 1180 30"/></svg>
+   <div class="steps">
+    <div class="step rv"><div class="n">1</div><h3>Согласование</h3><p>Встреча с руководством и медработником. Договор, документы, место установки и график выдачи.</p></div>
+    <div class="step rv d1"><div class="n">2</div><h3>Сбор согласий</h3><p>Информируем родителей: что за коктейль, состав, график. Собираем письменные согласия и данные об аллергиях.</p></div>
+    <div class="step rv d2"><div class="n">3</div><h3>Тестовый запуск</h3><p>Пилотная неделя: оператор, оборудование, выдача по группам. В конце — отчёт для руководства и родителей.</p></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- KIDS GAME -->
+<section class="band k softb" id="play" data-say="play">
+ <div class="wrap">
+  <div class="rv"><h2>Игра: лопни пузырьки!</h2><p class="lead muted">Нажимай на пузырьки, пока они не улетели. Синяя ягодка — целых 3 очка!</p></div>
+  <div class="game rv" id="game">
+   <div class="ghud"><span>Очки: <b id="score">0</b></span><span>Время: <b id="time">30</b></span></div>
+   <div class="gstart" id="gstart">
+    <img src="img/logo.webp" alt="">
+    <h3 id="gmsg" style="font-size:28px">Готов? Поехали!</h3>
+    <p id="gbest" style="margin:0"></p>
+    <button class="btn p" id="gbtn" type="button">Начать игру</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- KIDS RIDDLES -->
+<section class="band k" id="riddles" data-say="riddles">
+ <div class="wrap">
+  <div class="rv"><h2>Загадки от ягодки</h2><p class="lead muted">Подумай — и нажми на карточку, чтобы узнать ответ.</p></div>
+  <div class="grid" id="rid"></div>
+ </div>
+</section>
+
+<!-- KIDS RULES -->
+<section class="band k deep" id="rules" data-say="rules">
+ <div class="wrap">
+  <div class="rv"><h2>Мои правила ягодки</h2></div>
+  <div class="grid">
+   <div class="card rv"><h3>Мою ручки</h3><p>Перед любым перекусом — с мылом, как положено.</p></div>
+   <div class="card rv d1"><h3>Кушаю не спеша</h3><p>Пенку едят ложечкой, маленькими порциями.</p></div>
+   <div class="card rv d2"><h3>Можно сказать «нет»</h3><p>Если сегодня не хочется — это нормально.</p></div>
+   <div class="card rv d3"><h3>Говорю взрослым</h3><p>Если что-то не так — сразу скажи воспитателю.</p></div>
+  </div>
+  <p class="rv" style="margin-top:32px;font-weight:800;font-size:20px">Взрослые! Переключите сайт на «Взрослым», чтобы узнать о составе и безопасности.</p>
+ </div>
+</section>
+
+<!-- FAQ parents -->
+<section class="band softb a" id="faq" data-say="faq">
+ <div class="wrap split">
+  <div class="rv">
+   <h2>Родителям: частые вопросы</h2>
+   <p class="lead muted">Если вашего вопроса нет — напишите нам, ответим подробно и покажем документы.</p>
+   <a class="btn p" href="#contact">Задать вопрос</a>
+   <div class="poster" data-zoom style="margin-top:28px;max-width:400px"><img src="img/p-roditeli.webp" alt="Плакат «Вместе с родителями»: документы в порядке, забота и доверие" loading="lazy"></div>
+  </div>
+  <div class="rv d1">
+   <details><summary>Что входит в состав?</summary><p>Морс или сок на основе ягод жимолости, пенообразователь из корня солодки (без яичного белка) и медицинский кислород. Полный состав — в технологической карте, её можно запросить у нас или в учреждении.</p></details>
+   <details><summary>Это лекарство?</summary><p>Нет. Это пищевой продукт — ягодный перекус в форме пены. Он не лечит болезни и не заменяет прогулки на свежем воздухе.</p></details>
+   <details><summary>Как решают, можно ли моему ребёнку?</summary><p>Ребёнок получает коктейль только при вашем письменном согласии и после согласования с медработником учреждения. Обязательно укажите в согласии аллергии и особенности здоровья.</p></details>
+   <details><summary>Как часто дают коктейль?</summary><p>Частоту и время выдачи определяет учреждение вместе с медработником. Мы подстраиваемся под режим дня группы.</p></details>
+   <details><summary>Можно ли отказаться?</summary><p>Да, в любой момент — достаточно сообщить воспитателю или в администрацию. Ребёнок, который не хочет пенку, её не получает.</p></details>
+   <details><summary>Кто готовит коктейль?</summary><p>Обученный оператор «Жимолости» с личной медицинской книжкой, на нашем оборудовании, непосредственно перед выдачей.</p></details>
+  </div>
+ </div>
+</section>
+
+<!-- SCHEME -->
+<section class="band a sch2" id="scheme" data-say="scheme">
+ <div class="sch2-wrap">
+  <h2 class="sr">Жимолость: полезный и яркий ритуал для детских садов и школ</h2>
+  <div class="poster sch2-img rv" data-zoom><img src="img/scheme-full.webp" alt="Схема «Жимолость»: что такое коктейль, почему это безопасно, преимущества для школы и детского сада, путь к запуску — согласование, сбор согласий, тестовый запуск" width="1672" height="941"></div>
+  <p class="sch2-zoom muted">Нажмите на схему, чтобы открыть крупно</p>
+ </div>
+</section>
+<!-- MATERIALS -->
+<section class="band a" id="mats" data-say="mats">
+ <div class="wrap">
+  <div class="carbar rv"><div><h2>Плакаты и материалы</h2><p class="muted" style="margin:0">Для стендов в группах, родительских чатов и совещаний. Нажмите, чтобы открыть крупно.</p></div>
+   <div class="carbtn"><button type="button" data-car="ac" data-dir="-1" aria-label="Назад">‹</button><button type="button" data-car="ac" data-dir="1" aria-label="Вперёд">›</button></div></div>
+  <div class="car" id="ac" tabindex="0" aria-label="Плакаты" style="margin-top:20px">
+   <div class="poster" data-zoom><img src="img/p-penka.webp" alt="Плакат «Вкусная воздушная пенка»" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-sostav.webp" alt="Плакат «Понятный состав»" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-chisto.webp" alt="Плакат «Чисто и безопасно»" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-roditeli.webp" alt="Плакат «Вместе с родителями»" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-privychka.webp" alt="Плакат «Полезная привычка»" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-veselo.webp" alt="Плакат «Полезно и весело»" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-peremena.webp" alt="Плакат «Перемена с пользой»" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-vnimanie.webp" alt="Плакат «Внимание на уроке»" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-dumai.webp" alt="Плакат «Думай и твори»" loading="lazy"></div>
+   <div class="poster" data-zoom><img src="img/p-uchitsya.webp" alt="Плакат «Учиться легче вместе»" loading="lazy"></div>
+  </div>
+ </div>
+</section>
+<dialog id="lb"><form method="dialog"><button aria-label="Закрыть">×</button></form><img id="lbi" alt=""></dialog>
+
+<!-- CONTACT -->
+<section class="band deep" id="contact" data-say="contact">
+ <div class="wrap split">
+  <div class="rv">
+   <div class="a">
+    <h2>Запустим пилотную неделю в вашем учреждении</h2>
+    <p class="lead muted">Оставьте заявку — расскажем об условиях, покажем документы и подберём удобный график.</p>
+   </div>
+   <div class="k">
+    <h2>Хочешь пенку в свой садик?</h2>
+    <p class="lead muted">Покажи этот сайт маме, папе или воспитателю — пусть нажмут «Взрослым» и напишут нам!</p>
+   </div>
+   <ul class="contacts">
+    <li><b>Город</b>Петропавловск-Камчатский</li>
+    <li><b>Телефон</b>+7 (4152) 00-00-00</li>
+    <li><b>Telegram</b>@zhimolost_kam</li>
+   </ul>
+   <p class="small" style="margin-top:10px">Телефон и Telegram — образец, замените на свои.</p>
+  </div>
+  <form class="fm rv d1 a" id="fm" data-endpoint="">
+   <label>Кто вы
+    <select name="role" required><option value="">Выберите</option><option>Администрация города / управление образования</option><option>Детский сад</option><option>Школа</option><option>Родитель</option></select>
+   </label>
+   <div class="row"><label>Имя<input name="name" required autocomplete="name"></label><label>Телефон<input name="phone" type="tel" required autocomplete="tel" placeholder="+7"></label></div>
+   <label>Учреждение<input name="org" placeholder="Например, детский сад № 12"></label>
+   <label>Комментарий<textarea name="msg" rows="3"></textarea></label>
+   <button class="btn p" type="submit" style="justify-content:center">Отправить заявку</button>
+   <div class="ok" id="ok" role="status"></div>
+  </form>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div style="display:flex;align-items:center;gap:12px"><img src="img/logo.webp" alt="" width="36"><b style="color:#fff;font-size:18px">Жимолость</b></div>
+  <div class="small">Кислородный коктейль — пищевой продукт, не является лекарственным средством.</div>
+  <div class="small">© 2026 «Жимолость», Петропавловск-Камчатский</div>
+ </div>
+</footer>
+
+<div class="buddy" id="buddy"><div class="say off" id="say" role="status"></div><img id="bimg" src="img/logo.webp" alt="Маскот — нажмите, чтобы поговорить"></div>
+
+<script>
+{
+const root=document.documentElement;
+const SAY={
+ adult:{hero:'Здравствуйте! Я — символ «Жимолости» и друг ваших детей.',what:'Всего три ингредиента — состав видно целиком.',benefit:'Жимолость поспевает на Камчатке самой первой.',safety:'Каждый ребёнок — только с согласия родителей и медика.',schools:'Воспитателям ничего не нужно готовить — всё делаем мы.',launch:'Начнём с пилотной недели — это просто.',faq:'Остались вопросы? Напишите нам!',scheme:'Вся «Жимолость» — на одной схеме!',mats:'Эти плакаты можно распечатать для стенда.',school:'На перемене — ягодная пенка всем классом!',contact:'Оставьте заявку — я уже жду встречи с ребятами!',tap:['Нажмите «Детям» — там я играю!','Я сделан из ягодного настроения.','Пенка — это не лекарство, а радость.']},
+ kids:{hero:'Привет! Нажми на меня — я прыгаю!',what:'Ягодки + корешок + пузырьки = облачко!',kbenefit:'Листай мои картинки!',play:'Лопай пузырьки — я считаю очки!',riddles:'Отгадаешь все загадки?',rules:'Мой ручки — и будет праздник!',contact:'Покажи сайт маме!',tap:['Хи-хи, щекотно!','Ура-а-а!','Давай играть!','Я самая весёлая ягодка!','Ещё разок!']}
+};
+const say=document.getElementById('say'),bimg=document.getElementById('bimg');
+let mode='adult',cur='',hideT;
+function speak(t){say.textContent=t;say.classList.remove('off');clearTimeout(hideT);hideT=setTimeout(()=>say.classList.add('off'),5200)}
+function setMode(m,first){
+ const go=()=>{mode=m;root.dataset.mode=m;
+  document.querySelectorAll('.sw button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.set===m));
+  try{localStorage.setItem('zh-mode',m)}catch(e){}
+  requestAnimationFrame(()=>document.querySelectorAll('.rv').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0)el.classList.add('on')}));
+  if(!first){speak(SAY[m].hero);scrollTo({top:0,behavior:'smooth'})}};
+ if(document.startViewTransition&&!first)document.startViewTransition(go);else go();
+}
+document.querySelectorAll('.sw button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.set)));
+let saved='adult';try{saved=localStorage.getItem('zh-mode')||'adult'}catch(e){}
+setMode(saved==='kids'?'kids':'adult',true);
+
+const revealObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');revealObs.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>revealObs.observe(el));
+const pathEl=document.getElementById('path');
+const pathObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)pathEl.classList.add('on')}),{threshold:.3});
+pathObs.observe(pathEl);
+
+const sectObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const k=e.target.dataset.say;if(k!==cur&&SAY[mode][k]){cur=k;speak(SAY[mode][k])}}}),{threshold:.45});
+document.querySelectorAll('[data-say]').forEach(s=>sectObs.observe(s));
+function tap(){bimg.classList.remove('jump');void bimg.offsetWidth;bimg.classList.add('jump');const a=SAY[mode].tap;speak(a[Math.floor(Math.random()*a.length)])}
+bimg.addEventListener('click',tap);
+document.querySelector('.scene .hm').addEventListener('click',tap);
+setTimeout(()=>speak(SAY[mode].hero),1200);
+
+/* hero bubbles + parallax */
+const scene=document.getElementById('scene');
+for(let i=0;i<12;i++){const b=document.createElement('span');b.className='bub';const s=10+Math.random()*26;
+ b.style.cssText=`width:${s}px;height:${s}px;left:${30+Math.random()*40}%;animation-duration:${5+Math.random()*5}s;animation-delay:${Math.random()*6}s;--dx:${(Math.random()*60-30).toFixed(0)}px`;scene.appendChild(b)}
+const hm=scene.querySelector('.hm');
+scene.addEventListener('pointermove',e=>{const r=scene.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;hm.style.translate=`${x*18}px ${y*12}px`});
+scene.addEventListener('pointerleave',()=>hm.style.translate='0 0');
+
+/* riddles */
+const R=[['Синяя, продолговатая, на кустике живёт. На Камчатке раньше всех ягодок встаёт.','Жимолость'],['Лёгкое, как облачко, сладкое, как ягодка. В стаканчике живёт, ложкой его едят.','Пенка-коктейль'],['Высокая гора, а из макушки дымок идёт.','Вулкан'],['Круглые, прозрачные, вверх бегут — лопнут, и нет их тут.','Пузырьки'],['Дует-дует, щёки надувает, а его никто не видит.','Ветер'],['Утром встаю — с мылом их мою. Чтобы пенку кушать, надо их послушать.','Руки']];
+document.getElementById('rid').innerHTML=R.map((r,i)=>`<button type="button" class="card riddle rv ${['','d1','d2','d3'][i%4]}"><p>${r[0]}</p><span class="ans">${r[1]}</span></button>`).join('');
+document.querySelectorAll('#rid .riddle').forEach(b=>{revealObs.observe(b);b.addEventListener('click',()=>{b.classList.toggle('open');if(b.classList.contains('open'))speak('Молодец! Это — '+b.querySelector('.ans').textContent.toLowerCase()+'!')})});
+
+/* game */
+const game=document.getElementById('game'),gstart=document.getElementById('gstart'),scoreEl=document.getElementById('score'),timeEl=document.getElementById('time'),gmsg=document.getElementById('gmsg'),gbest=document.getElementById('gbest');
+let score=0,left=30,spawnT,tickT,best=0;try{best=+localStorage.getItem('zh-best')||0}catch(e){}
+if(best)gbest.textContent='Твой рекорд: '+best;
+function spawn(){const b=document.createElement('div');const berry=Math.random()<.22;b.className='gb'+(berry?' berry':'');
+ const s=berry?52:44+Math.random()*34,h=game.clientHeight+120;
+ b.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*(game.clientWidth-s)}px;top:${game.clientHeight}px;--h:${h}px;animation-duration:${3.4+Math.random()*2.6}s`;
+ b.addEventListener('pointerdown',()=>{if(b.classList.contains('pop'))return;b.classList.add('pop');score+=berry?3:1;scoreEl.textContent=score;
+  if(score%10===0||(berry&&score%10<3&&score>9))speak(SAY.kids.tap[Math.floor(Math.random()*5)]);setTimeout(()=>b.remove(),350)});
+ b.addEventListener('animationend',e=>{if(e.animationName==='float')b.remove()});game.appendChild(b)}
+function end(){clearInterval(spawnT);clearInterval(tickT);game.querySelectorAll('.gb').forEach(b=>b.remove());
+ if(score>best){best=score;try{localStorage.setItem('zh-best',best)}catch(e){}}
+ gmsg.textContent=score>=40?`Ого! ${score} очков — ты чемпион!`:score>=20?`Здорово! ${score} очков!`:`${score} очков. Попробуем ещё?`;
+ gbest.textContent='Твой рекорд: '+best;document.getElementById('gbtn').textContent='Играть ещё';gstart.classList.remove('hide');speak('Классно поиграли!')}
+document.getElementById('gbtn').addEventListener('click',()=>{score=0;left=30;scoreEl.textContent=0;timeEl.textContent=30;gstart.classList.add('hide');speak('Лопай пузырьки!');
+ spawnT=setInterval(spawn,520);tickT=setInterval(()=>{left--;timeEl.textContent=left;if(left<=0)end()},1000)});
+
+/* lightbox */
+const lb=document.getElementById('lb'),lbi=document.getElementById('lbi');
+document.querySelectorAll('[data-zoom]').forEach(p=>{p.tabIndex=0;p.setAttribute('role','button');const open=()=>{const im=p.querySelector('img');lbi.src=im.src;lbi.alt=im.alt;lb.showModal()};p.addEventListener('click',open);p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}})});
+lb.addEventListener('click',e=>{if(e.target===lb)lb.close()});
+/* carousels */
+function slide(c,d){c.scrollBy({left:d*(c.firstElementChild.getBoundingClientRect().width+18),behavior:'smooth'})}
+document.querySelectorAll('[data-car]').forEach(b=>b.addEventListener('click',()=>slide(document.getElementById(b.dataset.car),+b.dataset.dir)));
+document.querySelectorAll('.car').forEach(c=>c.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();slide(c,1)}if(e.key==='ArrowLeft'){e.preventDefault();slide(c,-1)}}));
+
+/* form: set data-endpoint to your webhook (n8n / Telegram bot) */
+const fm=document.getElementById('fm'),ok=document.getElementById('ok');
+fm.addEventListener('submit',async e=>{e.preventDefault();const data=Object.fromEntries(new FormData(fm));const ep=fm.dataset.endpoint;
+ if(!ep){ok.textContent='Форма работает в демо-режиме: отправка заявок подключается при размещении сайта. Пока свяжитесь с нами по телефону или в Telegram.';fm.classList.add('sent');return}
+ try{const r=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});if(!r.ok)throw 0;ok.textContent='Спасибо! Заявка получена — мы свяжемся с вами в ближайшее время.';fm.reset();speak('Ура! Скоро увидимся!')}
+ catch(err){ok.textContent='Не получилось отправить. Позвоните нам или напишите в Telegram.'}
+ fm.classList.add('sent')});
+}
+</script>
+</body>
+</html>
