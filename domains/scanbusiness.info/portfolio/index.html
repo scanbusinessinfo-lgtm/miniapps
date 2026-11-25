@@ -57,7 +57,7 @@ nav{position:fixed;top:14px;left:0;right:0;z-index:30;pointer-events:none}
 .folder{position:absolute;left:6%;right:14%;top:calc(var(--i)*var(--step,62px));height:72px;border-radius:14px;padding:0 20px;display:flex;align-items:center;gap:14px;
   background:linear-gradient(135deg,rgba(79,125,255,.55),rgba(30,52,140,.55) 60%,rgba(15,25,70,.6));
   border:1px solid rgba(143,176,255,.45);box-shadow:0 0 30px -8px var(--blglow),inset 0 1px 0 rgba(255,255,255,.25);
-  backdrop-filter:blur(6px);transform-origin:left center;transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+  backdrop-filter:blur(6px);transform-origin:left center;transition:transform .18s linear,box-shadow .3s,opacity .3s;will-change:transform}
 .folder svg{width:22px;height:22px;flex:none;color:#fff;opacity:.9}
 .folder b{display:block;font-size:13px;font-weight:500;color:#fff}
 .folder small{display:block;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.65)}
@@ -628,6 +628,29 @@ let pi=0,ci=0,del=false; const typed=document.getElementById('typed');
   else if(!del){del=true;setTimeout(type,1800)}
   else if(ci>0){ci--;setTimeout(type,22)}
   else{del=false;pi=(pi+1)%phrases.length;setTimeout(type,300)}
+})();
+
+/* STACK: угол и масштаб карточек меняются при прокрутке */
+(function(){
+  const st=document.getElementById('stack'); if(!st) return;
+  const fs=[...st.querySelectorAll('.folder')], n=fs.length;
+  const cl=v=>Math.max(0,Math.min(1,v)), lerp=(a,b,t)=>a+(b-a)*t;
+  function upd(){
+    const vh=innerHeight, r=st.getBoundingClientRect();
+    // 0 — стопка внизу экрана, 1 — стопка ушла вверх
+    const t=cl((vh-r.top)/(vh+r.height));
+    fs.forEach((f,i)=>{
+      const d=i/(n-1);                       // каждая карточка с небольшой задержкой
+      const k=cl((t-0.12*d)/(0.8));
+      const rotY=lerp(-28,8,k), rotX=lerp(10,-4,k);
+      const sc=lerp(.94,1.08,Math.sin(Math.PI*Math.min(k,1)*0.5+0.0));
+      const tx=(n-1-i)*lerp(5,2,k);
+      f.style.transform=`translateX(${tx}%) rotateY(${rotY}deg) rotateX(${rotX}deg) scale(${sc})`;
+    });
+  }
+  let raf=0;
+  addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;upd()})},{passive:true});
+  addEventListener('resize',upd); upd();
 })();
 
 /* MARQUEE */
